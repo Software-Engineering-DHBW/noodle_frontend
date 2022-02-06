@@ -1,4 +1,4 @@
-# <img src="src/assets/noodle_white.png" width="100"> Frontend
+# <img src="public/noodle_white.png" width="100"> Frontend
 
 ## Stack
 
