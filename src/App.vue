@@ -1,17 +1,25 @@
 <template>
   <v-app>
     <v-app-bar
+      v-if="isLoggedIn"
       app
       dark
     >
       <div
-        v-if="isLoggedIn"
         id="nav"
       >
         <router-link to="/">
           Home
+        </router-link> |
+        <router-link to="/calendar">
+          Calendar
         </router-link>
       </div>
+      <v-spacer />
+      <v-img
+        src="/noodle_white.png"
+        style="max-width: 100px;"
+      />
     </v-app-bar>
     <v-main>
       <router-view />
@@ -51,7 +59,7 @@ export default class App extends Vue {
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #f6da63;
 }
 
 html {
