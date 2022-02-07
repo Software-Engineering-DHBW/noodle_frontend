@@ -50,13 +50,13 @@ export default class Calendar extends Vue {
 
   private value = ''
 
-  private events = []
+  private events: any = []
 
   private names = ['Meeting', 'Vorlesung', 'Hausarbeit', 'Lernen', 'Sport']
 
   private colors = ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1']
 
-  getEvents({ start, end }): any {
+  getEvents({ start, end }: any): any {
     const events = [];
 
     const min = new Date(`${start.date}T00:00:00`);
@@ -82,7 +82,6 @@ export default class Calendar extends Vue {
       });
     }
 
-    console.log(events[0]);
     this.events = events;
   }
 

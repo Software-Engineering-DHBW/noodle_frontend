@@ -11,6 +11,9 @@
         <router-link to="/">
           Home
         </router-link> |
+        <router-link to="/grades">
+          Grades
+        </router-link> |
         <router-link to="/calendar">
           Calendar
         </router-link>

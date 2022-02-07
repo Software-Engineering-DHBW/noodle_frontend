@@ -21,10 +21,12 @@ const routes: Array<RouteConfig> = [
   {
     path: '/grades',
     name: 'Grades',
-    // route level code-splitting
-    // this generates a separate chunk (login.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import('../views/Grades.vue'),
+  },
+  {
+    path: '/calendar',
+    name: 'Calendar',
+    component: () => import('../views/Calendar.vue'),
   },
 ];
 

@@ -1,10 +1,9 @@
 <template>
   <div class="home">
     <v-container fluid>
-      <h1>Hello User</h1>
-      <v-btn @click="getGrades()">
-        Get Grades
-      </v-btn>
+      <h1 style="margin: 100px">
+        Hello User
+      </h1>
     </v-container>
   </div>
 </template>
@@ -12,7 +11,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import StudentService from '../services/StudentService';
 
 const Auth = namespace('Auth');
 
@@ -25,10 +23,6 @@ export default class Home extends Vue {
     if (!this.currentUser) {
       this.$router.push('/login');
     }
-  }
-
-  getGrades(): void {
-    alert(StudentService.getGrades(this.currentUser.id));
   }
 }
 </script>

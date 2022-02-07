@@ -30,7 +30,9 @@
             v-for="evalutation in semesterEvaluations"
             :key="evalutation.name"
           >
-            <td class="text-left">{{ evalutation.moduleName }}</td>
+            <td class="text-left">
+              {{ evalutation.moduleName }}
+            </td>
             <td>{{ 5.0 }}</td>
             <td>{{ evalutation.grade }}</td>
           </tr>
@@ -106,11 +108,11 @@ export default class Grades extends Vue {
     return this.evaluations.filter((evaluation) => evaluation.semester === this.semesterTab + 1);
   }
 
-  // mounted(): void {
-  //   if (!this.currentUser) {
-  //     this.$router.push('/login');
-  //   }
-  // }
+  mounted(): void {
+    if (!this.currentUser) {
+      this.$router.push('/login');
+    }
+  }
 }
 </script>
 
