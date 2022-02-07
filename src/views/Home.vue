@@ -21,13 +21,13 @@ export default class Home extends Vue {
   @Auth.State('user')
   private currentUser!: any;
 
-  mounted() {
+  mounted(): void {
     if (!this.currentUser) {
       this.$router.push('/login');
     }
   }
 
-  getGrades() {
+  getGrades(): void {
     alert(StudentService.getGrades(this.currentUser.id));
   }
 }
