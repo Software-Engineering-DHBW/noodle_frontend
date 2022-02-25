@@ -3,6 +3,7 @@ import {
 } from 'vuex-module-decorators';
 import AuthService from '@/services/AuthService';
 import jwtDecode from 'jwt-decode';
+import NoodleUser from '../../classes/NoodleUser';
 
 const storedUser = localStorage.getItem('user');
 
@@ -58,7 +59,7 @@ class User extends VuexModule {
   }
 
   get currentUser(): any {
-    return this.user ? jwtDecode(this.user) : null;
+    return this.user ? new NoodleUser(jwtDecode(this.user)) : null;
   }
 }
 export default User;

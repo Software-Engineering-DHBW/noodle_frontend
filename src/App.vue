@@ -39,7 +39,7 @@ const Auth = namespace('Auth');
 @Component
 export default class App extends Vue {
   @Auth.Getter
-  private isLoggedIn!: boolean;
+  isLoggedIn!: boolean;
 }
 </script>
 
