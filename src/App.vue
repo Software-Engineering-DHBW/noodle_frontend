@@ -5,6 +5,10 @@
       app
       dark
     >
+      <v-img
+        src="/noodle_white.png"
+        style="max-width: 100px;"
+      />
       <div
         id="nav"
       >
@@ -19,10 +23,13 @@
         </router-link>
       </div>
       <v-spacer />
-      <v-img
-        src="/noodle_white.png"
-        style="max-width: 100px;"
-      />
+      <v-btn
+        text
+        color="#f6da63"
+        @click="handleLogout()"
+      >
+        Logout
+      </v-btn>
     </v-app-bar>
     <v-main>
       <router-view />
@@ -40,6 +47,14 @@ const Auth = namespace('Auth');
 export default class App extends Vue {
   @Auth.Getter
   isLoggedIn!: boolean;
+
+  @Auth.Mutation
+  logout!: any;
+
+  handleLogout(): void {
+    this.logout();
+    this.$router.push('/login');
+  }
 }
 </script>
 
