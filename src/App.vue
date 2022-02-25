@@ -1,7 +1,8 @@
 <template>
   <v-app>
+    <!-- Desktop Bar -->
     <v-app-bar
-      v-if="isLoggedIn"
+      v-if="isLoggedIn && $mq=='desktop'"
       app
       dark
     >
@@ -31,6 +32,61 @@
         Logout
       </v-btn>
     </v-app-bar>
+
+    <!-- Mobile Bar -->
+    <v-app-bar
+      v-if="isLoggedIn && $mq=='mobile'"
+      app
+      dark
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-img
+        src="/noodle_white.png"
+        style="max-width: 100px;"
+      />
+      <v-spacer />
+      <v-btn
+        text
+        color="#f6da63"
+        @click="handleLogout()"
+      >
+        Logout
+      </v-btn>
+    </v-app-bar>
+
+    <!-- Mobile Navigation Drawer -->
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      temporary
+    >
+      <v-list
+        nav
+      >
+        <v-list-item-group
+          active-class="deep-purple--text text--accent-4"
+        >
+          <v-list-item>
+            <router-link to="/">
+              Home
+            </router-link>
+          </v-list-item>
+
+          <v-list-item>
+            <router-link to="/grades">
+              Grades
+            </router-link>
+          </v-list-item>
+
+          <v-list-item>
+            <router-link to="/calendar">
+              Calendar
+            </router-link>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+
     <v-main>
       <router-view />
     </v-main>
@@ -50,6 +106,8 @@ export default class App extends Vue {
 
   @Auth.Mutation
   logout!: any;
+
+  drawer = false;
 
   handleLogout(): void {
     this.logout();
