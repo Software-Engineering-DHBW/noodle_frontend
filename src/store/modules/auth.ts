@@ -2,6 +2,7 @@ import {
   VuexModule, Module, Mutation, Action,
 } from 'vuex-module-decorators';
 import AuthService from '@/services/AuthService';
+import jwtDecode from 'jwt-decode';
 
 const storedUser = localStorage.getItem('user');
 
@@ -54,6 +55,10 @@ class User extends VuexModule {
 
   get isLoggedIn(): boolean {
     return this.status.loggedIn;
+  }
+
+  get currentUser(): any {
+    return this.user ? jwtDecode(this.user) : null;
   }
 }
 export default User;
