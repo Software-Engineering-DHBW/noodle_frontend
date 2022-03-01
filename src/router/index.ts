@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue';
+import Home from '../views/student/Home.vue';
 
 Vue.use(VueRouter);
 
@@ -21,12 +21,12 @@ const routes: Array<RouteConfig> = [
   {
     path: '/grades',
     name: 'Grades',
-    component: () => import('../views/Grades.vue'),
+    component: () => import('../views/student/Grades.vue'),
   },
   {
     path: '/calendar',
     name: 'Calendar',
-    component: () => import('../views/Calendar.vue'),
+    component: () => import('../views/student/Calendar.vue'),
   },
 ];
 
