@@ -11,7 +11,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import NoodleUser from '../classes/NoodleUser';
+import NoodleUser from '../../classes/NoodleUser';
 
 const Auth = namespace('Auth');
 
