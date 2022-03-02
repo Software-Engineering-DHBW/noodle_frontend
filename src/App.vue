@@ -87,7 +87,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
+    <v-main class="main">
       <router-view />
     </v-main>
   </v-app>
@@ -140,5 +140,9 @@ export default class App extends Vue {
 
 html {
   overflow-y: auto !important;
+}
+
+.main {
+  margin: 10px;
 }
 </style>

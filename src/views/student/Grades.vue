@@ -1,43 +1,49 @@
 <template>
-  <v-container>
-    <template>
-      <v-tabs v-model="semesterTab">
-        <v-tab
-          v-for="semesterName in semesterNames"
-          :key="semesterName"
-        >
-          Semester {{ semesterName }}
-        </v-tab>
-      </v-tabs>
-    </template>
+  <v-container class="grades-table">
+    <v-tabs v-model="activeSemesterTab">
+      <v-tab
+        v-for="semesterName in semesterNames"
+        :key="semesterName"
+      >
+        Semester {{ semesterName }}
+      </v-tab>
+    </v-tabs>
+
     <v-simple-table>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th>
-              Modul
-            </th>
-            <th class="text-center">
-              Credits
-            </th>
-            <th class="text-center">
-              Note
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="evalutation in semesterEvaluations"
-            :key="evalutation.name"
-          >
-            <td class="text-left">
-              {{ evalutation.moduleName }}
-            </td>
-            <td>{{ 5.0 }}</td>
-            <td>{{ evalutation.grade }}</td>
-          </tr>
-        </tbody>
-      </template>
+      <thead>
+        <tr>
+          <th>
+            Modul
+          </th>
+          <th class="text-center">
+            Credits
+          </th>
+          <th class="text-center">
+            Note
+          </th>
+          <th class="text-center">
+            Details
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="grade in semesterGrades"
+          :key="grade.name"
+        >
+          <td class="text-left">
+            {{ grade.moduleName }}
+          </td>
+          <td>{{ 5.0 }}</td>
+          <td>{{ grade.grade }}</td>
+          <td>
+            <GradeDetailsPopup
+              v-if="grade.details"
+              :grade="grade"
+            />
+          </td>
+        </tr>
+      </tbody>
     </v-simple-table>
   </v-container>
 </template>
@@ -45,14 +51,17 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import NoodleUser from '@/classes/NoodleUser';
+import GradeDetailsPopup from '@/views/student/GradeDetailsPopup.vue';
 
 const Auth = namespace('Auth');
 
-const evaluations = [
+const grades = [
   {
     moduleName: 'Software-Engineering',
     semester: 1,
     grade: 1.4,
+    details: {},
   },
   {
     moduleName: 'Mathematik',
@@ -78,6 +87,7 @@ const evaluations = [
     moduleName: 'Programmieren',
     semester: 2,
     grade: 1.5,
+    details: {},
   },
   {
     moduleName: 'Software-Engineering',
@@ -86,26 +96,54 @@ const evaluations = [
   },
   {
     moduleName: 'Elektrotechnik',
-    semester: 3,
+    semester: 4,
     grade: 1.8,
+    details: {},
+  }, {
+    moduleName: 'Software-Engineering',
+    semester: 4,
+    grade: 1.0,
+  },
+  {
+    moduleName: 'Elektrotechnik',
+    semester: 4,
+    grade: 1.8,
+    details: {},
+  }, {
+    moduleName: 'Software-Engineering',
+    semester: 4,
+    grade: 1.0,
+  },
+  {
+    moduleName: 'Mathematik',
+    semester: 5,
+    grade: 1.8,
+    details: {},
   },
 ];
 
-@Component
+@Component({
+  components: { GradeDetailsPopup },
+})
 export default class Grades extends Vue {
   @Auth.State('user')
-  private currentUser!: any;
+  private currentUser!: NoodleUser;
 
-  private evaluations: Array<any> = evaluations;
+  private grades: Array<any> = grades;
 
-  private semesterTab: any = null
+  private activeSemesterTab: any = null;
 
   get semesterNames(): Array<number> {
-    return [...new Set(this.evaluations.map((evaluation) => evaluation.semester))];
+    return [...new Set(this.grades.map((grade) => grade.semester))];
   }
 
-  get semesterEvaluations(): Array<any> {
-    return this.evaluations.filter((evaluation) => evaluation.semester === this.semesterTab + 1);
+  get semesterGrades(): Array<any> {
+    return this.grades.filter((grade) => grade.semester === this.activeSemesterTab + 1);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  gradeDetails(grade: any): void {
+    console.log(grade);
   }
 
   mounted(): void {
@@ -117,5 +155,9 @@ export default class Grades extends Vue {
 </script>
 
 <style scoped>
-
+.grades-table {
+  border-style: solid;
+  border-radius: 10px;
+  border-color: var(--v-primary-base);
+}
 </style>
