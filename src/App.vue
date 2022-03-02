@@ -2,7 +2,7 @@
   <v-app>
     <!-- Desktop Bar -->
     <v-app-bar
-      v-if="isLoggedIn && $mq=='desktop'"
+      v-if="isLoggedIn && $mq==='desktop'"
       app
       dark
     >
@@ -35,7 +35,7 @@
 
     <!-- Mobile Bar -->
     <v-app-bar
-      v-if="isLoggedIn && $mq=='mobile'"
+      v-if="isLoggedIn && $mq==='mobile'"
       app
       dark
     >
@@ -135,7 +135,7 @@ export default class App extends Vue {
 }
 
 #nav a.router-link-exact-active {
-  color: #f6da63;
+  color: var(--v-primary-base);
 }
 
 html {

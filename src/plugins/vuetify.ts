@@ -9,4 +9,27 @@ export default new Vuetify({
     locales: { de },
     current: 'de',
   },
+  theme: {
+    options: { customProperties: true },
+    themes: {
+      light: {
+        primary: '#f6da63',
+        secondary: '#ffffff',
+        accent: '#82B1FF',
+        info: '#2196F3',
+        success: '#4CAF50',
+        warning: '#FFC107',
+        error: '#FF5252',
+      },
+      dark: {
+        primary: '#f6da63',
+        secondary: '#ffffff',
+        accent: '#82B1FF',
+        info: '#2196F3',
+        success: '#4CAF50',
+        warning: '#FFC107',
+        error: '#FF5252',
+      },
+    },
+  },
 });
