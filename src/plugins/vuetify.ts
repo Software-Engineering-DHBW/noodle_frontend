@@ -9,6 +9,15 @@ export default new Vuetify({
     locales: { de },
     current: 'de',
   },
+  breakpoint: {
+    thresholds: {
+      xs: 700,
+      sm: 700,
+      md: 700,
+      lg: 700,
+      // xl breakpoint for bigger devices,
+    },
+  },
   theme: {
     options: { customProperties: true },
     themes: {

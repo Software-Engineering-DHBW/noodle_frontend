@@ -2,7 +2,7 @@
   <v-app>
     <!-- Desktop Bar -->
     <v-app-bar
-      v-if="isLoggedIn && $mq==='desktop'"
+      v-if="isLoggedIn && $vuetify.breakpoint.xl"
       app
       dark
     >
@@ -35,7 +35,7 @@
 
     <!-- Mobile Bar -->
     <v-app-bar
-      v-if="isLoggedIn && $mq==='mobile'"
+      v-if="isLoggedIn && $vuetify.breakpoint.xs"
       app
       dark
     >

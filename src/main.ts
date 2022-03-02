@@ -3,10 +3,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
-import VueMq from './plugins/vuemq';
 
 Vue.config.productionTip = false;
-Vue.use(VueMq);
 
 new Vue({
   router,
