@@ -1,50 +1,58 @@
 <template>
-  <v-container class="grades-table">
-    <v-tabs v-model="activeSemesterTab">
-      <v-tab
-        v-for="semesterName in semesterNames"
-        :key="semesterName"
-      >
-        Semester {{ semesterName }}
-      </v-tab>
-    </v-tabs>
+  <v-container>
+    <p class="text-h6 d-flex justify-space-between">
+      Gesamtnote: {{ 2.3 }}
+      <v-spacer />
+      Erreichte Credits: {{ 69 }}
+    </p>
 
-    <v-simple-table>
-      <thead>
-        <tr>
-          <th>
-            Modul
-          </th>
-          <th class="text-center">
-            Credits
-          </th>
-          <th class="text-center">
-            Note
-          </th>
-          <th class="text-center">
-            Details
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="grade in semesterGrades"
-          :key="grade.name"
+    <v-container class="grades-table">
+      <v-tabs v-model="activeSemesterTab">
+        <v-tab
+          v-for="semesterName in semesterNames"
+          :key="semesterName"
         >
-          <td class="text-left">
-            {{ grade.moduleName }}
-          </td>
-          <td>{{ 5.0 }}</td>
-          <td>{{ grade.grade }}</td>
-          <td>
-            <GradeDetailsPopup
-              v-if="grade.details"
-              :grade="grade"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+          Semester {{ semesterName }}
+        </v-tab>
+      </v-tabs>
+
+      <v-simple-table>
+        <thead>
+          <tr>
+            <th>
+              Modul
+            </th>
+            <th class="text-center">
+              Credits
+            </th>
+            <th class="text-center">
+              Note
+            </th>
+            <th class="text-center">
+              Details
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="grade in semesterGrades"
+            :key="grade.name"
+          >
+            <td class="text-left">
+              {{ grade.moduleName }}
+            </td>
+            <td>{{ 5.0 }}</td>
+            <td>{{ grade.grade }}</td>
+            <td>
+              <GradeDetailsPopup
+                v-if="grade.details"
+                :grade="grade"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </v-simple-table>
+    </v-container>
   </v-container>
 </template>
 
@@ -61,7 +69,17 @@ const grades = [
     moduleName: 'Software-Engineering',
     semester: 1,
     grade: 1.4,
-    details: {},
+    details: [
+      {
+        name: 'Klausur',
+        weight: 0.4,
+        grade: 2,
+      },
+      {
+        name: 'Projekt',
+        weight: 0.6,
+        grade: 1,
+      }],
   },
   {
     moduleName: 'Mathematik',

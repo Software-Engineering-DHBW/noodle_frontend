@@ -1,28 +1,51 @@
 <template>
-  <div class="text-center">
+  <v-container>
+    <a @click="visible=true">
+      <v-icon color="primary">mdi-magnify</v-icon>
+    </a>
+
     <v-dialog
       v-model="visible"
       width="500"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <a
-          v-bind="attrs"
-          v-on="on"
-        >
-          Einzelnoten
-        </a>
-      </template>
-
       <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
+        <v-card-title class="text-h5 primary">
           Notendetails
         </v-card-title>
 
         <v-card-text>
-          {{ "Hier werden die Noten von " + grade.moduleName + " stehen" }}
+          <v-simple-table>
+            <thead>
+              <tr>
+                <th>
+                  Bezeichnung
+                </th>
+                <th class="text-center">
+                  Wichtung
+                </th>
+                <th class="text-center">
+                  Note
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="detail in grade.details"
+                :key="detail.name"
+              >
+                <td class="text-left">
+                  {{ detail.name }}
+                </td>
+                <td>
+                  {{ detail.weight }}
+                </td>
+                <td>
+                  {{ detail.grade }}
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
         </v-card-text>
-
-        <v-divider />
 
         <v-card-actions>
           <v-spacer />
@@ -31,12 +54,12 @@
             text
             @click="visible = false"
           >
-            I accept
+            Ok
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
