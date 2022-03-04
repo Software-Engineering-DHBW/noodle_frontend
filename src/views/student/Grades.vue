@@ -48,6 +48,9 @@
                 v-if="grade.details"
                 :grade="grade"
               />
+              <v-icon v-else>
+                mdi-minus
+              </v-icon>
             </td>
           </tr>
         </tbody>
