@@ -9,8 +9,6 @@
     />
     <v-form
       ref="loginForm"
-      v-model="valid"
-      lazy-validation
     >
       <v-text-field
         v-model="user.username"
@@ -52,9 +50,11 @@ export default class Login extends Vue {
     password: '',
   };
 
-  private valid = true
+  private get valid(): boolean {
+    return this.user.username && this.user.password;
+  }
 
-  private textFieldRules = [(v: any) => !!v || 'Field is required']
+  private textFieldRules = [(value: any) => !!value || 'Feld darf nicht leer sein']
 
   @Auth.Getter
   private isLoggedIn!: boolean;
