@@ -7,19 +7,30 @@
       src="/noodle_black.png"
       style="margin-top: 20px; margin-bottom: 20px"
     />
-    <v-form>
+    <v-form
+      ref="loginForm"
+    >
       <v-text-field
         v-model="user.username"
         label="Username"
         outlined
+        :rules="textFieldRules"
+        @keydown.enter="handleLogin"
       />
       <v-text-field
         v-model="user.password"
-        outlined
         label="Password"
         type="password"
+        autocomplete="on"
+        outlined
+        :rules="textFieldRules"
+        @keydown.enter="handleLogin"
       />
-      <v-btn @click="handleLogin()">
+      <v-btn
+        class="primary"
+        :disabled="!valid"
+        @click="handleLogin()"
+      >
         Login
       </v-btn>
     </v-form>
@@ -34,7 +45,16 @@ const Auth = namespace('Auth');
 
 @Component
 export default class Login extends Vue {
-  private user: any = { username: '', password: '' };
+  private user: any = {
+    username: '',
+    password: '',
+  };
+
+  private get valid(): boolean {
+    return this.user.username && this.user.password;
+  }
+
+  private textFieldRules = [(value: any) => !!value || 'Feld darf nicht leer sein']
 
   @Auth.Getter
   private isLoggedIn!: boolean;
@@ -49,6 +69,10 @@ export default class Login extends Vue {
   }
 
   handleLogin(): void {
+    // validation of name and passwort field
+    const form: any = this.$refs.loginForm;
+    form.validate();
+
     if (this.user.username && this.user.password) {
       this.login(this.user).then(
         () => {
