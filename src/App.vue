@@ -16,6 +16,9 @@
         <router-link to="/">
           Home
         </router-link> |
+        <router-link to="/modules">
+          Module
+        </router-link> |
         <router-link to="/grades">
           Grades
         </router-link> |
@@ -69,6 +72,12 @@
           <v-list-item>
             <router-link to="/">
               Home
+            </router-link>
+          </v-list-item>
+
+          <v-list-item>
+            <router-link to="/modules">
+              Module
             </router-link>
           </v-list-item>
 
