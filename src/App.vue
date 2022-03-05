@@ -2,7 +2,7 @@
   <v-app>
     <!-- Desktop Bar -->
     <v-app-bar
-      v-if="isLoggedIn && $mq=='desktop'"
+      v-if="isLoggedIn && $vuetify.breakpoint.xl"
       app
       dark
     >
@@ -35,7 +35,7 @@
 
     <!-- Mobile Bar -->
     <v-app-bar
-      v-if="isLoggedIn && $mq=='mobile'"
+      v-if="isLoggedIn && $vuetify.breakpoint.xs"
       app
       dark
     >
@@ -87,7 +87,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
+    <v-main class="main">
       <router-view />
     </v-main>
   </v-app>
@@ -135,10 +135,14 @@ export default class App extends Vue {
 }
 
 #nav a.router-link-exact-active {
-  color: #f6da63;
+  color: var(--v-primary-base);
 }
 
 html {
   overflow-y: auto !important;
+}
+
+.main {
+  margin: 10px;
 }
 </style>
