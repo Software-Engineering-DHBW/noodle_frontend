@@ -17,18 +17,21 @@
       <v-tab-item
         v-for="semesterNumber in semesterNumbers"
         :key="semesterNumber"
+        class="pa-2"
       >
-        <v-container
+        <v-card
           v-for="module in semesterModules(semesterNumber)"
           :key="module.name"
-          class="module-container text-left"
-          @click="moduleClicked(module.name)"
+          hover
+          :to="`module/${semesterNumber}/${module.name}`"
+          class="mt-4"
         >
-          <h3>{{ module.name }}</h3>
-          <v-divider />
-          <br>
-          {{ module.description }}
-        </v-container>
+          <v-card-title v-text="module.name" />
+          <v-card-text
+            class="text-left"
+            v-text="module.description"
+          />
+        </v-card>
       </v-tab-item>
     </v-tabs-items>
   </v-container>
@@ -86,18 +89,5 @@ export default class ModuleOverview extends Vue {
   semesterModules(semester: number): Array<any> {
     return this.modules.filter((module) => module.semester === semester);
   }
-
-  moduleClicked(module: string): void {
-    this.$router.push(`/module/${module}`);
-  }
 }
 </script>
-
-<style scoped>
-.module-container {
-  border-style: solid;
-  border-radius: 10px;
-  border-color: var(--v-primary-base);
-  margin-top: 10px;
-}
-</style>
