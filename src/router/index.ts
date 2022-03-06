@@ -24,6 +24,11 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/student/ModuleOverview.vue'),
   },
   {
+    path: '/module/:semester/:modulName',
+    name: 'Module',
+    component: () => import('../views/student/Module.vue'),
+  },
+  {
     path: '/grades',
     name: 'Grades',
     component: () => import('../views/student/Grades.vue'),
