@@ -39,7 +39,13 @@
             :key="grade.name"
           >
             <td class="text-left">
-              {{ grade.moduleName }}
+              <v-btn
+                plain
+                :ripple="false"
+                :to="`module/${activeSemesterTab+1}/${grade.moduleName}`"
+                class="text-capitalize pa-0"
+                v-text="grade.moduleName"
+              />
             </td>
             <td>{{ 5.0 }}</td>
             <td>{{ grade.grade }}</td>
@@ -160,11 +166,6 @@ export default class Grades extends Vue {
 
   get semesterGrades(): Array<any> {
     return this.grades.filter((grade) => grade.semester === this.activeSemesterTab + 1);
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  gradeDetails(grade: any): void {
-    console.log(grade);
   }
 
   mounted(): void {
