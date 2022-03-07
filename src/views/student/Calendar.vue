@@ -1,17 +1,76 @@
 <template>
-  <v-calendar
-    ref="calendar"
-    v-model="value"
-    :weekdays="weekday"
-    :type="type"
-    :events="events"
-    :event-overlap-mode="mode"
-    :event-overlap-threshold="30"
-    style="width: 100%; height: 100%;"
-    @change="getEvents"
-  >
-    />
-  </v-calendar>
+  <v-container>
+    <v-row>
+      <v-col class="py-0">
+        <v-switch
+          v-if="$vuetify.breakpoint.xl"
+          v-model="monthView"
+          dense
+          :label="monthView ? 'Monatsansicht' : 'Wochenansicht'"
+        />
+      </v-col>
+
+      <v-col
+        align-self="center"
+        class="py-0 d-flex justify-end"
+      >
+        <v-btn
+          color="primary"
+          @click="exportCalendar"
+          v-text="'Export'"
+        />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col
+        class="py-0 d-flex justify-center"
+        align-self="center"
+      >
+        <v-btn
+          icon
+          @click="$refs.calendar.prev()"
+        >
+          <v-icon>
+            mdi-chevron-left
+          </v-icon>
+        </v-btn>
+        <v-btn
+          v-if="$refs.calendar"
+          text
+          plain
+          class="align-self-center text-capitalize text-h6"
+          @click="focus=''"
+        >
+          {{ $refs.calendar.title }}
+        </v-btn>
+        <v-btn
+          icon
+          @click="$refs.calendar.next()"
+        >
+          <v-icon>
+            mdi-chevron-right
+          </v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <v-calendar
+          ref="calendar"
+          v-model="focus"
+          first-interval="6"
+          interval-count="14"
+          :type="type"
+          :events="events"
+          :weekdays="weekdayOrder"
+          @change="getEvents"
+          @click:event="onEventClick"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -31,32 +90,31 @@ export default class Calendar extends Vue {
     }
   }
 
-  private type = 'month'
+  // Weekdays ordered by Mon-Sun
+  private weekdayOrder = [1, 2, 3, 4, 5, 6, 0];
 
-  private types = ['month', 'week', 'day', '4day']
+  private monthView = true;
 
-  private mode = 'stack'
+  get type(): string {
+    if (this.$vuetify.breakpoint.xs) {
+      return 'week';
+    }
+    return this.monthView ? 'month' : 'week';
+  }
 
-  private modes = ['stack', 'column']
+  private focus = '';
 
-  private weekday = [0, 1, 2, 3, 4, 5, 6]
+  private events: any = [];
 
-  private weekdays = [
-    { text: 'Sun - Sat', value: [0, 1, 2, 3, 4, 5, 6] },
-    { text: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] },
-    { text: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
-    { text: 'Mon, Wed, Fri', value: [1, 3, 5] },
-  ]
+  private courses = ['Mathematik', 'Software-Engineering', 'Elektronik', 'Programmieren', 'IT-Security'];
 
-  private value = ''
+  private colors = ['red', 'green', 'blue', 'indigo', 'brown'];
 
-  private events: any = []
-
-  private names = ['Meeting', 'Vorlesung', 'Hausarbeit', 'Lernen', 'Sport']
-
-  private colors = ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1']
-
-  getEvents({ start, end }: any): any {
+  getEvents(startAndEnd: any): void {
+    const {
+      start,
+      end,
+    } = startAndEnd;
     const events = [];
 
     const min = new Date(`${start.date}T00:00:00`);
@@ -65,16 +123,16 @@ export default class Calendar extends Vue {
     const eventCount = Calendar.rnd(days, days + 20);
 
     for (let i = 0; i < eventCount; i += 1) {
-      const allDay = Calendar.rnd(0, 3) === 0;
+      const allDay = false;
       const firstTimestamp = Calendar.rnd(min.getTime(), max.getTime());
       const first = new Date(firstTimestamp - (firstTimestamp % 900000));
       const secondTimestamp = Calendar.rnd(2, allDay ? 288 : 8) * 900000;
       const second = new Date(first.getTime() + secondTimestamp);
 
-      const eventNumber = Calendar.rnd(0, this.names.length - 1);
+      const eventNumber = Calendar.rnd(0, this.courses.length - 1);
 
       events.push({
-        name: this.names[eventNumber],
+        name: this.courses[eventNumber],
         start: first,
         end: second,
         color: this.colors[eventNumber],
@@ -85,8 +143,27 @@ export default class Calendar extends Vue {
     this.events = events;
   }
 
-  static rnd(a: any, b: any): any {
+  static rnd(a: number, b: number): number {
     return Math.floor((b - a + 1) * Math.random()) + a;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  exportCalendar(): void {
+    alert('Kalender wird exportiert');
+  }
+
+  // eslint-disable-next-line max-len
+  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/explicit-module-boundary-types
+  onEventClick({ event }: any): void {
+    const route = `/module/1/${event.name}`;
+    this.$router.push(route);
   }
 }
 </script>
+
+<style>
+/* removes calendars scroll bar that has no use */
+.v-calendar-daily__scroll-area {
+  overflow: auto !important;
+}
+</style>
