@@ -2,101 +2,59 @@
   <v-app>
     <!-- Desktop Bar -->
     <v-app-bar
-      v-if="isLoggedIn && $vuetify.breakpoint.xl"
+      v-if="isLoggedIn"
       app
       dark
     >
+      <v-app-bar-nav-icon
+        v-if="$vuetify.breakpoint.xs"
+        @click.stop="drawer = !drawer"
+      />
       <v-img
         src="/noodle_white.png"
         style="max-width: 100px;"
       />
       <div
+        v-if="$vuetify.breakpoint.xl"
         id="nav"
       >
-        <router-link to="/">
-          Home
-        </router-link> |
-        <router-link to="/modules">
-          Module
-        </router-link> |
-        <router-link to="/grades">
-          Grades
-        </router-link> |
-        <router-link to="/calendar">
-          Calendar
-        </router-link>
+        <span
+          v-for="link in pageLinks"
+          :key="link.name"
+        >
+          <router-link
+            :to="link.path"
+            v-text="link.name"
+          />&nbsp;
+        </span>
       </div>
       <v-spacer />
       <v-btn
         text
-        color="#f6da63"
+        color="primary"
         @click="handleLogout()"
-      >
-        Logout
-      </v-btn>
-    </v-app-bar>
-
-    <!-- Mobile Bar -->
-    <v-app-bar
-      v-if="isLoggedIn && $vuetify.breakpoint.xs"
-      app
-      dark
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-img
-        src="/noodle_white.png"
-        style="max-width: 100px;"
+        v-text="'Logout'"
       />
-      <v-spacer />
-      <v-btn
-        text
-        color="#f6da63"
-        @click="handleLogout()"
-      >
-        Logout
-      </v-btn>
     </v-app-bar>
 
     <!-- Mobile Navigation Drawer -->
     <v-navigation-drawer
+      v-if="$vuetify.breakpoint.xs"
       v-model="drawer"
       absolute
       temporary
     >
-      <v-list
-        nav
-      >
-        <v-list-item-group
-          active-class="deep-purple--text text--accent-4"
-        >
-          <v-list-item>
-            <router-link to="/">
-              Home
-            </router-link>
-          </v-list-item>
-
-          <v-list-item>
-            <router-link to="/modules">
-              Module
-            </router-link>
-          </v-list-item>
-
-          <v-list-item>
-            <router-link to="/grades">
-              Grades
-            </router-link>
-          </v-list-item>
-
-          <v-list-item>
-            <router-link to="/calendar">
-              Calendar
-            </router-link>
-          </v-list-item>
-        </v-list-item-group>
+      <v-list nav>
+        <v-list-item
+          v-for="link in pageLinks"
+          :key="link.name"
+          :to="link.path"
+          v-text="link.name"
+        />
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="main">
+    <v-main class="ma-2">
       <router-view />
     </v-main>
   </v-app>
@@ -118,6 +76,25 @@ export default class App extends Vue {
 
   drawer = false;
 
+  private pageLinks = [
+    {
+      name: 'Home',
+      path: '/',
+    },
+    {
+      name: 'Module',
+      path: '/modules',
+    },
+    {
+      name: 'Noten',
+      path: '/grades',
+    },
+    {
+      name: 'Kalender',
+      path: '/calendar',
+    },
+  ]
+
   handleLogout(): void {
     this.logout();
     this.$router.push('/login');
@@ -126,21 +103,13 @@ export default class App extends Vue {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
 #nav {
   padding: 30px;
 }
 
 #nav a {
   font-weight: bold;
-  color: #ffffff;
+  color: white;
 }
 
 #nav a.router-link-exact-active {
@@ -149,9 +118,5 @@ export default class App extends Vue {
 
 html {
   overflow-y: auto !important;
-}
-
-.main {
-  margin: 10px;
 }
 </style>

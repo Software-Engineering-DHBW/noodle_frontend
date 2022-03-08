@@ -47,9 +47,15 @@
                 v-text="grade.moduleName"
               />
             </td>
-            <td>{{ 5.0 }}</td>
-            <td>{{ grade.grade }}</td>
-            <td>
+            <td
+              class="text-center"
+              v-text="'5'"
+            />
+            <td
+              class="text-center"
+              v-text="grade.grade"
+            />
+            <td class="text-center">
               <GradeDetailsPopup
                 v-if="grade.details"
                 :grade="grade"
