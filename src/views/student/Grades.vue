@@ -1,73 +1,82 @@
 <template>
   <v-container>
-    <p class="text-h6 d-flex justify-space-between">
-      Gesamtnote: {{ 2.3 }}
+    <v-row class="text-center text-h6">
+      <v-col v-text="`Gesamtnote: ${ 2.3 }`" />
       <v-spacer />
-      Erreichte Credits: {{ 69 }}
-    </p>
+      <v-col v-text="`Erreichte Credits: ${ 69 }`" />
+    </v-row>
 
-    <v-container class="grades-table">
-      <v-tabs v-model="activeSemesterTab">
-        <v-tab
-          v-for="semesterName in semesterNames"
-          :key="semesterName"
-        >
-          Semester {{ semesterName }}
-        </v-tab>
-      </v-tabs>
+    <v-row>
+      <v-col>
+        <v-divider />
+      </v-col>
+    </v-row>
 
-      <v-simple-table>
-        <thead>
-          <tr>
-            <th>
-              Modul
-            </th>
-            <th class="text-center">
-              Credits
-            </th>
-            <th class="text-center">
-              Note
-            </th>
-            <th class="text-center">
-              Details
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="grade in semesterGrades"
-            :key="grade.name"
+    <v-row>
+      <v-col>
+        <SemesterTabs
+          v-model="activeSemesterTab"
+          :semester-numbers="semesterNumbers"
+        />
+
+        <v-tabs-items v-model="activeSemesterTab">
+          <v-tab-item
+            v-for="semesterNumber in semesterNumbers"
+            :key="semesterNumber"
           >
-            <td class="text-left">
-              <v-btn
-                plain
-                :ripple="false"
-                :to="`module/${activeSemesterTab+1}/${grade.moduleName}`"
-                class="text-capitalize pa-0"
-                v-text="grade.moduleName"
-              />
-            </td>
-            <td
-              class="text-center"
-              v-text="'5'"
-            />
-            <td
-              class="text-center"
-              v-text="grade.grade"
-            />
-            <td class="text-center">
-              <GradeDetailsPopup
-                v-if="grade.details"
-                :grade="grade"
-              />
-              <v-icon v-else>
-                mdi-minus
-              </v-icon>
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
-    </v-container>
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th>
+                    Modul
+                  </th>
+                  <th class="text-center">
+                    Credits
+                  </th>
+                  <th class="text-center">
+                    Note
+                  </th>
+                  <th class="text-center">
+                    Details
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="grade in gradesForSemester(semesterNumber)"
+                  :key="grade.name"
+                >
+                  <td class="text-break">
+                    <router-link
+                      :to="`module/${semesterNumber}/${grade.moduleName}`"
+                      v-text="grade.moduleName"
+                    />
+                  </td>
+                  <td
+                    class="text-center"
+                    v-text="'5'"
+                  />
+                  <td
+                    class="text-center"
+                    v-text="grade.grade"
+                  />
+                  <td class="text-center">
+                    <GradeDetailsPopup
+                      v-if="grade.details"
+                      :grade="grade"
+                      class="pa-0"
+                    />
+                    <v-icon v-else>
+                      mdi-minus
+                    </v-icon>
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </v-tab-item>
+        </v-tabs-items>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -76,6 +85,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import NoodleUser from '@/classes/NoodleUser';
 import GradeDetailsPopup from '@/views/student/GradeDetailsPopup.vue';
+import SemesterTabs from '@/components/SemesterTabs.vue';
 
 const Auth = namespace('Auth');
 
@@ -123,11 +133,6 @@ const grades = [
     details: {},
   },
   {
-    moduleName: 'Software-Engineering',
-    semester: 3,
-    grade: 1.0,
-  },
-  {
     moduleName: 'Elektrotechnik',
     semester: 4,
     grade: 1.8,
@@ -156,7 +161,10 @@ const grades = [
 ];
 
 @Component({
-  components: { GradeDetailsPopup },
+  components: {
+    SemesterTabs,
+    GradeDetailsPopup,
+  },
 })
 export default class Grades extends Vue {
   @Auth.State('user')
@@ -164,14 +172,14 @@ export default class Grades extends Vue {
 
   private grades: Array<any> = grades;
 
-  private activeSemesterTab: any = null;
+  private activeSemesterTab = 0;
 
-  get semesterNames(): Array<number> {
+  get semesterNumbers(): Array<number> {
     return [...new Set(this.grades.map((grade) => grade.semester))];
   }
 
-  get semesterGrades(): Array<any> {
-    return this.grades.filter((grade) => grade.semester === this.activeSemesterTab + 1);
+  gradesForSemester(semesterNumber: number): Array<any> {
+    return this.grades.filter((grade) => grade.semester === semesterNumber);
   }
 
   mounted(): void {
@@ -183,9 +191,20 @@ export default class Grades extends Vue {
 </script>
 
 <style scoped>
-.grades-table {
-  border-style: solid;
-  border-radius: 10px;
-  border-color: var(--v-primary-base);
+/* remove paddings in table to improve responsiveness */
+td:not(:first-child) {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+th:not(:first-child) {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+/* remove formatting of router link */
+a {
+  text-decoration: inherit;
+  color: inherit;
 }
 </style>

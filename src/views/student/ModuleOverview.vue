@@ -1,17 +1,9 @@
 <template>
   <v-container>
-    <v-tabs
+    <SemesterTabs
       v-model="activeSemesterTab"
-      center-active
-      show-arrows
-    >
-      <v-tab
-        v-for="semesterNumber in semesterNumbers"
-        :key="semesterNumber"
-      >
-        Semester {{ semesterNumber }}
-      </v-tab>
-    </v-tabs>
+      :semester-numbers="semesterNumbers"
+    />
 
     <v-tabs-items v-model="activeSemesterTab">
       <v-tab-item
@@ -39,8 +31,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import SemesterTabs from '@/components/SemesterTabs.vue';
 
-@Component
+@Component({
+  components: { SemesterTabs },
+})
 export default class ModuleOverview extends Vue {
   private modules = [
     {
