@@ -1,31 +1,35 @@
 <template>
   <v-container>
-    <SemesterTabs
-      v-model="activeSemesterTab"
-      :semester-numbers="semesterNumbers"
-    />
+    <v-row>
+      <v-col>
+        <SemesterTabs
+          v-model="activeSemesterTab"
+          :semester-numbers="semesterNumbers"
+        />
 
-    <v-tabs-items v-model="activeSemesterTab">
-      <v-tab-item
-        v-for="semesterNumber in semesterNumbers"
-        :key="semesterNumber"
-        class="pa-2"
-      >
-        <v-card
-          v-for="module in semesterModules(semesterNumber)"
-          :key="module.name"
-          hover
-          :to="`module/${semesterNumber}/${module.name}`"
-          class="mt-4"
-        >
-          <v-card-title v-text="module.name" />
-          <v-card-text
-            class="text-left"
-            v-text="module.description"
-          />
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
+        <v-tabs-items v-model="activeSemesterTab">
+          <v-tab-item
+            v-for="semesterNumber in semesterNumbers"
+            :key="semesterNumber"
+            class="pa-4"
+          >
+            <v-card
+              v-for="module in semesterModules(semesterNumber)"
+              :key="module.name"
+              hover
+              :to="`module/${semesterNumber}/${module.name}`"
+              class="mb-4"
+            >
+              <v-card-title v-text="module.name" />
+              <v-card-text
+                class="text-left"
+                v-text="module.description"
+              />
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
