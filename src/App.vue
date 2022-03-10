@@ -110,9 +110,11 @@ export default class App extends Vue {
 #nav a {
   font-weight: bold;
   color: white;
+  text-decoration: none;
 }
 
 #nav a.router-link-exact-active {
+  text-decoration: underline;
   color: var(--v-primary-base);
 }
 
