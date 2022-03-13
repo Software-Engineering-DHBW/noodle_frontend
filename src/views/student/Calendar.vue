@@ -24,7 +24,7 @@
 
     <v-row>
       <v-col
-        class="py-0 d-flex justify-center"
+        class="pb-0 d-flex justify-center"
         align-self="center"
       >
         <v-btn
@@ -56,7 +56,8 @@
     </v-row>
 
     <v-row>
-      <v-col>
+      <!-- active but invisible in mobile view to use datepicker above, "v-if" not possible here -->
+      <v-col :class="{invisible: $vuetify.breakpoint.xs}">
         <v-calendar
           ref="calendar"
           v-model="focus"
@@ -68,6 +69,37 @@
           @change="getEvents"
           @click:event="onEventClick"
         />
+      </v-col>
+
+      <v-col v-if="$vuetify.breakpoint.xs">
+        <v-card
+          v-for="weekday in mobileEvents"
+          :key="weekday.name"
+          class="mb-4"
+        >
+          <v-card-title
+            class="primary"
+            v-text="weekday.name"
+          />
+          <v-list-item
+            v-for="(event, index) in weekday.events"
+            :key="event.start.getMilliseconds()"
+          >
+            <v-list-item-content class="pt-0">
+              <v-list-item-title>
+                <v-divider v-if="index !== 0" />
+              </v-list-item-title>
+              <v-list-item-title
+                class="pt-2"
+                v-text="event.name"
+              />
+              <v-list-item-subtitle
+                v-text="`${event.start.toLocaleTimeString().slice(0,-3)}
+                 - ${event.end.toLocaleTimeString().slice(0,-3)}`"
+              />
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -125,7 +157,7 @@ export default class Calendar extends Vue {
     for (let i = 0; i < eventCount; i += 1) {
       const allDay = false;
       const firstTimestamp = Calendar.rnd(min.getTime(), max.getTime());
-      const first = new Date(firstTimestamp - (firstTimestamp % 900000));
+      const first = new Date(firstTimestamp - (firstTimestamp % 900000) + Math.random() * 1000);
       const secondTimestamp = Calendar.rnd(2, allDay ? 288 : 8) * 900000;
       const second = new Date(first.getTime() + secondTimestamp);
 
@@ -141,6 +173,47 @@ export default class Calendar extends Vue {
     }
 
     this.events = events;
+  }
+
+  get mobileEvents(): any {
+    const weekdayEvents: any = {
+      0: {
+        name: 'Montag',
+        events: [],
+      },
+      1: {
+        name: 'Dienstag',
+        events: [],
+      },
+      2: {
+        name: 'Mittwoch',
+        events: [],
+      },
+      3: {
+        name: 'Donnerstag',
+        events: [],
+      },
+      4: {
+        name: 'Freitag',
+        events: [],
+      },
+      5: {
+        name: 'Samstag',
+        events: [],
+      },
+      6: {
+        name: 'Sonntag',
+        events: [],
+      },
+    };
+
+    this.events
+      .sort((a: any, b: any) => a.start - b.start)
+      .forEach((event: any) => {
+        const day = event.start.getDay() > 0 ? event.start.getDay() - 1 : 6;
+        weekdayEvents[day].events.push(event);
+      });
+    return weekdayEvents;
   }
 
   static rnd(a: number, b: number): number {
@@ -165,5 +238,9 @@ export default class Calendar extends Vue {
 /* removes calendars scroll bar that has no use */
 .v-calendar-daily__scroll-area {
   overflow: auto !important;
+}
+
+.invisible {
+  display: none;
 }
 </style>
