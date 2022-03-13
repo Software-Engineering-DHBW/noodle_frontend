@@ -84,6 +84,7 @@
           <v-list-item
             v-for="(event, index) in weekday.events"
             :key="event.start.getMilliseconds()"
+            :to="`module/${1}/${event.name}`"
           >
             <v-list-item-content class="pt-0">
               <v-list-item-title>
@@ -207,6 +208,20 @@ export default class Calendar extends Vue {
       },
     };
 
+    let start: any;
+    let date: any;
+    if (this.$refs.calendar) {
+      start = this.$refs.calendar.lastStart;
+    }
+    if (start) {
+      date = new Date(start.date);
+      const weekdayKeys = Object.keys(weekdayEvents);
+      weekdayKeys.forEach((key, index) => {
+        weekdayEvents[key].name += `, ${this.padTo2Digits(date.getDate())}.${this.padTo2Digits(date.getMonth() + 1)}.`;
+        date.setDate(date.getDate() + 1);
+      });
+    }
+
     this.events
       .sort((a: any, b: any) => a.start - b.start)
       .forEach((event: any) => {
@@ -214,6 +229,12 @@ export default class Calendar extends Vue {
         weekdayEvents[day].events.push(event);
       });
     return weekdayEvents;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  padTo2Digits(num: { toString: () => string; }): string {
+    return num.toString()
+      .padStart(2, '0');
   }
 
   static rnd(a: number, b: number): number {
