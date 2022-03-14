@@ -4,7 +4,7 @@
 
 - Vue 2
 - Typescript
-- Rooter
+- Router
 - Vuex
 - Vuetify (UI Components)
 - Jest (Unit Tests)
