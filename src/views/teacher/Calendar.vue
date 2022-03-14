@@ -1,18 +1,40 @@
 <template>
-  <calendar
-    :events="events"
-    @change="getEvents"
-  />
+  <v-container>
+    <v-row>
+      <v-col>
+        <v-select
+          v-model="selectedCalendarView"
+          solo
+          hide-details
+          :items="calendarViews"
+          @change="setCalendarView"
+        />
+      </v-col>
+      <v-col class="text-right">
+        <MeetingPopup :meeting="currentMeeting" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <calendar
+        :events="events"
+        @change="getEvents"
+      />
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Calendar from '@/components/Calendar.vue';
+import MeetingPopup from '@/views/teacher/MeetingPopup.vue';
 
 const Auth = namespace('Auth');
 @Component({
-  components: { Calendar },
+  components: {
+    MeetingPopup,
+    Calendar,
+  },
 })
 export default class CalendarView extends Vue {
   @Auth.State('user')
@@ -22,6 +44,17 @@ export default class CalendarView extends Vue {
     if (!this.currentUser) {
       this.$router.push('/login');
     }
+  }
+
+  private calendarViews = ['Meine Termine', 'Meine Termine + Kurs IT1', 'Meine Termine + Kurs IT2'];
+
+  private currentMeeting = null;
+
+  private selectedCalendarView = this.calendarViews[0];
+
+  // eslint-disable-next-line class-methods-use-this
+  setCalendarView(selectedCalendarView: any) {
+    console.log(`Wechseln zu "${selectedCalendarView}"`);
   }
 
   private courses = ['Mathematik', 'Software-Engineering', 'Elektronik', 'Programmieren', 'IT-Security'];

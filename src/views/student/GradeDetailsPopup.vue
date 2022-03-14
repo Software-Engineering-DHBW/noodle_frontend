@@ -9,7 +9,7 @@
       width="500"
     >
       <v-card>
-        <v-card-title class="text-h5 primary">
+        <v-card-title class="primary">
           Notendetails
         </v-card-title>
 
@@ -33,13 +33,13 @@
                 v-for="detail in grade.details"
                 :key="detail.name"
               >
-                <td class="text-left">
+                <td>
                   {{ detail.name }}
                 </td>
-                <td>
+                <td class="text-center">
                   {{ detail.weight }}
                 </td>
-                <td>
+                <td class="text-center">
                   {{ detail.grade }}
                 </td>
               </tr>
