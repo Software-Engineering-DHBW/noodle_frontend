@@ -27,7 +27,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Calendar from '@/components/Calendar.vue';
-import MeetingPopup from '@/views/teacher/MeetingPopup.vue';
+import MeetingPopup from '@/components/MeetingPopup.vue';
 
 const Auth = namespace('Auth');
 @Component({

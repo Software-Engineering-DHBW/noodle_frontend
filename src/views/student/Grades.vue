@@ -84,7 +84,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import NoodleUser from '@/classes/NoodleUser';
-import GradeDetailsPopup from '@/views/student/GradeDetailsPopup.vue';
+import GradeDetailsPopup from '@/components/GradeDetailsPopup.vue';
 import SemesterTabs from '@/components/SemesterTabs.vue';
 
 const Auth = namespace('Auth');
