@@ -93,6 +93,10 @@ export default class App extends Vue {
       name: 'Kalender',
       path: '/calendar',
     },
+    {
+      name: 'Kalender-Lehrer',
+      path: 'calendar-teacher',
+    },
   ]
 
   handleLogout(): void {
@@ -120,5 +124,9 @@ export default class App extends Vue {
 
 html {
   overflow-y: auto !important;
+}
+
+.col {
+  align-self: center;
 }
 </style>

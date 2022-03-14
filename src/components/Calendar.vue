@@ -10,23 +10,28 @@
         />
       </v-col>
 
-      <v-col
-        align-self="center"
-        class="py-0 d-flex justify-end"
-      >
-        <v-btn
-          color="primary"
-          @click="exportCalendar"
-          v-text="'Export'"
-        />
+      <v-col class="py-0 d-flex justify-end">
+        <v-tooltip bottom>
+          Kalender exportieren
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              icon
+              v-bind="attrs"
+              v-on="on"
+              @click="exportCalendar"
+            >
+              <v-icon>
+                mdi-download
+              </v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
       </v-col>
     </v-row>
 
     <v-row>
-      <v-col
-        class="pb-0 d-flex justify-center"
-        align-self="center"
-      >
+      <v-col class="pb-0 d-flex justify-center">
         <v-btn
           icon
           @click="$refs.calendar.prev()"
@@ -39,7 +44,7 @@
           v-if="$refs.calendar"
           text
           plain
-          class="align-self-center text-capitalize text-h6"
+          class="text-capitalize text-h6"
           @click="focus=''"
         >
           {{ $refs.calendar.title }}
