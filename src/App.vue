@@ -95,7 +95,11 @@ export default class App extends Vue {
     },
     {
       name: 'Kalender-Lehrer',
-      path: 'calendar-teacher',
+      path: '/calendar-teacher',
+    },
+    {
+      name: 'Module-Lehrer',
+      path: '/modules-teacher',
     },
   ]
 

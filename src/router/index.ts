@@ -43,6 +43,11 @@ const routes: Array<RouteConfig> = [
     name: 'Calendar-Teacher',
     component: () => import('../views/teacher/Calendar.vue'),
   },
+  {
+    path: '/modules-teacher',
+    name: 'Module-Teacher',
+    component: () => import('../views/teacher/ModuleOverview.vue'),
+  },
 ];
 
 const router = new VueRouter({
