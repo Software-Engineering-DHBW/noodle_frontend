@@ -31,7 +31,10 @@ import MeetingPopup from '@/views/teacher/MeetingPopup.vue';
 
 const Auth = namespace('Auth');
 @Component({
-  components: { MeetingPopup, Calendar },
+  components: {
+    MeetingPopup,
+    Calendar,
+  },
 })
 export default class CalendarView extends Vue {
   @Auth.State('user')
@@ -45,7 +48,7 @@ export default class CalendarView extends Vue {
 
   private calendarViews = ['Meine Termine', 'Meine Termine + Kurs IT1', 'Meine Termine + Kurs IT2'];
 
-  private currentMeeting = null
+  private currentMeeting = null;
 
   private selectedCalendarView = this.calendarViews[0];
 

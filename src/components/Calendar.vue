@@ -132,7 +132,7 @@ export default class Calendar extends Vue {
 
   @Prop({ required: true }) private events: any;
 
-  emitChange(startAndEnd:any) {
+  emitChange(startAndEnd: any) {
     this.$emit('change', startAndEnd);
   }
 

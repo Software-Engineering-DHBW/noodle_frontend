@@ -24,13 +24,14 @@
       width="500"
     >
       <v-card>
-        <v-card-title class="primary">
-          Termin
-        </v-card-title>
+        <v-card-title
+          class="primary"
+          v-text="'Termin'"
+        />
 
         <v-card-text>
           <v-container>
-            <v-row>
+            <v-row class="text-h6">
               <v-col v-text="'Kurs'" />
               <v-col>
                 <v-select
