@@ -13,19 +13,7 @@
             :key="semesterNumber"
             class="pa-4"
           >
-            <v-card
-              v-for="module in semesterModules(semesterNumber)"
-              :key="module.name"
-              hover
-              :to="`module/${semesterNumber}/${module.name}`"
-              class="mb-4"
-            >
-              <v-card-title v-text="module.name" />
-              <v-card-text
-                class="text-left"
-                v-text="module.description"
-              />
-            </v-card>
+            <ModuleList :modules="semesterModules(semesterNumber)" />
           </v-tab-item>
         </v-tabs-items>
       </v-col>
@@ -36,9 +24,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import SemesterTabs from '@/components/SemesterTabs.vue';
+import ModuleList from '@/components/ModuleList.vue';
 
 @Component({
-  components: { SemesterTabs },
+  components: { ModuleList, SemesterTabs },
 })
 export default class ModuleOverview extends Vue {
   private modules = [
