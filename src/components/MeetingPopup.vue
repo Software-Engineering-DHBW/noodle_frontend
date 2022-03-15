@@ -118,9 +118,9 @@ import TimeField from '@/components/TimeField.vue';
   },
 })
 export default class MeetingPopup extends Vue {
-  private visible = false;
-
   @Prop({ required: true }) readonly meeting: any;
+
+  private visible = false;
 
   private date = null;
 
