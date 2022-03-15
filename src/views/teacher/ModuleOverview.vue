@@ -2,12 +2,9 @@
   <v-container>
     <v-row>
       <v-col>
-        <v-select
+        <SemesterDropdown
           v-model="selectedSemester"
-          hide-details
-          label="Semester"
-          outlined
-          :items="semester"
+          :semester="semester"
         />
       </v-col>
     </v-row>
@@ -23,9 +20,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 import SemesterTabs from '@/components/SemesterTabs.vue';
 import ModuleList from '@/components/ModuleList.vue';
+import SemesterDropdown from '@/components/SemesterDropdown.vue';
 
 @Component({
   components: {
+    SemesterDropdown,
     ModuleList,
     SemesterTabs,
   },
@@ -34,49 +33,49 @@ export default class ModuleOverview extends Vue {
   private modules = [
     {
       name: 'Software-Engineering I',
-      semester: 'Wi2020',
+      semester: 'Wintersemester 2020',
       course: 'IT1',
       description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
     },
     {
       name: 'Software-Engineering II',
-      semester: 'Wi2020',
+      semester: 'Wintersemester 2020',
       course: 'IT2',
       description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
     },
     {
       name: 'Mathematik',
-      semester: 'Wi2020',
+      semester: 'Wintersemester 2020',
       course: 'IT2',
       description: '9 von 7 Menschen sind mit Mathe überfordert',
     },
     {
       name: 'Mathematik',
-      semester: 'So2021',
+      semester: 'Sommersemester 2021',
       course: 'IT1',
       description: '9 von 7 Menschen sind mit Mathe überfordert',
     },
     {
       name: 'Mathematik',
-      semester: 'So2021',
+      semester: 'Sommersemester 2021',
       course: 'IT2',
       description: '9 von 7 Menschen sind mit Mathe überfordert',
     },
     {
       name: 'Mathematik',
-      semester: 'So2021',
+      semester: 'Sommersemester 2021',
       course: 'IT2',
       description: '9 von 7 Menschen sind mit Mathe überfordert',
     },
     {
       name: 'Software-Engineering I',
-      semester: 'Wi2021',
+      semester: 'Wintersemester 2021',
       course: 'CS1',
       description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
     },
     {
       name: 'Software-Engineering I',
-      semester: 'Wi2021',
+      semester: 'Wintersemester 2021',
       course: 'CS2',
       description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
     },
