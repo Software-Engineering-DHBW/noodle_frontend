@@ -106,8 +106,16 @@ export default class App extends Vue {
       path: '/modules-teacher',
     },
     {
+      name: '(Modul-Lehrer)',
+      path: '/module-teacher/1/Mathematik',
+    },
+    {
       name: '(Module-Admin)',
       path: '/modules-admin',
+    },
+    {
+      name: '(Modul-Admin)',
+      path: '/module-admin/1/Mathematik',
     },
   ];
 
