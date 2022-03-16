@@ -1,0 +1,113 @@
+<template>
+  <v-container>
+    <v-row>
+      <v-col>
+        <SemesterDropdown
+          v-model="selectedSemester"
+          :semester="semester"
+        />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <SearchField v-model="filterString" />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <ModuleList :modules="filteredSemesterModules" />
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import ModuleList from '@/components/ModuleList.vue';
+import SemesterDropdown from '@/components/SemesterDropdown.vue';
+import SearchField from '@/components/SearchField.vue';
+
+@Component({
+  components: {
+    SearchField,
+    SemesterDropdown,
+    ModuleList,
+  },
+})
+export default class ModuleOverview extends Vue {
+  private filterString = '';
+
+  private modules = [
+    {
+      name: 'Software-Engineering I',
+      semester: 'Wintersemester 2020',
+      course: 'IT1',
+      description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
+    },
+    {
+      name: 'Software-Engineering II',
+      semester: 'Wintersemester 2020',
+      course: 'IT2',
+      description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
+    },
+    {
+      name: 'Mathematik',
+      semester: 'Wintersemester 2020',
+      course: 'IT2',
+      description: '9 von 7 Menschen sind mit Mathe überfordert',
+    },
+    {
+      name: 'Mathematik',
+      semester: 'Sommersemester 2021',
+      course: 'IT1',
+      description: '9 von 7 Menschen sind mit Mathe überfordert',
+    },
+    {
+      name: 'Mathematik',
+      semester: 'Sommersemester 2021',
+      course: 'CS1',
+      description: '9 von 7 Menschen sind mit Mathe überfordert',
+    },
+    {
+      name: 'Mathematik',
+      semester: 'Sommersemester 2021',
+      course: 'IT2',
+      description: '9 von 7 Menschen sind mit Mathe überfordert',
+    },
+    {
+      name: 'Software-Engineering I',
+      semester: 'Wintersemester 2021',
+      course: 'CS1',
+      description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
+    },
+    {
+      name: 'Software-Engineering I',
+      semester: 'Wintersemester 2021',
+      course: 'CS2',
+      description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
+    },
+  ];
+
+  private selectedSemester = this.semester[0];
+
+  get semester(): Array<any> {
+    return [...new Set(this.modules.map((module) => module.semester))];
+  }
+
+  get semesterModules(): Array<any> {
+    return this.modules
+      .filter((module) => module.semester === this.selectedSemester)
+      .map((module) => ({
+        name: `${module.name} in Kurs ${module.course}`,
+        description: module.description,
+      }));
+  }
+
+  get filteredSemesterModules(): Array<any> {
+    return this.semesterModules
+      .filter((module) => module.name.includes(this.filterString));
+  }
+}
+</script>
