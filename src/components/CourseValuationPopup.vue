@@ -42,6 +42,8 @@
                   v-model="gradeWeights[index]"
                   :label="`Note ${index + 1}`"
                   hide-details
+                  hide-spin-buttons
+                  type="number"
                   append-icon="mdi-percent"
                 />
               </th>
@@ -84,7 +86,9 @@
                 <v-text-field
                   v-model="students[studentIndex].grades[weightIndex]"
                   hide-details
+                  hide-spin-buttons
                   placeholder="Note"
+                  type="number"
                 />
               </td>
               <td />
@@ -232,6 +236,7 @@ export default class CourseValuationPopup extends Vue {
   private visible = false;
 
   saveValuations(): void {
+    alert('Kursbewertung abgegeben');
     this.visible = false;
   }
 }
