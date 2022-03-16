@@ -53,6 +53,11 @@ const routes: Array<RouteConfig> = [
     name: 'Module-Teacher',
     component: () => import('../views/teacher/Module.vue'),
   },
+  {
+    path: '/modules-admin',
+    name: 'Module-Admin',
+    component: () => import('../views/admin/ModuleOverview.vue'),
+  },
 ];
 
 const router = new VueRouter({
