@@ -13,6 +13,9 @@
       <v-col>
         <SearchField v-model="filterString" />
       </v-col>
+      <v-col class="text-right">
+        <NewModulePopup />
+      </v-col>
     </v-row>
 
     <v-row>
@@ -28,9 +31,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import ModuleList from '@/components/ModuleList.vue';
 import SemesterDropdown from '@/components/SemesterDropdown.vue';
 import SearchField from '@/components/SearchField.vue';
+import NewModulePopup from '@/components/NewModulePopup.vue';
 
 @Component({
   components: {
+    NewModulePopup,
     SearchField,
     SemesterDropdown,
     ModuleList,
@@ -107,7 +112,7 @@ export default class ModuleOverview extends Vue {
 
   get filteredSemesterModules(): Array<any> {
     return this.semesterModules
-      .filter((module) => module.name.includes(this.filterString));
+      .filter((module) => module.name.toLowerCase().includes(this.filterString.toLowerCase()));
   }
 }
 </script>

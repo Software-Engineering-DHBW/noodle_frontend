@@ -78,7 +78,3 @@ export default class NewAssignmentPopup extends Vue {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
