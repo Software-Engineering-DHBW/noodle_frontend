@@ -72,7 +72,3 @@ export default class GradeDetailsPopup extends Vue {
   private visible = false;
 }
 </script>
-
-<style scoped>
-
-</style>

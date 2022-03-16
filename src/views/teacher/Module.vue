@@ -1,9 +1,15 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
+      <v-col cols="8">
         <h2 v-text="`${modulName} im ${semester}. Semester`" />
         <v-textarea v-text="description" />
+      </v-col>
+      <v-col
+        cols="4"
+        class="text-right"
+      >
+        <CourseValuationPopup :course="course" />
       </v-col>
     </v-row>
 
@@ -73,9 +79,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 import LectureMaterialTree from '@/components/LectureMaterialTree.vue';
 import NewAssignmentPopup from '@/components/NewAssignmentPopup.vue';
+import CourseValuationPopup from '@/components/CourseValuationPopup.vue';
 
 @Component({
   components: {
+    CourseValuationPopup,
     NewAssignmentPopup,
     LectureMaterialTree,
   },
@@ -86,6 +94,8 @@ export default class Module extends Vue {
   private description = 'Dieses Modul ist besonders geil. Es ist supergeil!';
 
   private semester = 0;
+
+  private course = 'IT2';
 
   private lectureMaterial = [
     {
