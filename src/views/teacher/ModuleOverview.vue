@@ -18,7 +18,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import SemesterTabs from '@/components/SemesterTabs.vue';
 import ModuleList from '@/components/ModuleList.vue';
 import SemesterDropdown from '@/components/SemesterDropdown.vue';
 
@@ -26,7 +25,6 @@ import SemesterDropdown from '@/components/SemesterDropdown.vue';
   components: {
     SemesterDropdown,
     ModuleList,
-    SemesterTabs,
   },
 })
 export default class ModuleOverview extends Vue {

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="text-left">
+  <v-container>
     <h2 v-text="`${modulName} im ${semester}. Semester`" />
     <v-textarea v-text="description" />
 
@@ -7,83 +7,63 @@
     <v-divider />
 
     <v-card-title v-text="'Materialien'" />
-    <v-treeview
-      :items="material"
-      item-key="name"
-      expand-icon=""
-      open-on-click
-      hoverable
-    >
-      <template v-slot:prepend="{ item, open }">
-        <v-icon
-          v-if="!item.format"
-          color="primary"
-        >
-          {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
-        </v-icon>
-        <v-icon
-          v-else
-          color="primary"
-        >
-          {{ formats[item.format] }}
-        </v-icon>
-      </template>
-    </v-treeview>
+    <LectureMaterialTree :lecture-material="lectureMaterial" />
 
     <br>
     <v-divider />
 
     <v-card-title v-text="'Abgaben'" />
-    <v-list class="ml-6">
-      <v-list-item-group>
-        <v-list-item
-          v-for="assignment in assignments"
-          :key="assignment.name"
-          class="assignment-item"
-          :ripple="false"
-          inactive
-          two-line
-        >
-          <div>
-            <v-icon
-              v-if="assignment.submitted"
-              color="success"
-            >
-              mdi-check-circle-outline
-            </v-icon>
-            <v-icon
-              v-else-if="assignment.over"
-              color="error"
-            >
-              mdi-circle-off-outline
-            </v-icon>
-            <v-icon
-              v-else
-              color="primary"
-            >
-              mdi-checkbox-blank-circle-outline
-            </v-icon>
-          </div>
-          <v-container>
-            <v-list-item-title v-text="assignment.name" />
-            <v-list-item-subtitle v-text="assignment.deadline" />
-          </v-container>
-          <v-file-input
-            :prepend-icon="assignment.submitted ? 'mdi-file' : 'mdi-file-plus'"
-            :disabled="assignment.over"
-            hide-input
-            dense
-          />
-        </v-list-item>
-      </v-list-item-group>
+    <v-list class="ml-5">
+      <v-list-item
+        v-for="assignment in assignments"
+        :key="assignment.name"
+        :ripple="false"
+        inactive
+        two-line
+      >
+        <div>
+          <v-icon
+            v-if="assignment.submitted"
+            color="success"
+          >
+            mdi-check-circle-outline
+          </v-icon>
+          <v-icon
+            v-else-if="assignment.over"
+            color="error"
+          >
+            mdi-circle-off-outline
+          </v-icon>
+          <v-icon
+            v-else
+            color="primary"
+          >
+            mdi-checkbox-blank-circle-outline
+          </v-icon>
+        </div>
+        <v-container>
+          <v-list-item-title v-text="assignment.name" />
+          <v-list-item-subtitle v-text="assignment.deadline" />
+        </v-container>
+        <v-file-input
+          :prepend-icon="assignment.submitted ? 'mdi-file' : 'mdi-file-plus'"
+          :disabled="assignment.over"
+          hide-input
+          dense
+          @change="uploadAssignment"
+        />
+      </v-list-item>
     </v-list>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import LectureMaterialTree from '@/components/LectureMaterialTree.vue';
 
-@Component
+@Component({
+  components: { LectureMaterialTree },
+})
 export default class Module extends Vue {
   private modulName = '';
 
@@ -91,13 +71,7 @@ export default class Module extends Vue {
 
   private semester = 0;
 
-  private formats = {
-    file: 'mdi-file-outline',
-    pdf: 'mdi-file-pdf-box',
-    link: 'mdi-link',
-  };
-
-  private material = [
+  private lectureMaterial = [
     {
       name: 'Vorlesungsmaterial',
       children: [
@@ -170,15 +144,14 @@ export default class Module extends Vue {
     },
   ];
 
+  // eslint-disable-next-line class-methods-use-this
+  uploadAssignment(event: any) {
+    alert(`"${event.name}" wird hochgeladen`);
+  }
+
   mounted(): void {
     this.modulName = this.$route.params.modulName;
     this.semester = +this.$route.params.semester;
   }
 }
 </script>
-
-<style scoped>
-.assignment-item:hover {
-  background-color: #f6f6f6;
-}
-</style>

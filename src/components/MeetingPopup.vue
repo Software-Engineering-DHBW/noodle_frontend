@@ -11,6 +11,7 @@
       v-if="$vuetify.breakpoint.xs"
       fab
       small
+      elevation="2"
       color="primary"
       @click="visible=true"
     >
@@ -46,10 +47,7 @@
             </v-row>
             <v-row>
               <v-col>
-                <DateField
-                  v-model="date"
-                  label="Datum"
-                />
+                <DateField v-model="date" />
               </v-col>
             </v-row>
             <v-row>
@@ -118,9 +116,9 @@ import TimeField from '@/components/TimeField.vue';
   },
 })
 export default class MeetingPopup extends Vue {
-  private visible = false;
-
   @Prop({ required: true }) readonly meeting: any;
+
+  private visible = false;
 
   private date = null;
 

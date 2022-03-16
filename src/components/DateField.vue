@@ -11,6 +11,7 @@
         :label="label"
         prepend-icon="mdi-calendar"
         readonly
+        hide-details
         v-bind="attrs"
         v-on="on"
       />
@@ -27,7 +28,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class DateField extends Vue {
-  @Prop({ required: false }) label: any;
+  @Prop({ required: false }) label = 'Datum';
 
   @Prop({ required: true }) value: any;
 

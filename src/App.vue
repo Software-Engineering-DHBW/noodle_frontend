@@ -86,6 +86,10 @@ export default class App extends Vue {
       path: '/modules',
     },
     {
+      name: '(Modul)',
+      path: '/module/3/Mathematik',
+    },
+    {
       name: 'Noten',
       path: '/grades',
     },
@@ -94,14 +98,18 @@ export default class App extends Vue {
       path: '/calendar',
     },
     {
-      name: 'Kalender-Lehrer',
+      name: '(Kalender-Lehrer)',
       path: '/calendar-teacher',
     },
     {
-      name: 'Module-Lehrer',
+      name: '(Module-Lehrer)',
       path: '/modules-teacher',
     },
-  ]
+    {
+      name: '(Modul-Lehrer)',
+      path: '/module-teacher/1/Mathematik',
+    },
+  ];
 
   handleLogout(): void {
     this.logout();
@@ -130,6 +138,7 @@ html {
   overflow-y: auto !important;
 }
 
+/* vertically center content in all columns */
 .col {
   align-self: center;
 }

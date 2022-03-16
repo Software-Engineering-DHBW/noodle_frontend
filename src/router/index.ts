@@ -45,8 +45,13 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/modules-teacher',
-    name: 'Module-Teacher',
+    name: 'Modules-Teacher',
     component: () => import('../views/teacher/ModuleOverview.vue'),
+  },
+  {
+    path: '/module-teacher/:semester/:modulName',
+    name: 'Module-Teacher',
+    component: () => import('../views/teacher/Module.vue'),
   },
 ];
 
