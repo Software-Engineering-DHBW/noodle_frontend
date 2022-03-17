@@ -25,23 +25,41 @@
       width="500"
     >
       <v-card>
-        <v-card-title
-          class="primary"
-          v-text="'Termin'"
-        />
+        <v-card-title class="primary">
+          Termin
+        </v-card-title>
 
         <v-card-text>
           <v-container>
-            <v-row class="text-h6">
-              <v-col v-text="'Kurs'" />
-              <v-col>
+            <v-row>
+              <v-col cols="3">
+                <v-card-title class="pa-0">
+                  Kurs
+                </v-card-title>
+              </v-col>
+              <v-col cols="9">
                 <v-select
                   v-model="selectedCourse"
-                  solo
-                  dense
-                  flat
                   hide-details
+                  dense
+                  placeholder="Kurs"
                   :items="courses"
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="3">
+                <v-card-title class="pa-0">
+                  Modul
+                </v-card-title>
+              </v-col>
+              <v-col cols="9">
+                <v-select
+                  v-model="selectedModule"
+                  hide-details
+                  dense
+                  placeholder="Modul"
+                  :items="modules"
                 />
               </v-col>
             </v-row>
@@ -128,7 +146,11 @@ export default class MeetingPopup extends Vue {
 
   private courses = ['IT1', 'IT2'];
 
-  private selectedCourse = this.courses[0];
+  private selectedCourse = null;
+
+  private modules = ['Mathematik', 'Softwareengineering', 'IT-Security'];
+
+  private selectedModule = null;
 
   get duration(): any {
     const startDate = new Date(`01/01/1970 ${this.startTime}`);

@@ -4,7 +4,6 @@
       <v-col>
         <v-select
           v-model="selectedCalendarView"
-          solo
           hide-details
           :items="calendarViews"
           @change="setCalendarView"
