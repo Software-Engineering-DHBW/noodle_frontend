@@ -117,6 +117,10 @@ export default class App extends Vue {
       name: '(Modul-Admin)',
       path: '/module-admin/1/Mathematik',
     },
+    {
+      name: '(User-Liste-Admin)',
+      path: '/users',
+    },
   ];
 
   handleLogout(): void {
