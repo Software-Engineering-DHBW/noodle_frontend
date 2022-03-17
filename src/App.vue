@@ -121,6 +121,10 @@ export default class App extends Vue {
       name: '(User-Liste-Admin)',
       path: '/users',
     },
+    {
+      name: '(Kurs-Liste-Admin)',
+      path: '/courses',
+    },
   ];
 
   handleLogout(): void {

@@ -68,6 +68,11 @@ const routes: Array<RouteConfig> = [
     name: 'UserList-Admin',
     component: () => import('../views/admin/Users.vue'),
   },
+  {
+    path: '/courses',
+    name: 'CourseList-Admin',
+    component: () => import('../views/admin/Courses.vue'),
+  },
 ];
 
 const router = new VueRouter({
