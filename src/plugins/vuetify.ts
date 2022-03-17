@@ -22,7 +22,7 @@ export default new Vuetify({
     options: { customProperties: true },
     themes: {
       light: {
-        primary: '#f6da63',
+        primary: '#deaf29',
         secondary: '#ffffff',
         accent: '#82B1FF',
         info: '#2196F3',

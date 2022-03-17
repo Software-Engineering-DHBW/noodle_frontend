@@ -9,6 +9,7 @@
     />
     <v-form
       ref="loginForm"
+      class="text-center"
     >
       <v-text-field
         v-model="user.username"
