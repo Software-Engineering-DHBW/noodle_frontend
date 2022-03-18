@@ -61,8 +61,7 @@
     </v-row>
 
     <v-row>
-      <!-- active but invisible in mobile view to use datepicker above, "v-if" not possible here -->
-      <v-col :class="{invisible: $vuetify.breakpoint.xs}">
+      <v-col v-show="$vuetify.breakpoint.xl">
         <v-calendar
           ref="calendar"
           v-model="focus"
@@ -216,12 +215,8 @@ export default class Calendar extends Vue {
 </script>
 
 <style>
-/* removes calendars scroll bar that has no use */
+/* removes calendars scroll bar in weekly view that has no use */
 .v-calendar-daily__scroll-area {
   overflow: auto !important;
-}
-
-.invisible {
-  display: none;
 }
 </style>
