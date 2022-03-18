@@ -150,7 +150,7 @@ export default class Module extends Vue {
   }
 
   mounted(): void {
-    this.modulName = this.$route.params.modulName;
+    this.modulName = this.$route.params.moduleName;
     this.semester = +this.$route.params.semester;
   }
 }

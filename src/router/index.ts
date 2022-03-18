@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/student/Home.vue';
+import store from '@/store';
+import Role from '../classes/Role';
 
 Vue.use(VueRouter);
 
@@ -8,7 +9,8 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    meta: { authorize: [] },
+    component: () => import('../views/student/Home.vue'),
   },
   {
     path: '/login',
@@ -21,57 +23,61 @@ const routes: Array<RouteConfig> = [
   {
     path: '/modules',
     name: 'Modules',
-    component: () => import('../views/student/ModuleOverview.vue'),
+    meta: { authorize: [] },
+    component: () => {
+      if (Role.isStudent()) {
+        return import('../views/student/ModuleOverview.vue');
+      }
+      if (Role.isTeacher()) {
+        return import('../views/teacher/ModuleOverview.vue');
+      }
+      return import('../views/admin/ModuleOverview.vue');
+    },
   },
   {
-    path: '/module/:semester/:modulName',
+    path: '/module/:semester/:moduleName',
     name: 'Module',
-    component: () => import('../views/student/Module.vue'),
+    meta: { authorize: [] },
+    component: () => {
+      if (Role.isStudent()) {
+        return import('../views/student/Module.vue');
+      }
+      return import('../views/teacher/Module.vue');
+    },
   },
   {
     path: '/grades',
     name: 'Grades',
+    meta: { authorize: [Role.Student] },
     component: () => import('../views/student/Grades.vue'),
   },
   {
     path: '/calendar',
     name: 'Calendar',
-    component: () => import('../views/student/Calendar.vue'),
-  },
-  {
-    path: '/calendar-teacher',
-    name: 'Calendar-Teacher',
-    component: () => import('../views/teacher/Calendar.vue'),
-  },
-  {
-    path: '/modules-teacher',
-    name: 'Modules-Teacher',
-    component: () => import('../views/teacher/ModuleOverview.vue'),
-  },
-  {
-    path: '/module-teacher/:semester/:moduleName',
-    name: 'Module-Teacher',
-    component: () => import('../views/teacher/Module.vue'),
-  },
-  {
-    path: '/modules-admin',
-    name: 'Modules-Admin',
-    component: () => import('../views/admin/ModuleOverview.vue'),
-  },
-  {
-    path: '/module-admin/:semester/:moduleName',
-    name: 'Module-Admin',
-    component: () => import('../views/teacher/Module.vue'),
+    meta: { authorize: [Role.Student, Role.Teacher] },
+    component: () => {
+      if (Role.isStudent()) {
+        return import('../views/student/Calendar.vue');
+      }
+      return import('../views/teacher/Calendar.vue');
+    },
   },
   {
     path: '/users',
     name: 'UserList-Admin',
+    meta: { authorize: [Role.Admin] },
     component: () => import('../views/admin/Users.vue'),
   },
   {
     path: '/courses',
     name: 'CourseList-Admin',
+    meta: { authorize: [Role.Admin] },
     component: () => import('../views/admin/Courses.vue'),
+  },
+  {
+    path: '*',
+    name: '404',
+    component: () => import('../views/PageNotFound.vue'),
   },
 ];
 
@@ -79,6 +85,25 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { authorize } = to.meta;
+  const currentUser = store.getters['Auth/currentUser'];
+
+  if (authorize) {
+    if (!currentUser) {
+      return next('/login');
+    }
+
+    // redirect to homepage if role is not authorised
+    if (authorize.length && !authorize.includes(currentUser.role)) {
+      return next('/');
+    }
+  }
+  return next();
 });
 
 export default router;
