@@ -83,7 +83,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import NoodleUser from '@/classes/NoodleUser';
+import CurrentUser from '@/classes/CurrentUser';
 import GradeDetailsPopup from '@/components/GradeDetailsPopup.vue';
 import SemesterTabs from '@/components/SemesterTabs.vue';
 
@@ -168,7 +168,7 @@ const grades = [
 })
 export default class Grades extends Vue {
   @Auth.State('user')
-  private currentUser!: NoodleUser;
+  private currentUser!: CurrentUser;
 
   private grades: Array<any> = grades;
 

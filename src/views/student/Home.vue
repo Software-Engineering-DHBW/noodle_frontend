@@ -11,14 +11,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import NoodleUser from '../../classes/NoodleUser';
+import CurrentUser from '../../classes/CurrentUser';
 
 const Auth = namespace('Auth');
 
 @Component
 export default class Home extends Vue {
   @Auth.Getter('currentUser')
-  currentUser!: NoodleUser;
+  currentUser!: CurrentUser;
 
   mounted(): void {
     if (!this.currentUser) {

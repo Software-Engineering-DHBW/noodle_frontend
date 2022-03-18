@@ -7,7 +7,7 @@ interface UserProps {
   username: string;
 }
 
-export default class NoodleUser {
+export default class CurrentUser {
   private props: UserProps
 
   constructor(props: UserProps) {
