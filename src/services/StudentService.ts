@@ -1,9 +1,9 @@
-import axios from 'axios';
-import authHeader from './auth-header';
+import axios from '../plugins/axios';
 
-class UserService {
+class StudentService {
   static getGrades(id: any) {
-    return axios.get(`api/grades/${id}`, { headers: authHeader() });
+    return axios.get(`api/grades/${id}`);
   }
 }
-export default UserService;
+
+export default StudentService;

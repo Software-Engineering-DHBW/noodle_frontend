@@ -1,65 +1,55 @@
 import {
-  VuexModule, Module, Mutation, Action,
+  Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
 import AuthService from '@/services/AuthService';
 import jwtDecode from 'jwt-decode';
 import CurrentUser from '../../classes/CurrentUser';
 
-const storedUser = localStorage.getItem('user');
-
 @Module({ namespaced: true })
-class User extends VuexModule {
-  public status = storedUser ? { loggedIn: true } : { loggedIn: false };
+class Auth extends VuexModule {
+  public token = AuthService.getToken();
 
-  public user = storedUser ? JSON.parse(storedUser) : null;
+  get currentUser(): CurrentUser | null {
+    return this.token ? new CurrentUser(jwtDecode(this.token)) : null;
+  }
 
-  @Mutation
-  public loginSuccess(user: any): void {
-    this.status.loggedIn = true;
-    this.user = user;
+  get isLoggedIn(): boolean {
+    return !!this.token;
   }
 
   @Mutation
-  public loginFailure(): void {
-    this.status.loggedIn = false;
-    this.user = null;
+  public updateToken(): void {
+    this.token = AuthService.getToken();
   }
 
   @Mutation
-  public logout(): void {
-    this.status.loggedIn = false;
-    this.user = null;
+  public resetToken(): void {
+    this.token = null;
   }
 
   @Action({ rawError: true })
   login(data: any): Promise<any> {
-    return AuthService.login(data.username, data.password).then(
-      (user) => {
-        this.context.commit('loginSuccess', user);
-        return Promise.resolve(user);
-      },
-      (error) => {
-        this.context.commit('loginFailure');
-        const message = (error.response && error.response.data && error.response.data.message)
-          || error.message
-          || error.toString();
-        return Promise.reject(message);
-      },
-    );
+    return AuthService.login(data.username, data.password)
+      .then(
+        (token: any) => {
+          this.context.commit('updateToken');
+          return Promise.resolve(token);
+        },
+        (error: any) => {
+          this.context.commit('logoutt');
+          const message = (error.response && error.response.data && error.response.data.message)
+            || error.message
+            || error.toString();
+          return Promise.reject(message);
+        },
+      );
   }
 
   @Action
-  signOut(): void {
+  logout(): void {
     AuthService.logout();
-    this.context.commit('logout');
-  }
-
-  get isLoggedIn(): boolean {
-    return this.status.loggedIn;
-  }
-
-  get currentUser(): any {
-    return this.user ? new CurrentUser(jwtDecode(this.user)) : null;
+    this.context.commit('resetToken');
   }
 }
-export default User;
+
+export default Auth;
