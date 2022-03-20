@@ -17,7 +17,7 @@ const Auth = namespace('Auth');
 
 @Component
 export default class Home extends Vue {
-  @Auth.Getter('currentUser')
+  @Auth.Getter
   currentUser!: CurrentUser;
 
   mounted(): void {

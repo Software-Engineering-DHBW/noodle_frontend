@@ -167,7 +167,7 @@ const grades = [
   },
 })
 export default class Grades extends Vue {
-  @Auth.State('user')
+  @Auth.State
   private currentUser!: CurrentUser;
 
   private grades: Array<any> = grades;

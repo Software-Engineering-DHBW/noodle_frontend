@@ -55,7 +55,7 @@ export default class Login extends Vue {
     return this.user.username && this.user.password;
   }
 
-  private textFieldRules = [(value: any) => !!value || 'Feld darf nicht leer sein']
+  private textFieldRules = [(value: any) => !!value || 'Feld darf nicht leer sein'];
 
   @Auth.Getter
   private isLoggedIn!: boolean;
@@ -75,14 +75,15 @@ export default class Login extends Vue {
     form.validate();
 
     if (this.user.username && this.user.password) {
-      this.login(this.user).then(
-        () => {
-          this.$router.push('/');
-        },
-        (error) => {
-          alert(error);
-        },
-      );
+      this.login(this.user)
+        .then(
+          () => {
+            this.$router.push('/');
+          },
+          (error) => {
+            alert(error);
+          },
+        );
     }
   }
 }
