@@ -3,7 +3,7 @@ import {
 } from 'vuex-module-decorators';
 import { NoodleUser } from '@/classes/NoodleUser';
 import UserService from '@/services/UserService';
-import EmptyUser from '@/classes/EmptyUser';
+import NewUser from '@/classes/NewUser';
 
 @Module({ namespaced: true })
 export default class Users extends VuexModule {
@@ -46,7 +46,7 @@ export default class Users extends VuexModule {
   }
 
   @Action
-  registerUser(user: EmptyUser): void {
+  registerUser(user: NewUser): void {
     this.context.commit('setIsRegisteringUser', true);
 
     UserService.registerUser(user)

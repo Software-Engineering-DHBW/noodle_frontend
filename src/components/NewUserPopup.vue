@@ -91,7 +91,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import EmptyUser from '@/classes/EmptyUser';
+import NewUser from '@/classes/NewUser';
 import Role from '@/classes/Role';
 import { namespace } from 'vuex-class';
 
@@ -101,7 +101,7 @@ const UserStore = namespace('Users');
 export default class NewUserPopup extends Vue {
   visible = false;
 
-  newUser = new EmptyUser();
+  newUser = new NewUser();
 
   roles = [Role.STUDENT, Role.TEACHER];
 
@@ -109,12 +109,12 @@ export default class NewUserPopup extends Vue {
   isRegisteringUser!: boolean;
 
   @UserStore.Action
-  registerUser!: (user: EmptyUser) => void
+  registerUser!: (user: NewUser) => void
 
   createUser(): void {
     this.registerUser(this.newUser);
 
-    this.newUser = new EmptyUser();
+    this.newUser = new NewUser();
     this.visible = false;
   }
 }

@@ -1,7 +1,7 @@
 import { NoodleUser } from '@/classes/NoodleUser';
 import AuthService from '@/services/AuthService';
 import axios from 'axios';
-import EmptyUser from '@/classes/EmptyUser';
+import NewUser from '@/classes/NewUser';
 
 axios.defaults.headers.common.Authorization = `Bearer ${AuthService.getToken()}`;
 
@@ -21,7 +21,7 @@ class UserService {
       .post('api/user/delete', { username });
   }
 
-  static registerUser(data: EmptyUser): Promise<void> {
+  static registerUser(data: NewUser): Promise<void> {
     return axios
       .post('api/user/register', data);
   }

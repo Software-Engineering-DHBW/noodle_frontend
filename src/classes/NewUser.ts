@@ -1,4 +1,4 @@
-export default class EmptyUser {
+export default class NewUser {
   username: string;
 
   password: string;
