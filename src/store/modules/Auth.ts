@@ -4,7 +4,7 @@ import {
 import AuthService from '@/services/AuthService';
 import jwtDecode from 'jwt-decode';
 import { LoginData } from '@/classes/LoginData';
-import router from '@/router';
+import Role from '@/classes/Role';
 import CurrentUser from '../../classes/CurrentUser';
 
 @Module({ namespaced: true })
@@ -19,6 +19,18 @@ class Auth extends VuexModule {
 
   get isLoggedIn(): boolean {
     return !!this.token;
+  }
+
+  get isStudent(): boolean {
+    return this.currentUser?.role === Role.STUDENT;
+  }
+
+  get isTeacher(): boolean {
+    return this.currentUser?.role === Role.TEACHER;
+  }
+
+  get isAdmin(): boolean {
+    return this.currentUser?.role === Role.ADMIN;
   }
 
   @Mutation
@@ -37,13 +49,13 @@ class Auth extends VuexModule {
   }
 
   @Action
-  login(data: LoginData): void {
-    this.context.commit('setIsLoading', true);
-    AuthService.login(data)
+  login(data: LoginData): Promise<void> {
+    return AuthService.login(data)
       .then(() => this.context.commit('updateToken'))
-      .then(() => router.push('/'))
-      .catch((error) => alert(error))
-      .finally(() => this.context.commit('setIsLoading', false));
+      .catch((error) => {
+        alert(error);
+        throw error;
+      });
   }
 
   @Action

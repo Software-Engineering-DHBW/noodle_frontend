@@ -30,7 +30,7 @@
       <v-btn
         class="primary"
         :disabled="!valid"
-        :loading="isLoading"
+        :loading="loading"
         @click="handleLogin()"
       >
         Login
@@ -48,8 +48,7 @@ const Auth = namespace('Auth');
 
 @Component
 export default class Login extends Vue {
-  @Auth.State
-  isLoading!: boolean
+  loading = false;
 
   user: any = {
     username: '',
@@ -66,7 +65,7 @@ export default class Login extends Vue {
   isLoggedIn!: boolean;
 
   @Auth.Action
-  login!: (loginData: LoginData) => void;
+  login!: (loginData: LoginData) => Promise<void>;
 
   created(): void {
     if (this.isLoggedIn) {
@@ -75,12 +74,18 @@ export default class Login extends Vue {
   }
 
   handleLogin(): void {
+    this.loading = true;
+
     // validation of name and passwort field
     const form: any = this.$refs.loginForm;
     form.validate();
 
-    if (this.user.username && this.user.password) {
-      this.login(this.user);
+    if (this.valid) {
+      this.login(this.user)
+        .then(() => this.$router.push('/'))
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 }

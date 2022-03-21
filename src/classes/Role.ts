@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-shadow
 enum Role {
-  STUDENT = 'student',
+  ADMIN = 'administrator',
   TEACHER = 'teacher',
-  ADMIN = 'administrator,',
+  STUDENT = 'student',
 }
 
 export default Role;

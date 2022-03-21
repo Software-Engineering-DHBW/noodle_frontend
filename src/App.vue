@@ -19,7 +19,7 @@
         id="nav"
       >
         <span
-          v-for="link in pageLinks"
+          v-for="link in pageLinksForRole"
           :key="link.name"
         >
           <router-link
@@ -46,7 +46,7 @@
     >
       <v-list nav>
         <v-list-item
-          v-for="link in pageLinks"
+          v-for="link in pageLinksForRole"
           :key="link.name"
           :to="link.path"
           v-text="link.name"
@@ -63,11 +63,16 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import Role from '@/classes/Role';
+import CurrentUser from '@/classes/CurrentUser';
 
 const Auth = namespace('Auth');
 
 @Component
 export default class App extends Vue {
+  @Auth.Getter
+  currentUser!: CurrentUser;
+
   @Auth.Getter
   isLoggedIn!: boolean;
 
@@ -86,46 +91,31 @@ export default class App extends Vue {
       path: '/modules',
     },
     {
-      name: '(Modul)',
-      path: '/module/3/Mathematik',
-    },
-    {
       name: 'Noten',
       path: '/grades',
+      roles: [Role.STUDENT],
     },
     {
       name: 'Kalender',
       path: '/calendar',
+      roles: [Role.STUDENT, Role.TEACHER],
     },
     {
-      name: '(Kalender-Lehrer)',
-      path: '/calendar-teacher',
-    },
-    {
-      name: '(Module-Lehrer)',
-      path: '/modules-teacher',
-    },
-    {
-      name: '(Modul-Lehrer)',
-      path: '/module-teacher/1/Mathematik',
-    },
-    {
-      name: '(Module-Admin)',
-      path: '/modules-admin',
-    },
-    {
-      name: '(Modul-Admin)',
-      path: '/module-admin/1/Mathematik',
-    },
-    {
-      name: '(User-Liste-Admin)',
+      name: 'Nutzer',
       path: '/users',
+      roles: [Role.ADMIN],
     },
     {
-      name: '(Kurs-Liste-Admin)',
+      name: 'Kurse',
       path: '/courses',
+      roles: [Role.ADMIN],
     },
   ];
+
+  get pageLinksForRole(): Array<any> {
+    return this.pageLinks
+      .filter((link) => !link.roles || link.roles.includes(this.currentUser.role));
+  }
 
   handleLogout(): void {
     this.logout();
