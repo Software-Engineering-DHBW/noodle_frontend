@@ -15,7 +15,7 @@ const Auth = namespace('Auth');
   components: { Calendar },
 })
 export default class CalendarView extends Vue {
-  @Auth.State('user')
+  @Auth.State
   private currentUser!: any;
 
   mounted(): void {

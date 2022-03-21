@@ -2,7 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { VuexPersistence } from 'vuex-persist';
 
-import Auth from './modules/auth';
+import Users from '@/store/modules/Users';
+import Auth from '@/store/modules/Auth';
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
@@ -11,14 +12,8 @@ const vuexLocal = new VuexPersistence({
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
-    Auth,
+    Auth, Users,
   },
   plugins: [vuexLocal.plugin],
 });

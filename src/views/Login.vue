@@ -30,6 +30,7 @@
       <v-btn
         class="primary"
         :disabled="!valid"
+        :loading="isLoading"
         @click="handleLogin()"
       >
         Login
@@ -41,27 +42,31 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import { LoginData } from '@/classes/LoginData';
 
 const Auth = namespace('Auth');
 
 @Component
 export default class Login extends Vue {
-  private user: any = {
+  @Auth.State
+  isLoading!: boolean
+
+  user: any = {
     username: '',
     password: '',
   };
 
-  private get valid(): boolean {
+  get valid(): boolean {
     return this.user.username && this.user.password;
   }
 
-  private textFieldRules = [(value: any) => !!value || 'Feld darf nicht leer sein']
+  textFieldRules = [(value: any) => !!value || 'Feld darf nicht leer sein'];
 
   @Auth.Getter
-  private isLoggedIn!: boolean;
+  isLoggedIn!: boolean;
 
   @Auth.Action
-  private login!: (data: any) => Promise<any>;
+  login!: (loginData: LoginData) => void;
 
   created(): void {
     if (this.isLoggedIn) {
@@ -75,14 +80,7 @@ export default class Login extends Vue {
     form.validate();
 
     if (this.user.username && this.user.password) {
-      this.login(this.user).then(
-        () => {
-          this.$router.push('/');
-        },
-        (error) => {
-          alert(error);
-        },
-      );
+      this.login(this.user);
     }
   }
 }

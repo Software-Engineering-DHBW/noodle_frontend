@@ -11,6 +11,13 @@
 
     <v-row>
       <v-col>
+        <v-overlay :value="loading">
+          <v-progress-circular
+            indeterminate
+            size="100"
+          />
+        </v-overlay>
+
         <v-simple-table
           fixed-header
           height="70vh"
@@ -34,16 +41,19 @@
               :key="index"
             >
               <td class="text-break">
-                {{ user.name }}
+                {{ user.userId.username }}
               </td>
-              <td
-                class="text-center"
-                v-text="user.role"
-              />
+              <td class="text-center">
+                {{
+                  user.userId.isAdministrator ? 'Administrator'
+                  : user.userId.isTeacher ? 'Teacher'
+                    : 'Student'
+                }}
+              </td>
               <td class="text-right">
                 <v-btn
                   icon
-                  @click="deleteUser(user)"
+                  @click="deleteSelectedUser(user.userId.username)"
                 >
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
@@ -60,6 +70,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 import SearchField from '@/components/SearchField.vue';
 import NewUserPopup from '@/components/NewUserPopup.vue';
+import { namespace } from 'vuex-class';
+import { NoodleUser } from '@/classes/NoodleUser';
+
+const UserStore = namespace('Users');
 
 @Component({
   components: {
@@ -68,503 +82,42 @@ import NewUserPopup from '@/components/NewUserPopup.vue';
   },
 })
 export default class Users extends Vue {
-  private filterString = '';
+  filterString = '';
 
-  private users = [
-    {
-      name: 'Olaf',
-      role: 'Teacher',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-    {
-      name: 'Bernd',
-      role: 'Teacher',
-    },
-    {
-      name: 'Gustav',
-      role: 'Teacher',
-    },
-    {
-      name: 'Max',
-      role: 'Student',
-    },
-    {
-      name: 'Moritz',
-      role: 'Student',
-    },
-  ];
+  @UserStore.State
+  users!: Array<NoodleUser>;
 
-  get filteredUsers(): Array<any> {
-    return this.users.filter((user) => user.name.toLowerCase()
+  loading = false;
+
+  @UserStore.Action
+  loadAllUsers!: () => Promise<void>;
+
+  @UserStore.Action
+  deleteUser!: (username: string) => Promise<void>;
+
+  loadTableData(): void {
+    this.loading = true;
+    this.loadAllUsers()
+      .finally(() => {
+        this.loading = false;
+      });
+  }
+
+  deleteSelectedUser(username:string): void {
+    this.loading = true;
+    this.deleteUser(username)
+      .finally(() => {
+        this.loading = false;
+      });
+  }
+
+  get filteredUsers(): Array<NoodleUser> {
+    return this.users.filter((user) => user.fullname.toLowerCase()
       .includes(this.filterString.toLowerCase()));
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  deleteUser(user: any): void {
-    alert(`User ${user.name} wird gelöscht`);
+  mounted(): void {
+    this.loadTableData();
   }
 }
 </script>

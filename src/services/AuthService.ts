@@ -1,22 +1,23 @@
 import axios from 'axios';
+import { LoginData } from '@/classes/LoginData';
 
 class AuthService {
-  static login(username: string, password: string) {
+  static TOKEN_NAME = 'JWT_NOODLE';
+
+  static getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_NAME);
+  }
+
+  static login(data: LoginData): Promise<void> {
     return axios
-      .post('api/user/login', {
-        username,
-        password,
-      })
-      .then((response) => {
-        if (response.data.accessToken) {
-          localStorage.setItem('user', JSON.stringify(response.data));
-        }
-        return response.data;
-      });
+      .post('api/user/login', data)
+      .then((res) => res.data)
+      .then((token) => localStorage.setItem(this.TOKEN_NAME, token));
   }
 
   static logout(): void {
-    localStorage.removeItem('user');
+    localStorage.removeItem(this.TOKEN_NAME);
   }
 }
+
 export default AuthService;

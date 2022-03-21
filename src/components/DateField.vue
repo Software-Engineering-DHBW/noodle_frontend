@@ -30,7 +30,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class DateField extends Vue {
   @Prop({ required: true }) value: any;
 
-  private datePickerVisible = false;
+  datePickerVisible = false;
 
   get date(): any {
     return this.value;

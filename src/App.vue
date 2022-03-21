@@ -71,12 +71,12 @@ export default class App extends Vue {
   @Auth.Getter
   isLoggedIn!: boolean;
 
-  @Auth.Mutation
-  logout!: any;
+  @Auth.Action
+  logout!: () => void;
 
   drawer = false;
 
-  private pageLinks = [
+  pageLinks = [
     {
       name: 'Home',
       path: '/',

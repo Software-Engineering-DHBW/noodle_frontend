@@ -56,11 +56,11 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class LectureMaterialTree extends Vue {
   @Prop({ required: true }) lectureMaterial: any;
 
-  private isAdmin = true;
+  isAdmin = true;
 
-  private isTeacher = false;
+  isTeacher = false;
 
-  private canEdit = this.isAdmin || this.isTeacher;
+  canEdit = this.isAdmin || this.isTeacher;
 
   private formats = {
     file: 'mdi-file-outline',
