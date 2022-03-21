@@ -1,3 +1,5 @@
+import Role from '@/classes/Role';
+
 export default class NewUser {
   username: string;
 
@@ -16,7 +18,7 @@ export default class NewUser {
   constructor() {
     this.username = '';
     this.password = '';
-    this.role = '';
+    this.role = Role.STUDENT;
     this.fullname = '';
     this.matriculationNumber = null;
     this.address = '';

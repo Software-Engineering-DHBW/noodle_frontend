@@ -11,7 +11,6 @@
       v-if="$vuetify.breakpoint.xs"
       fab
       small
-      :loading="isRegisteringUser"
       color="primary"
       elevation="2"
       @click="visible=true"
@@ -80,6 +79,7 @@
           <v-btn
             text
             color="primary"
+            :loading="loading"
             @click="createUser"
             v-text="'Erstellen'"
           />
@@ -105,17 +105,22 @@ export default class NewUserPopup extends Vue {
 
   roles = [Role.STUDENT, Role.TEACHER];
 
-  @UserStore.State
-  isRegisteringUser!: boolean;
+  loading = false;
 
   @UserStore.Action
-  registerUser!: (user: NewUser) => void
+  registerUser!: (user: NewUser) => Promise<void>
 
   createUser(): void {
-    this.registerUser(this.newUser);
-
-    this.newUser = new NewUser();
-    this.visible = false;
+    // TODO: form validation to check at least if every field is filled
+    this.loading = true;
+    this.registerUser(this.newUser)
+      .then(() => {
+        this.newUser = new NewUser();
+        this.visible = false;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 </script>

@@ -9,59 +9,38 @@ import NewUser from '@/classes/NewUser';
 export default class Users extends VuexModule {
   users: Array<NoodleUser> = [];
 
-  isLoadingUsers = false;
-
-  isRegisteringUser = false
-
-  isDeletingUser = false;
-
   @Mutation
   updateUsers(users: Array<NoodleUser>): void {
     this.users = users;
   }
 
-  @Mutation
-  setIsLoadingUsers(value: boolean): void {
-    this.isLoadingUsers = value;
-  }
-
-  @Mutation
-  setIsRegisteringUser(value: boolean): void {
-    this.isRegisteringUser = value;
-  }
-
-  @Mutation
-  setIsDeletingUser(value: boolean): void {
-    this.isDeletingUser = value;
-  }
-
   @Action
-  loadAllUsers(): void {
-    this.context.commit('setIsLoadingUsers', true);
-
-    UserService.getAllUsers()
+  loadAllUsers(): Promise<void> {
+    return UserService.getAllUsers()
       .then((userList) => this.context.commit('updateUsers', userList))
-      .catch((error) => alert(error))
-      .finally(() => this.context.commit('setIsLoadingUsers', false));
+      .catch((error) => {
+        alert(error);
+        throw error;
+      });
   }
 
   @Action
-  registerUser(user: NewUser): void {
-    this.context.commit('setIsRegisteringUser', true);
-
-    UserService.registerUser(user)
+  registerUser(user: NewUser): Promise<void> {
+    return UserService.registerUser(user)
       .then(() => this.context.dispatch('loadAllUsers'))
-      .catch((error) => alert(error))
-      .finally(() => this.context.commit('setIsRegisteringUser', false));
+      .catch((error) => {
+        alert(error);
+        throw error;
+      });
   }
 
   @Action
-  deleteUser(username: string): void {
-    this.context.commit('setIsDeletingUser', true);
-
-    UserService.deleteUser(username)
+  deleteUser(username: string): Promise<void> {
+    return UserService.deleteUser(username)
       .then(() => this.context.dispatch('loadAllUsers'))
-      .catch((error) => alert(error))
-      .finally(() => this.context.commit('setIsDeletingUser', false));
+      .catch((error) => {
+        alert(error);
+        throw error;
+      });
   }
 }

@@ -11,7 +11,7 @@
 
     <v-row>
       <v-col>
-        <v-overlay :value="isLoadingUsers || isDeletingUser">
+        <v-overlay :value="loading">
           <v-progress-circular
             indeterminate
             size="100"
@@ -53,7 +53,7 @@
               <td class="text-right">
                 <v-btn
                   icon
-                  @click="deleteUser(user.userId.username)"
+                  @click="deleteSelectedUser(user.userId.username)"
                 >
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
@@ -87,17 +87,29 @@ export default class Users extends Vue {
   @UserStore.State
   users!: Array<NoodleUser>;
 
-  @UserStore.State
-  isLoadingUsers!: boolean;
-
-  @UserStore.State
-  isDeletingUser!: boolean;
+  loading = false;
 
   @UserStore.Action
-  loadAllUsers!: () => void;
+  loadAllUsers!: () => Promise<void>;
 
   @UserStore.Action
-  deleteUser!: (username: string) => void;
+  deleteUser!: (username: string) => Promise<void>;
+
+  loadTableData(): void {
+    this.loading = true;
+    this.loadAllUsers()
+      .finally(() => {
+        this.loading = false;
+      });
+  }
+
+  deleteSelectedUser(username:string): void {
+    this.loading = true;
+    this.deleteUser(username)
+      .finally(() => {
+        this.loading = false;
+      });
+  }
 
   get filteredUsers(): Array<NoodleUser> {
     return this.users.filter((user) => user.fullname.toLowerCase()
@@ -105,7 +117,7 @@ export default class Users extends Vue {
   }
 
   mounted(): void {
-    this.loadAllUsers();
+    this.loadTableData();
   }
 }
 </script>
