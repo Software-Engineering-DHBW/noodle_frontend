@@ -76,7 +76,7 @@ export default class App extends Vue {
 
   drawer = false;
 
-  private pageLinks = [
+  pageLinks = [
     {
       name: 'Home',
       path: '/',

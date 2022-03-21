@@ -8,20 +8,41 @@ import UserService from '@/services/UserService';
 export default class Users extends VuexModule {
   users: Array<NoodleUser> = [];
 
+  isLoadingUsers = false;
+
+  isDeletingUser = false
+
   @Mutation
   updateUsers(users: Array<NoodleUser>): void {
     this.users = users;
   }
 
+  @Mutation
+  setIsLoadingUsers(value: boolean): void {
+    this.isLoadingUsers = value;
+  }
+
+  @Mutation
+  setIsDeletingUser(value: boolean): void {
+    this.isDeletingUser = value;
+  }
+
   @Action
   loadAllUsers(): void {
-    const users = UserService.getAllUsers();
-    this.context.commit('updateUsers', users);
+    this.context.commit('setIsLoadingUsers', true);
+
+    UserService.getAllUsers()
+      .then((userList) => this.context.commit('updateUsers', userList))
+      .catch((error) => alert(error))
+      .finally(() => this.context.commit('setIsLoadingUsers', false));
   }
 
   @Action
   deleteUser(username: string): void {
-    UserService.deleteUser(username);
-    this.context.dispatch('loadAllUsers');
+    this.context.commit('setIsDeletingUser', true);
+
+    UserService.deleteUser(username)
+      .then(() => this.context.dispatch('loadAllUsers'))
+      .finally(() => this.context.commit('setIsDeletingUser', false));
   }
 }

@@ -41,6 +41,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import { LoginData } from '@/classes/LoginData';
 
 const Auth = namespace('Auth');
 
@@ -61,7 +62,7 @@ export default class Login extends Vue {
   private isLoggedIn!: boolean;
 
   @Auth.Action
-  private login!: (data: any) => Promise<any>;
+  private login!: (loginData: LoginData) => void;
 
   created(): void {
     if (this.isLoggedIn) {
@@ -75,15 +76,7 @@ export default class Login extends Vue {
     form.validate();
 
     if (this.user.username && this.user.password) {
-      this.login(this.user)
-        .then(
-          () => {
-            this.$router.push('/');
-          },
-          (error) => {
-            alert(error);
-          },
-        );
+      this.login(this.user);
     }
   }
 }

@@ -69,6 +69,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class GradeDetailsPopup extends Vue {
   @Prop({ required: true }) readonly grade: any;
 
-  private visible = false;
+  visible = false;
 }
 </script>

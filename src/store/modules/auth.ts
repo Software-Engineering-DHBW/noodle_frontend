@@ -3,6 +3,8 @@ import {
 } from 'vuex-module-decorators';
 import AuthService from '@/services/AuthService';
 import jwtDecode from 'jwt-decode';
+import { LoginData } from '@/classes/LoginData';
+import router from '@/router';
 import CurrentUser from '../../classes/CurrentUser';
 
 @Module({ namespaced: true })
@@ -27,22 +29,12 @@ class Auth extends VuexModule {
     this.token = null;
   }
 
-  @Action({ rawError: true })
-  login(data: any): Promise<any> {
-    return AuthService.login(data.username, data.password)
-      .then(
-        (token: any) => {
-          this.context.commit('updateToken');
-          return Promise.resolve(token);
-        },
-        (error: any) => {
-          this.context.commit('resetToken');
-          const message = (error.response && error.response.data && error.response.data.message)
-            || error.message
-            || error.toString();
-          return Promise.reject(message);
-        },
-      );
+  @Action
+  login(data: LoginData): void {
+    AuthService.login(data)
+      .then(() => this.context.commit('updateToken'))
+      .catch((error) => alert(error))
+      .finally(() => router.push('/'));
   }
 
   @Action

@@ -116,9 +116,9 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class Calendar extends Vue {
   // Weekdays ordered by Mon-Sun
-  private weekdayOrder = [1, 2, 3, 4, 5, 6, 0];
+  weekdayOrder = [1, 2, 3, 4, 5, 6, 0];
 
-  private monthView = true;
+  monthView = true;
 
   get type(): string {
     if (this.$vuetify.breakpoint.xs) {
@@ -127,7 +127,7 @@ export default class Calendar extends Vue {
     return this.monthView ? 'month' : 'week';
   }
 
-  private focus = '';
+  focus = '';
 
   @Prop({ required: true }) private events: any;
 

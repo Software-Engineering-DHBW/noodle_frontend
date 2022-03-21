@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { LoginData } from '@/classes/LoginData';
 
 class AuthService {
   static TOKEN_NAME = 'JWT_NOODLE';
@@ -7,18 +8,11 @@ class AuthService {
     return localStorage.getItem(this.TOKEN_NAME);
   }
 
-  static login(username: string, password: string): any {
+  static login(data: LoginData): Promise<void> {
     return axios
-      .post('api/user/login', {
-        username,
-        password,
-      })
-      .then((response) => {
-        if (response.data) {
-          localStorage.setItem(this.TOKEN_NAME, response.data);
-        }
-        return response.data;
-      });
+      .post('api/user/login', data)
+      .then((res) => res.data)
+      .then((token) => localStorage.setItem(this.TOKEN_NAME, token));
   }
 
   static logout(): void {

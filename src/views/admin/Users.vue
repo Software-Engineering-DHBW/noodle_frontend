@@ -11,6 +11,13 @@
 
     <v-row>
       <v-col>
+        <v-overlay :value="isLoadingUsers || isDeletingUser">
+          <v-progress-circular
+            indeterminate
+            size="100"
+          />
+        </v-overlay>
+
         <v-simple-table
           fixed-header
           height="70vh"
@@ -75,16 +82,22 @@ const UserStore = namespace('Users');
   },
 })
 export default class Users extends Vue {
-  private filterString = '';
+  filterString = '';
 
   @UserStore.State
-  private users!: Array<NoodleUser>;
+  users!: Array<NoodleUser>;
+
+  @UserStore.State
+  isLoadingUsers!: boolean;
+
+  @UserStore.State
+  isDeletingUser!: boolean;
 
   @UserStore.Action
-  private loadAllUsers!: () => void;
+  loadAllUsers!: () => void;
 
   @UserStore.Action
-  private deleteUser!: (username: string) => void;
+  deleteUser!: (username: string) => void;
 
   get filteredUsers(): Array<NoodleUser> {
     return this.users.filter((user) => user.fullname.toLowerCase()

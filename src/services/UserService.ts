@@ -1,24 +1,23 @@
 import { NoodleUser } from '@/classes/NoodleUser';
-import axios from '../plugins/axios';
+import AuthService from '@/services/AuthService';
+import axios from 'axios';
+
+axios.defaults.headers.common.Authorization = `Bearer ${AuthService.getToken()}`;
 
 class UserService {
-  static getAllUsers(): Array<NoodleUser> {
+  static getAllUsers(): Promise<Array<NoodleUser>> {
     const userList: Array<NoodleUser> = [];
 
-    axios
+    return axios
       .get('api/user/getAll')
       .then((res) => res.data)
       .then((data) => data.forEach((element: NoodleUser) => userList.push(element)))
-      .catch((error) => alert(error));
-
-    return userList;
+      .then(() => userList);
   }
 
-  static deleteUser(username: string): void {
-    axios
-      .post('api/user/delete', { username })
-      .then(() => console.log('User erfolgreich gelöscht'))
-      .catch((error) => alert(error));
+  static deleteUser(username: string): Promise<void> {
+    return axios
+      .post('api/user/delete', { username });
   }
 }
 
