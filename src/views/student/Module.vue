@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h2 v-text="`${modulName} im ${semester}. Semester`" />
+    <h2 v-text="`${moduleName} im ${semester}. Semester`" />
     <v-textarea v-text="description" />
 
     <br>
@@ -65,7 +65,7 @@ import LectureMaterialTree from '@/components/LectureMaterialTree.vue';
   components: { LectureMaterialTree },
 })
 export default class Module extends Vue {
-  private modulName = '';
+  private moduleName = '';
 
   private description = 'Dieses Modul ist besonders geil. Es ist supergeil!';
 
@@ -150,7 +150,7 @@ export default class Module extends Vue {
   }
 
   mounted(): void {
-    this.modulName = this.$route.params.modulName;
+    this.moduleName = this.$route.params.moduleName;
     this.semester = +this.$route.params.semester;
   }
 }

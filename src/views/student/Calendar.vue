@@ -15,20 +15,11 @@ const Auth = namespace('Auth');
   components: { Calendar },
 })
 export default class CalendarView extends Vue {
-  @Auth.State
-  private currentUser!: any;
+  courses = ['Mathematik', 'Software-Engineering', 'Elektronik', 'Programmieren', 'IT-Security'];
 
-  mounted(): void {
-    if (!this.currentUser) {
-      this.$router.push('/login');
-    }
-  }
+  colors = ['red', 'green', 'blue', 'indigo', 'brown'];
 
-  private courses = ['Mathematik', 'Software-Engineering', 'Elektronik', 'Programmieren', 'IT-Security'];
-
-  private colors = ['red', 'green', 'blue', 'indigo', 'brown'];
-
-  private events: any = [];
+  events: any = [];
 
   getEvents(startAndEnd: any): void {
     const {

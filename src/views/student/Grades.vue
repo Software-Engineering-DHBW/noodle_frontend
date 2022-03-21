@@ -83,7 +83,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import CurrentUser from '@/classes/CurrentUser';
 import GradeDetailsPopup from '@/components/GradeDetailsPopup.vue';
 import SemesterTabs from '@/components/SemesterTabs.vue';
 
@@ -167,12 +166,9 @@ const grades = [
   },
 })
 export default class Grades extends Vue {
-  @Auth.State
-  private currentUser!: CurrentUser;
+  grades: Array<any> = grades;
 
-  private grades: Array<any> = grades;
-
-  private activeSemesterTab = 0;
+  activeSemesterTab = 0;
 
   get semesterNumbers(): Array<number> {
     return [...new Set(this.grades.map((grade) => grade.semester))];
@@ -180,12 +176,6 @@ export default class Grades extends Vue {
 
   gradesForSemester(semesterNumber: number): Array<any> {
     return this.grades.filter((grade) => grade.semester === semesterNumber);
-  }
-
-  mounted(): void {
-    if (!this.currentUser) {
-      this.$router.push('/login');
-    }
   }
 }
 </script>

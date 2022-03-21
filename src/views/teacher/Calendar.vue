@@ -36,31 +36,22 @@ const Auth = namespace('Auth');
   },
 })
 export default class CalendarView extends Vue {
-  @Auth.State
-  private currentUser!: any;
+  calendarViews = ['Meine Termine', 'Meine Termine + Kurs IT1', 'Meine Termine + Kurs IT2'];
 
-  mounted(): void {
-    if (!this.currentUser) {
-      this.$router.push('/login');
-    }
-  }
+  currentMeeting = null;
 
-  private calendarViews = ['Meine Termine', 'Meine Termine + Kurs IT1', 'Meine Termine + Kurs IT2'];
-
-  private currentMeeting = null;
-
-  private selectedCalendarView = this.calendarViews[0];
+  selectedCalendarView = this.calendarViews[0];
 
   // eslint-disable-next-line class-methods-use-this
   setCalendarView(selectedCalendarView: any) {
     console.log(`Wechseln zu "${selectedCalendarView}"`);
   }
 
-  private courses = ['Mathematik', 'Software-Engineering', 'Elektronik', 'Programmieren', 'IT-Security'];
+  courses = ['Mathematik', 'Software-Engineering', 'Elektronik', 'Programmieren', 'IT-Security'];
 
-  private colors = ['red', 'green', 'blue', 'indigo', 'brown'];
+  colors = ['red', 'green', 'blue', 'indigo', 'brown'];
 
-  private events: any = [];
+  events: any = [];
 
   getEvents(startAndEnd: any): void {
     const {

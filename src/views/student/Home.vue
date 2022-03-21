@@ -19,11 +19,5 @@ const Auth = namespace('Auth');
 export default class Home extends Vue {
   @Auth.Getter
   currentUser!: CurrentUser;
-
-  mounted(): void {
-    if (!this.currentUser) {
-      this.$router.push('/login');
-    }
-  }
 }
 </script>
