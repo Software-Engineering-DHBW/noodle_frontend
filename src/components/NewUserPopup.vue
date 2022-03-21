@@ -11,6 +11,7 @@
       v-if="$vuetify.breakpoint.xs"
       fab
       small
+      :loading="isRegisteringUser"
       color="primary"
       elevation="2"
       @click="visible=true"
@@ -51,24 +52,17 @@
             :items="roles"
           />
           <v-text-field
-            v-model="newUser.address.fullName"
+            v-model="newUser.fullname"
             hide-details
             label="Vollständiger Name"
           />
           <v-text-field
-            v-model="newUser.address.street"
+            v-model="newUser.address"
             hide-details
-            label="Straße, Hausnummer"
+            label="Adresse"
           />
           <v-text-field
-            v-model="newUser.address.postalCode"
-            hide-details
-            type="number"
-            hide-spin-buttons
-            label="Postleitzahl"
-          />
-          <v-text-field
-            v-model="newUser.email"
+            v-model="newUser.mail"
             hide-details
             type="email"
             label="E-Mail"
@@ -98,17 +92,27 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import EmptyUser from '@/classes/EmptyUser';
+import Role from '@/classes/Role';
+import { namespace } from 'vuex-class';
+
+const UserStore = namespace('Users');
 
 @Component
 export default class NewUserPopup extends Vue {
-  private visible = false;
+  visible = false;
 
-  private newUser = new EmptyUser();
+  newUser = new EmptyUser();
 
-  private roles = ['Student', 'Teacher'];
+  roles = [Role.STUDENT, Role.TEACHER];
 
-  createUser(): any {
-    alert(`User ${this.newUser.username} mit der Rolle "${this.newUser.role} wird erstellt`);
+  @UserStore.State
+  isRegisteringUser!: boolean;
+
+  @UserStore.Action
+  registerUser!: (user: EmptyUser) => void
+
+  createUser(): void {
+    this.registerUser(this.newUser);
 
     this.newUser = new EmptyUser();
     this.visible = false;

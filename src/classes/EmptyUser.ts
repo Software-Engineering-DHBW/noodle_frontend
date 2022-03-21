@@ -3,28 +3,23 @@ export default class EmptyUser {
 
   password: string;
 
-  matriculationNumber: number | null;
-
   role: string;
 
-  address: {
-    fullName: string,
-    street: string,
-    postalCode: number | null,
-  };
+  fullname: string;
 
-  email: string;
+  address: string;
+
+  matriculationNumber: number | null;
+
+  mail: string;
 
   constructor() {
     this.username = '';
     this.password = '';
-    this.matriculationNumber = null;
     this.role = '';
-    this.address = {
-      fullName: '',
-      street: '',
-      postalCode: null,
-    };
-    this.email = '';
+    this.fullname = '';
+    this.matriculationNumber = null;
+    this.address = '';
+    this.mail = '';
   }
 }

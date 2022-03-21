@@ -3,6 +3,7 @@ import {
 } from 'vuex-module-decorators';
 import { NoodleUser } from '@/classes/NoodleUser';
 import UserService from '@/services/UserService';
+import EmptyUser from '@/classes/EmptyUser';
 
 @Module({ namespaced: true })
 export default class Users extends VuexModule {
@@ -10,7 +11,9 @@ export default class Users extends VuexModule {
 
   isLoadingUsers = false;
 
-  isDeletingUser = false
+  isRegisteringUser = false
+
+  isDeletingUser = false;
 
   @Mutation
   updateUsers(users: Array<NoodleUser>): void {
@@ -20,6 +23,11 @@ export default class Users extends VuexModule {
   @Mutation
   setIsLoadingUsers(value: boolean): void {
     this.isLoadingUsers = value;
+  }
+
+  @Mutation
+  setIsRegisteringUser(value: boolean): void {
+    this.isRegisteringUser = value;
   }
 
   @Mutation
@@ -38,11 +46,22 @@ export default class Users extends VuexModule {
   }
 
   @Action
+  registerUser(user: EmptyUser): void {
+    this.context.commit('setIsRegisteringUser', true);
+
+    UserService.registerUser(user)
+      .then(() => this.context.dispatch('loadAllUsers'))
+      .catch((error) => alert(error))
+      .finally(() => this.context.commit('setIsRegisteringUser', false));
+  }
+
+  @Action
   deleteUser(username: string): void {
     this.context.commit('setIsDeletingUser', true);
 
     UserService.deleteUser(username)
       .then(() => this.context.dispatch('loadAllUsers'))
+      .catch((error) => alert(error))
       .finally(() => this.context.commit('setIsDeletingUser', false));
   }
 }
