@@ -34,15 +34,19 @@
               :key="index"
             >
               <td class="text-break">
-                {{ user.fullname }}
+                {{ user.userId.username }}
               </td>
               <td class="text-center">
-                {{ 'Olaf' }}
+                {{
+                  user.userId.isAdministrator ? 'Administrator'
+                  : user.userId.isTeacher ? 'Teacher'
+                    : 'Student'
+                }}
               </td>
               <td class="text-right">
                 <v-btn
                   icon
-                  @click="deleteUser(user)"
+                  @click="deleteUser(user.userId.username)"
                 >
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
@@ -60,7 +64,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import SearchField from '@/components/SearchField.vue';
 import NewUserPopup from '@/components/NewUserPopup.vue';
 import { namespace } from 'vuex-class';
-import NoodleUser from '@/classes/NoodleUser';
+import { NoodleUser } from '@/classes/NoodleUser';
 
 const UserStore = namespace('Users');
 
@@ -79,15 +83,12 @@ export default class Users extends Vue {
   @UserStore.Action
   private loadAllUsers!: () => void;
 
+  @UserStore.Action
+  private deleteUser!: (username: string) => void;
+
   get filteredUsers(): Array<NoodleUser> {
     return this.users.filter((user) => user.fullname.toLowerCase()
       .includes(this.filterString.toLowerCase()));
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  deleteUser(user: NoodleUser): void {
-    console.log(user);
-    alert(`User ${user.fullname} wird gelöscht`);
   }
 
   mounted(): void {

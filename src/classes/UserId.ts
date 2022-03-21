@@ -1,9 +1,9 @@
-export default class UserId {
-  id!: number
+export type UserId = {
+  id: number
 
-  username!: string
+  username: string
 
-  isTeacher!: boolean
+  isTeacher: boolean
 
-  isAdministrator!: boolean
+  isAdministrator: boolean
 }

@@ -1,15 +1,15 @@
-import UserId from '@/classes/UserId';
+import { UserId } from '@/classes/UserId';
 
-export default class NoodleUser {
-  id!: number;
+export type NoodleUser = {
+  id: number;
 
-  fullname!: string;
+  fullname: string;
 
-  address!: string;
+  address: string;
 
-  matriculationNumber!: number;
+  matriculationNumber: number;
 
-  mail!: string;
+  mail: string;
 
-  userID!: UserId;
+  userId: UserId;
 }

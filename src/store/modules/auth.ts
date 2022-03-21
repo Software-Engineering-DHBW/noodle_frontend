@@ -7,7 +7,7 @@ import CurrentUser from '../../classes/CurrentUser';
 
 @Module({ namespaced: true })
 class Auth extends VuexModule {
-  public token = AuthService.getToken();
+  token = AuthService.getToken();
 
   get currentUser(): CurrentUser | null {
     return this.token ? new CurrentUser(jwtDecode(this.token)) : null;
@@ -18,12 +18,12 @@ class Auth extends VuexModule {
   }
 
   @Mutation
-  public updateToken(): void {
+  updateToken(): void {
     this.token = AuthService.getToken();
   }
 
   @Mutation
-  public resetToken(): void {
+  resetToken(): void {
     this.token = null;
   }
 
@@ -36,7 +36,7 @@ class Auth extends VuexModule {
           return Promise.resolve(token);
         },
         (error: any) => {
-          this.context.commit('logoutt');
+          this.context.commit('resetToken');
           const message = (error.response && error.response.data && error.response.data.message)
             || error.message
             || error.toString();
