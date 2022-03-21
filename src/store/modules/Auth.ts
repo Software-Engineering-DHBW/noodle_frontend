@@ -11,8 +11,6 @@ import CurrentUser from '../../classes/CurrentUser';
 class Auth extends VuexModule {
   token = AuthService.getToken();
 
-  isLoading = false;
-
   get currentUser(): CurrentUser | null {
     return this.token ? new CurrentUser(jwtDecode(this.token)) : null;
   }
@@ -41,11 +39,6 @@ class Auth extends VuexModule {
   @Mutation
   resetToken(): void {
     this.token = null;
-  }
-
-  @Mutation
-  setIsLoading(value: boolean): void {
-    this.isLoading = value;
   }
 
   @Action

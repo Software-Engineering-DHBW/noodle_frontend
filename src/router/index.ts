@@ -2,8 +2,6 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import store from '@/store/index';
 import Role from '@/classes/Role';
-import jwtDecode from 'jwt-decode';
-import AuthService from '@/services/AuthService';
 import CurrentUser from '@/classes/CurrentUser';
 
 Vue.use(VueRouter);

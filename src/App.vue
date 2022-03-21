@@ -120,6 +120,11 @@ export default class App extends Vue {
   handleLogout(): void {
     this.logout();
     this.$router.push('/login');
+
+    // TODO: hard reload of page necessary after logout to clear role-based components in router
+    // cant be used because user/token is resettet
+    // eslint-disable-next-line no-restricted-globals
+    // location.reload();
   }
 }
 </script>
