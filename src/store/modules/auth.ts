@@ -11,6 +11,8 @@ import CurrentUser from '../../classes/CurrentUser';
 class Auth extends VuexModule {
   token = AuthService.getToken();
 
+  isLoading = false;
+
   get currentUser(): CurrentUser | null {
     return this.token ? new CurrentUser(jwtDecode(this.token)) : null;
   }
@@ -29,12 +31,19 @@ class Auth extends VuexModule {
     this.token = null;
   }
 
+  @Mutation
+  setIsLoading(value: boolean): void {
+    this.isLoading = value;
+  }
+
   @Action
   login(data: LoginData): void {
+    this.context.commit('setIsLoading', true);
     AuthService.login(data)
       .then(() => this.context.commit('updateToken'))
+      .then(() => router.push('/'))
       .catch((error) => alert(error))
-      .finally(() => router.push('/'));
+      .finally(() => this.context.commit('setIsLoading', false));
   }
 
   @Action

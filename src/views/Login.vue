@@ -30,6 +30,7 @@
       <v-btn
         class="primary"
         :disabled="!valid"
+        :loading="isLoading"
         @click="handleLogin()"
       >
         Login
@@ -47,22 +48,25 @@ const Auth = namespace('Auth');
 
 @Component
 export default class Login extends Vue {
-  private user: any = {
+  @Auth.State
+  isLoading!: boolean
+
+  user: any = {
     username: '',
     password: '',
   };
 
-  private get valid(): boolean {
+  get valid(): boolean {
     return this.user.username && this.user.password;
   }
 
-  private textFieldRules = [(value: any) => !!value || 'Feld darf nicht leer sein'];
+  textFieldRules = [(value: any) => !!value || 'Feld darf nicht leer sein'];
 
   @Auth.Getter
-  private isLoggedIn!: boolean;
+  isLoggedIn!: boolean;
 
   @Auth.Action
-  private login!: (loginData: LoginData) => void;
+  login!: (loginData: LoginData) => void;
 
   created(): void {
     if (this.isLoggedIn) {
