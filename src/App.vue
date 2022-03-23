@@ -63,8 +63,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import Role from '@/classes/Role';
 import CurrentUser from '@/classes/CurrentUser';
+import routes from '@/router/Routes';
+import { RouteConfig } from 'vue-router';
 
 const Auth = namespace('Auth');
 
@@ -81,50 +82,19 @@ export default class App extends Vue {
 
   drawer = false;
 
-  pageLinks = [
-    {
-      name: 'Home',
-      path: '/',
-    },
-    {
-      name: 'Module',
-      path: '/modules',
-    },
-    {
-      name: 'Noten',
-      path: '/grades',
-      roles: [Role.STUDENT],
-    },
-    {
-      name: 'Kalender',
-      path: '/calendar',
-      roles: [Role.STUDENT, Role.TEACHER],
-    },
-    {
-      name: 'Nutzer',
-      path: '/users',
-      roles: [Role.ADMIN],
-    },
-    {
-      name: 'Kurse',
-      path: '/courses',
-      roles: [Role.ADMIN],
-    },
-  ];
+  get pageLinksForRole(): Array<RouteConfig> {
+    return routes
+      .filter((route) => route.meta?.visibleInNavbar && this.authorizedToVisitRoute(route));
+  }
 
-  get pageLinksForRole(): Array<any> {
-    return this.pageLinks
-      .filter((link) => !link.roles || link.roles.includes(this.currentUser.role));
+  authorizedToVisitRoute(route: RouteConfig): boolean {
+    if (!route.meta?.authorize || route.meta?.authorize.length === 0) return true;
+    return route.meta?.authorize.includes(this.currentUser.role);
   }
 
   handleLogout(): void {
     this.logout();
     this.$router.push('/login');
-
-    // TODO: hard reload of page necessary after logout to clear role-based components in router
-    // cant be used because user/token is resettet
-    // eslint-disable-next-line no-restricted-globals
-    // location.reload();
   }
 }
 </script>
