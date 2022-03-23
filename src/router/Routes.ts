@@ -4,34 +4,37 @@ import Role from '@/classes/Role';
 const routesForAdmin: Array<RouteConfig> = [
   {
     path: '/admin/modules',
-    name: 'Module',
+    name: 'Module Admin',
     meta: {
       authorize: [Role.ADMIN],
       visibleInNavbar: true,
+      navbarName: 'Module',
     },
     component: () => import('../views/admin/ModuleOverview.vue'),
   },
   {
     path: '/admin/module/:semester/:moduleName',
-    name: 'Modul',
+    name: 'Modul Admin',
     meta: { authorize: [Role.ADMIN] },
     component: () => import('../views/teacher/Module.vue'),
   },
   {
     path: '/admin/users',
-    name: 'Nuzter',
+    name: 'Nuzter Admin',
     meta: {
       authorize: [Role.ADMIN],
       visibleInNavbar: true,
+      navbarName: 'Nutzer',
     },
     component: () => import('../views/admin/Users.vue'),
   },
   {
     path: '/admin/courses',
-    name: 'Kurse',
+    name: 'Kurse Admin',
     meta: {
       authorize: [Role.ADMIN],
       visibleInNavbar: true,
+      navbarName: 'Kurse',
     },
     component: () => import('../views/admin/Courses.vue'),
   },
@@ -40,25 +43,27 @@ const routesForAdmin: Array<RouteConfig> = [
 const routesForTeacher: Array<RouteConfig> = [
   {
     path: '/teacher/modules',
-    name: 'Module',
+    name: 'Module Teacher',
     meta: {
       authorize: [Role.TEACHER],
       visibleInNavbar: true,
+      navbarName: 'Module',
     },
     component: () => import('../views/teacher/ModuleOverview.vue'),
   },
   {
     path: '/teacher/module/:semester/:moduleName',
-    name: 'Modul',
+    name: 'Modul Teacher',
     meta: { authorize: [Role.TEACHER] },
     component: () => import('../views/teacher/Module.vue'),
   },
   {
     path: '/teacher/calendar',
-    name: 'Kalender',
+    name: 'Kalender Teacher',
     meta: {
       authorize: [Role.TEACHER],
       visibleInNavbar: true,
+      navbarName: 'Kalender',
     },
     component: () => import('../views/teacher/Calendar.vue'),
   },
@@ -67,34 +72,37 @@ const routesForTeacher: Array<RouteConfig> = [
 const routesForStudent: Array<RouteConfig> = [
   {
     path: '/student/modules',
-    name: 'Module',
+    name: 'Module Student',
     meta: {
       authorize: [Role.STUDENT],
       visibleInNavbar: true,
+      navbarName: 'Module',
     },
     component: () => import('../views/student/ModuleOverview.vue'),
   },
   {
     path: '/student/module/:semester/:moduleName',
-    name: 'Modul',
+    name: 'Modul Student',
     meta: { authorize: [Role.STUDENT] },
     component: () => import('../views/student/Module.vue'),
   },
   {
     path: '/student/calendar',
-    name: 'Kalender',
+    name: 'Kalender Student',
     meta: {
       authorize: [Role.STUDENT],
       visibleInNavbar: true,
+      navbarName: 'Kalender',
     },
     component: () => import('../views/student/Calendar.vue'),
   },
   {
     path: '/student/grades',
-    name: 'Noten',
+    name: 'Noten Student',
     meta: {
       authorize: [Role.STUDENT],
       visibleInNavbar: true,
+      navbarName: 'Noten',
     },
     component: () => import('../views/student/Grades.vue'),
   },
@@ -115,6 +123,7 @@ const routesForEeachRole: Array<RouteConfig> = [
     meta: {
       authorize: [],
       visibleInNavbar: true,
+      navbarName: 'Home',
     },
     component: () => import('../views/Home.vue'),
   },

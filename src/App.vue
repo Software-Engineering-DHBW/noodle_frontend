@@ -24,7 +24,7 @@
         >
           <router-link
             :to="link.path"
-            v-text="link.name"
+            v-text="link.meta.navbarName"
           />&nbsp;
         </span>
       </div>
@@ -49,7 +49,7 @@
           v-for="link in pageLinksForRole"
           :key="link.name"
           :to="link.path"
-          v-text="link.name"
+          v-text="link.meta.navbarName"
         />
       </v-list>
     </v-navigation-drawer>
