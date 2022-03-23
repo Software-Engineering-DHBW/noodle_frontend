@@ -50,13 +50,13 @@ const Auth = namespace('Auth');
 export default class Login extends Vue {
   loading = false;
 
-  user: any = {
+  user: LoginData = {
     username: '',
     password: '',
   };
 
   get valid(): boolean {
-    return this.user.username && this.user.password;
+    return !!this.user.username && !!this.user.password;
   }
 
   textFieldRules = [(value: any) => !!value || 'Feld darf nicht leer sein'];
