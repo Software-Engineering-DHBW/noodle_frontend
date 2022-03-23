@@ -1,9 +1,6 @@
 import { NoodleUser } from '@/classes/NoodleUser';
-import AuthService from '@/services/AuthService';
 import axios from 'axios';
 import NewUser from '@/classes/NewUser';
-
-axios.defaults.headers.common.Authorization = `Bearer ${AuthService.getToken()}`;
 
 class UserService {
   static getAllUsers(): Promise<Array<NoodleUser>> {

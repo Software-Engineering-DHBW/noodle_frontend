@@ -12,11 +12,15 @@ class AuthService {
     return axios
       .post('api/user/login', data)
       .then((res) => res.data)
-      .then((token) => localStorage.setItem(this.TOKEN_NAME, token));
+      .then((token) => localStorage.setItem(this.TOKEN_NAME, token))
+      .then(() => {
+        axios.defaults.headers.common.Authorization = `Bearer ${this.getToken()}`;
+      });
   }
 
   static logout(): void {
     localStorage.removeItem(this.TOKEN_NAME);
+    delete axios.defaults.headers.common.Authorization;
   }
 }
 
