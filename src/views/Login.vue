@@ -83,6 +83,7 @@ export default class Login extends Vue {
     if (this.valid) {
       this.login(this.user)
         .then(() => this.$router.push('/'))
+        .catch((error) => undefined)
         .finally(() => {
           this.loading = false;
         });
