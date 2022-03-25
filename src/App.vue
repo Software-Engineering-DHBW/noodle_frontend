@@ -1,5 +1,15 @@
 <template>
   <v-app>
+    <div class="alert-overlay">
+      <v-alert
+        v-for="(alert, index) in alerts"
+        :key="index"
+        :type="alert.type"
+      >
+        {{ alert.message }}
+      </v-alert>
+    </div>
+
     <!-- Desktop Bar -->
     <v-app-bar
       v-if="isLoggedIn"
@@ -66,11 +76,21 @@ import { namespace } from 'vuex-class';
 import CurrentUser from '@/classes/CurrentUser';
 import routes from '@/router/Routes';
 import { RouteConfig } from 'vue-router';
+import { Alert } from '@/classes/Alert';
 
 const Auth = namespace('Auth');
+const AlertStore = namespace('AlertStore');
 
 @Component
 export default class App extends Vue {
+  @AlertStore.State
+  alerts!: Array<Alert>;
+
+  alertsLength = true;
+
+  @AlertStore.Action
+  resetAlerts!: () => void;
+
   @Auth.Getter
   currentUser!: CurrentUser;
 
@@ -95,6 +115,10 @@ export default class App extends Vue {
   handleLogout(): void {
     this.logout();
     this.$router.push('/login');
+  }
+
+  mounted(): void {
+    this.resetAlerts();
   }
 }
 </script>
@@ -122,5 +146,13 @@ html {
 /* vertically center content in all columns */
 .col {
   align-self: center;
+}
+
+/* overlay that shows all alerts */
+.alert-overlay {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 6;
 }
 </style>
