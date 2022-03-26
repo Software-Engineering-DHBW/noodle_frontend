@@ -11,13 +11,7 @@
 
     <v-row>
       <v-col>
-        <v-overlay :value="loading">
-          <v-progress-circular
-            indeterminate
-            size="100"
-          />
-        </v-overlay>
-
+        <LoadingOverlay :loading="loading" />
         <v-simple-table
           fixed-header
           height="70vh"
@@ -72,11 +66,13 @@ import SearchField from '@/components/SearchField.vue';
 import NewUserPopup from '@/components/NewUserPopup.vue';
 import { namespace } from 'vuex-class';
 import { NoodleUser } from '@/classes/NoodleUser';
+import LoadingOverlay from '@/components/LoadingOverlay.vue';
 
 const UserStore = namespace('Users');
 
 @Component({
   components: {
+    LoadingOverlay,
     NewUserPopup,
     SearchField,
   },
