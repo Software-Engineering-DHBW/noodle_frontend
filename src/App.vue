@@ -49,7 +49,7 @@
 
     <!-- Mobile Navigation Drawer -->
     <v-navigation-drawer
-      v-if="$vuetify.breakpoint.xs"
+      v-if="isLoggedIn && $vuetify.breakpoint.xs"
       v-model="drawer"
       absolute
       temporary
