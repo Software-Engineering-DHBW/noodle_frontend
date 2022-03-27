@@ -43,4 +43,14 @@ export default class Users extends VuexModule {
         throw error;
       });
   }
+
+  @Action
+  changeUserPassword(data: {username: string, password: string}): Promise<void> {
+    return UserService.changeUserPassword(data)
+      .then(() => this.context.dispatch('loadAllUsers'))
+      .catch((error) => {
+        alert(error);
+        throw error;
+      });
+  }
 }

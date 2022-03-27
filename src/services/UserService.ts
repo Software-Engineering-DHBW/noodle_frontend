@@ -22,6 +22,11 @@ class UserService {
     return axios
       .post('api/user/register', data);
   }
+
+  static changeUserPassword(data: {username: string, password: string}): Promise<void> {
+    return axios
+      .post('api/user/changePassword', data);
+  }
 }
 
 export default UserService;
