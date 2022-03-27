@@ -17,11 +17,6 @@ class CourseService {
     return axios
       .post(`api/course/${id}/delete`);
   }
-
-  static removeStudentsFromCourse(studentsIds: Array<number>, courseId: number) {
-    return axios
-      .post(`api/course/${courseId}/deleteStudent`, [...studentsIds]);
-  }
 }
 
 export default CourseService;

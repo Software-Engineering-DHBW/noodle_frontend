@@ -35,25 +35,11 @@ export default class Courses extends VuexModule {
 
   @Action
   deleteCourse(courseId: number): Promise<void> {
-    const courseToDelete = this.courses.find((course) => course.id === courseId);
-    const studentsToRemove = courseToDelete ? courseToDelete.students : [];
-    this.context.dispatch('removeStudentsFromCourse', {
-      students: studentsToRemove,
-      courseId,
-    });
-
-    this.context.dispatch('removeStudentFromCourse');
     return CourseService.deleteCourse(courseId)
       .then(() => this.context.dispatch('loadAllCourses'))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
         throw error;
       });
-  }
-
-  @Action
-  // eslint-disable-next-line class-methods-use-this
-  removeStudentsFromCourse(data: { students: Array<number>, courseId: number }): Promise<void> {
-    return CourseService.removeStudentsFromCourse(data.students, data.courseId).then();
   }
 }
