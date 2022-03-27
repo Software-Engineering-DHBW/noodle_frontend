@@ -24,6 +24,9 @@
               <th class="text-center">
                 Rolle
               </th>
+              <th class="text-center">
+                Kurs
+              </th>
               <th class="text-right">
                 Aktion
               </th>
@@ -43,6 +46,9 @@
                   : user.userId.isTeacher ? 'Teacher'
                     : 'Student'
                 }}
+              </td>
+              <td class="text-center">
+                {{ user.userId.course }}
               </td>
               <td class="text-right">
                 <v-btn

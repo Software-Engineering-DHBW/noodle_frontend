@@ -3,4 +3,5 @@ export type UserId = {
   username: string
   isTeacher: boolean
   isAdministrator: boolean
+  course: string
 }
