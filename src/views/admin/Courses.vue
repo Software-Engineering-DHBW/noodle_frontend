@@ -21,9 +21,7 @@
               <th>
                 Kurs
               </th>
-              <th class="text-right">
-                Aktion
-              </th>
+              <th class="text-right" />
             </tr>
           </thead>
           <tbody>

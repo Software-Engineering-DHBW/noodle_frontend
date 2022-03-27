@@ -36,7 +36,10 @@
           <v-text-field
             v-model="newUser.password"
             hide-details
+            :type="showPassword ? 'text' : 'password'"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             label="Passwort"
+            @click:append="showPassword = !showPassword"
           />
           <v-text-field
             v-model="newUser.matriculationNumber"
@@ -105,10 +108,12 @@ export default class NewUserPopup extends Vue {
 
   roles = [Role.STUDENT, Role.TEACHER];
 
+  showPassword = false;
+
   loading = false;
 
   @UserStore.Action
-  registerUser!: (user: NewNoodleUser) => Promise<void>
+  registerUser!: (user: NewNoodleUser) => Promise<void>;
 
   createUser(): void {
     // TODO: form validation to check at least if every field is filled

@@ -46,7 +46,7 @@
                     : 'Student'
                 }}
               </td>
-              <td class="text-center">
+              <td>
                 {{ user.userId.course ? user.userId.course.name : '-' }}
               </td>
               <td class="text-right">
