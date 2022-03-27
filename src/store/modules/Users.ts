@@ -13,6 +13,10 @@ export default class Users extends VuexModule {
     return this.users.filter((user) => !user.userId.isAdministrator && !user.userId.isTeacher);
   }
 
+  get teacher(): Array<NoodleUser> {
+    return this.users.filter((user) => user.userId.isTeacher);
+  }
+
   @Mutation
   updateUsers(users: Array<NoodleUser>): void {
     this.users = users;

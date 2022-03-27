@@ -29,7 +29,7 @@
 
         <v-card-text>
           <v-text-field
-            v-model="module.title"
+            v-model="module.name"
             label="Titel"
           />
           <v-text-field
@@ -37,14 +37,18 @@
             label="Beschreibung"
           />
           <v-select
-            v-model="module.course"
+            v-model="module.assignedCourse"
             label="Kurs"
             :items="courses"
+            item-text="name"
+            item-value="id"
           />
           <v-select
-            v-model="module.teacher"
+            v-model="module.assignedTeacher"
             label="Lehrender"
             :items="teacher"
+            item-text="fullname"
+            item-value="id"
           />
         </v-card-text>
 
@@ -70,29 +74,50 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Course } from '@/classes/Course';
+import { namespace } from 'vuex-class';
+import { NoodleUser } from '@/classes/NoodleUser';
+import { NewModule } from '@/classes/NewModule';
+
+const CourseStore = namespace('Courses');
+const UserStore = namespace('Users');
+const ModuleStore = namespace('Modules');
 
 @Component
 export default class NewModulePopup extends Vue {
   private visible = false;
 
-  private courses = ['IT1', 'IT2', 'CS1'];
+  @CourseStore.State
+  courses!: Array<Course>;
 
-  private teacher = ['Herr Rainer Sauerstoff', 'Herr Ernst Haft', 'Herr Sergej Färhlich', 'Frau Anna Nass', 'Frau Ute Russ'];
+  @UserStore.Getter
+  teacher!: Array<NoodleUser>;
 
-  private module = {
-    title: null,
-    description: null,
-    course: null,
-    teacher: null,
+  @ModuleStore.Action
+  registerModule!: (module: NewModule) => void;
+
+  module = {
+    name: '',
+    description: '',
+    assignedTeacher: 0,
+    assignedCourse: 0,
+    submodule: [],
   };
 
-  createModule(): any {
-    alert(`Modul ${this.module.title} mit Lehrer ${this.module.teacher} für Kurs ${this.module.course} wird erstellt`);
+  createModule(): void {
+    this.registerModule({
+      name: this.module.name,
+      description: this.module.description,
+      assignedCourse: this.module.assignedCourse,
+      assignedTeacher: [this.module.assignedTeacher],
+      submodule: this.module.submodule,
+    });
 
-    this.module.title = null;
-    this.module.description = null;
-    this.module.course = null;
-    this.module.teacher = null;
+    this.module.name = '';
+    this.module.description = '';
+    this.module.assignedCourse = 0;
+    this.module.assignedTeacher = 0;
+    this.module.submodule = [];
 
     this.visible = false;
   }

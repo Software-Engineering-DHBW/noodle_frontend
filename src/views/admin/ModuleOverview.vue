@@ -1,13 +1,15 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col>
-        <SemesterDropdown
-          v-model="selectedSemester"
-          :semester="semester"
-        />
-      </v-col>
-    </v-row>
+    <LoadingOverlay :loading="loading" />
+
+    <!--    <v-row>-->
+    <!--      <v-col>-->
+    <!--        <SemesterDropdown-->
+    <!--          v-model="selectedSemester"-->
+    <!--          :semester="semester"-->
+    <!--        />-->
+    <!--      </v-col>-->
+    <!--    </v-row>-->
 
     <v-row>
       <v-col>
@@ -20,7 +22,7 @@
 
     <v-row>
       <v-col>
-        <ModuleList :modules="filteredSemesterModules" />
+        <ModuleList :modules="filteredModules" />
       </v-col>
     </v-row>
   </v-container>
@@ -32,9 +34,15 @@ import ModuleList from '@/components/ModuleList.vue';
 import SemesterDropdown from '@/components/SemesterDropdown.vue';
 import SearchField from '@/components/SearchField.vue';
 import NewModulePopup from '@/components/NewModulePopup.vue';
+import { namespace } from 'vuex-class';
+import { NoodleModule } from '@/classes/NoodleModule';
+import LoadingOverlay from '@/components/LoadingOverlay.vue';
+
+const ModuleStore = namespace('Modules');
 
 @Component({
   components: {
+    LoadingOverlay,
     NewModulePopup,
     SearchField,
     SemesterDropdown,
@@ -42,77 +50,49 @@ import NewModulePopup from '@/components/NewModulePopup.vue';
   },
 })
 export default class ModuleOverview extends Vue {
-  private filterString = '';
+  filterString = '';
 
-  private modules = [
-    {
-      name: 'Software-Engineering I',
-      semester: 'Wintersemester 2020',
-      course: 'IT1',
-      description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
-    },
-    {
-      name: 'Software-Engineering II',
-      semester: 'Wintersemester 2020',
-      course: 'IT2',
-      description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
-    },
-    {
-      name: 'Mathematik',
-      semester: 'Wintersemester 2020',
-      course: 'IT2',
-      description: '9 von 7 Menschen sind mit Mathe überfordert',
-    },
-    {
-      name: 'Mathematik',
-      semester: 'Sommersemester 2021',
-      course: 'IT1',
-      description: '9 von 7 Menschen sind mit Mathe überfordert',
-    },
-    {
-      name: 'Mathematik',
-      semester: 'Sommersemester 2021',
-      course: 'CS1',
-      description: '9 von 7 Menschen sind mit Mathe überfordert',
-    },
-    {
-      name: 'Mathematik',
-      semester: 'Sommersemester 2021',
-      course: 'IT2',
-      description: '9 von 7 Menschen sind mit Mathe überfordert',
-    },
-    {
-      name: 'Software-Engineering I',
-      semester: 'Wintersemester 2021',
-      course: 'CS1',
-      description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
-    },
-    {
-      name: 'Software-Engineering I',
-      semester: 'Wintersemester 2021',
-      course: 'CS2',
-      description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
-    },
-  ];
+  loading = false;
 
-  private selectedSemester = this.semester[0];
+  @ModuleStore.State
+  allModules!: Array<NoodleModule>;
 
-  get semester(): Array<any> {
-    return [...new Set(this.modules.map((module) => module.semester))];
+  @ModuleStore.Action
+  loadAllModules!: () => Promise<void>;
+
+  get filteredModules(): Array<NoodleModule> {
+    return this.allModules
+      .filter((module) => module.name.toLowerCase()
+        .includes(this.filterString.toLowerCase()));
   }
 
-  get semesterModules(): Array<any> {
-    return this.modules
-      .filter((module) => module.semester === this.selectedSemester)
-      .map((module) => ({
-        name: `${module.name} in Kurs ${module.course}`,
-        description: module.description,
-      }));
+  mounted(): void {
+    this.loading = true;
+    this.loadAllModules()
+      .finally(() => {
+        this.loading = false;
+      });
   }
 
-  get filteredSemesterModules(): Array<any> {
-    return this.semesterModules
-      .filter((module) => module.name.toLowerCase().includes(this.filterString.toLowerCase()));
-  }
+  // TODO: Decision if module overview should be split into semester
+  // selectedSemester = this.semester[0];
+  //
+  // get semester(): Array<any> {
+  //   return [...new Set(this.modules.map((module) => module.semester))];
+  // }
+  //
+  // get semesterModules(): Array<any> {
+  //   return this.modules
+  //     .filter((module) => module.semester === this.selectedSemester)
+  //     .map((module) => ({
+  //       name: `${module.name} in Kurs ${module.course}`,
+  //       description: module.description,
+  //     }));
+  // }
+  //
+  // get filteredSemesterModules(): Array<any> {
+  //   return this.semesterModules
+  //     .filter((module) => module.name.toLowerCase().includes(this.filterString.toLowerCase()));
+  // }
 }
 </script>
