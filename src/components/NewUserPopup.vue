@@ -91,7 +91,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import NewUser from '@/classes/NewUser';
+import NewNoodleUser from '@/classes/NewNoodleUser';
 import Role from '@/classes/Role';
 import { namespace } from 'vuex-class';
 
@@ -101,21 +101,21 @@ const UserStore = namespace('Users');
 export default class NewUserPopup extends Vue {
   visible = false;
 
-  newUser = new NewUser();
+  newUser = new NewNoodleUser();
 
   roles = [Role.STUDENT, Role.TEACHER];
 
   loading = false;
 
   @UserStore.Action
-  registerUser!: (user: NewUser) => Promise<void>
+  registerUser!: (user: NewNoodleUser) => Promise<void>
 
   createUser(): void {
     // TODO: form validation to check at least if every field is filled
     this.loading = true;
     this.registerUser(this.newUser)
       .then(() => {
-        this.newUser = new NewUser();
+        this.newUser = new NewNoodleUser();
         this.visible = false;
       })
       .finally(() => {

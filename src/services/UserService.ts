@@ -1,6 +1,6 @@
 import { NoodleUser } from '@/classes/NoodleUser';
 import axios from 'axios';
-import NewUser from '@/classes/NewUser';
+import NewNoodleUser from '@/classes/NewNoodleUser';
 
 class UserService {
   static getAllUsers(): Promise<Array<NoodleUser>> {
@@ -18,7 +18,7 @@ class UserService {
       .post('api/user/delete', { username });
   }
 
-  static registerUser(data: NewUser): Promise<void> {
+  static registerUser(data: NewNoodleUser): Promise<void> {
     return axios
       .post('api/user/register', data);
   }

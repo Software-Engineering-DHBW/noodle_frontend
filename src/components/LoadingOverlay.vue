@@ -12,6 +12,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class LoadingOverlay extends Vue {
-  @Prop({ required: true }) loading: boolean;
+  @Prop({ required: true }) loading!: boolean;
 }
 </script>

@@ -1,5 +1,8 @@
+import { Course } from '@/classes/Course';
+
 interface UserProps {
   exp: number;
+  course: Course
   fullName: string;
   iat: number;
   id: number;
@@ -12,6 +15,10 @@ export default class CurrentUser {
 
   constructor(props: UserProps) {
     this.props = props;
+  }
+
+  get course(): Course {
+    return this.props.course;
   }
 
   get exp(): number {

@@ -1,6 +1,6 @@
 import Role from '@/classes/Role';
 
-export default class NewUser {
+export default class NewNoodleUser {
   username: string;
 
   password: string;

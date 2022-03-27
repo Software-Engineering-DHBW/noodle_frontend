@@ -3,7 +3,7 @@ import {
 } from 'vuex-module-decorators';
 import { NoodleUser } from '@/classes/NoodleUser';
 import UserService from '@/services/UserService';
-import NewUser from '@/classes/NewUser';
+import NewNoodleUser from '@/classes/NewNoodleUser';
 
 @Module({ namespaced: true })
 export default class Users extends VuexModule {
@@ -25,7 +25,7 @@ export default class Users extends VuexModule {
   }
 
   @Action
-  registerUser(user: NewUser): Promise<void> {
+  registerUser(user: NewNoodleUser): Promise<void> {
     return UserService.registerUser(user)
       .then(() => this.context.dispatch('loadAllUsers'))
       .catch((error) => {
