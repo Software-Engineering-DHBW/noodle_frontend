@@ -21,15 +21,14 @@
               <th>
                 Nutzername
               </th>
-              <th class="text-center">
+              <th>
                 Rolle
               </th>
-              <th class="text-center">
+              <th>
                 Kurs
               </th>
-              <th class="text-right">
-                Aktion
-              </th>
+              <th />
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -40,7 +39,7 @@
               <td class="text-break">
                 {{ user.userId.username }}
               </td>
-              <td class="text-center">
+              <td>
                 {{
                   user.userId.isAdministrator ? 'Administrator'
                   : user.userId.isTeacher ? 'Teacher'
@@ -49,6 +48,9 @@
               </td>
               <td class="text-center">
                 {{ user.userId.course ? user.userId.course.name : '-' }}
+              </td>
+              <td class="text-right">
+                <ChangePasswordPopup :username="user.userId.username" />
               </td>
               <td class="text-right">
                 <v-btn
@@ -73,6 +75,7 @@ import NewUserPopup from '@/components/NewUserPopup.vue';
 import { namespace } from 'vuex-class';
 import { NoodleUser } from '@/classes/NoodleUser';
 import LoadingOverlay from '@/components/LoadingOverlay.vue';
+import ChangePasswordPopup from '@/components/ChangePasswordPopup.vue';
 
 const UserStore = namespace('Users');
 
@@ -81,6 +84,7 @@ const UserStore = namespace('Users');
     LoadingOverlay,
     NewUserPopup,
     SearchField,
+    ChangePasswordPopup,
   },
 })
 export default class Users extends Vue {
