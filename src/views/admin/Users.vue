@@ -48,7 +48,7 @@
                 }}
               </td>
               <td class="text-center">
-                {{ user.userId.course }}
+                {{ user.userId.course ? user.userId.course.name : '-' }}
               </td>
               <td class="text-right">
                 <v-btn

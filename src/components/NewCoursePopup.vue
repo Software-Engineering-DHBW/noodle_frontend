@@ -3,7 +3,7 @@
     <v-btn
       v-if="$vuetify.breakpoint.xl"
       color="primary"
-      @click="visible=true"
+      @click="openPopup"
       v-text="'Neuen Kurs erstellen'"
     />
 
@@ -34,8 +34,11 @@
           />
           <v-autocomplete
             v-model="newCourse.students"
-            :items="students"
+            :items="studentsNotAssignedToCourse"
+            item-text="fullname"
+            item-value="userId.id"
             label="Studenten"
+            :loading="loadingStudents"
             small-chips
             multiple
           />
@@ -52,7 +55,8 @@
           <v-btn
             text
             color="primary"
-            @click="createUser"
+            :loading="loadingWhileRegisteringCourse"
+            @click="createCourse"
             v-text="'Erstellen'"
           />
         </v-card-actions>
@@ -63,25 +67,58 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import { NoodleUser } from '@/classes/NoodleUser';
+
+const UserStore = namespace('Users');
+const CourseStore = namespace('Courses');
 
 @Component
 export default class NewUserPopup extends Vue {
-  private visible = false;
+  visible = false;
 
-  private newCourse = {
-    name: null,
-    students: null,
+  loadingWhileRegisteringCourse = false;
+
+  loadingStudents = false;
+
+  newCourse = {
+    name: '',
+    students: [],
   };
 
-  private students = ['Max', 'Moritz', 'Rainer', 'Gert', 'Hans', 'Lieselotte', 'Sven', 'Günther', 'Kevin', 'Yannic']
+  @UserStore.Getter
+  students!: Array<NoodleUser>;
 
-  createUser(): any {
-    alert(`Kurs ${this.newCourse.name} mit den Studenten ${this.newCourse.students} wird erstellt`);
+  @UserStore.Action
+  loadAllUsers!: () => Promise<void>;
 
-    this.newCourse.name = null;
-    this.newCourse.students = null;
+  @CourseStore.Action
+  registerCourse!: (course: { name: string, students: Array<number> }) => Promise<void>;
 
-    this.visible = false;
+  get studentsNotAssignedToCourse(): Array<NoodleUser> {
+    return this.students.filter((student) => !student.userId.course);
+  }
+
+  createCourse(): any {
+    this.loadingWhileRegisteringCourse = true;
+    this.registerCourse(this.newCourse)
+      .then(() => {
+        this.newCourse.name = '';
+        this.newCourse.students = [];
+      })
+      .finally(() => {
+        this.loadingWhileRegisteringCourse = false;
+        this.visible = false;
+      });
+  }
+
+  openPopup() : void {
+    this.visible = true;
+    this.loadingStudents = true;
+    this.loadAllUsers()
+      .finally(() => {
+        this.loadingStudents = false;
+      });
   }
 }
 </script>

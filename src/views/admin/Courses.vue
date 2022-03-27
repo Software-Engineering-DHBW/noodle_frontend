@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <LoadingOverlay :loading="loading" />
     <v-row>
       <v-col>
         <SearchField v-model="filterString" />
@@ -36,7 +37,7 @@
               <td class="text-right">
                 <v-btn
                   icon
-                  @click="deleteCourse(course)"
+                  @click="deleteCourseFromList(course.id)"
                 >
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
@@ -53,47 +54,52 @@
 import { Component, Vue } from 'vue-property-decorator';
 import SearchField from '@/components/SearchField.vue';
 import NewCoursePopup from '@/components/NewCoursePopup.vue';
+import { namespace } from 'vuex-class';
+import { Course } from '@/classes/Course';
+import LoadingOverlay from '@/components/LoadingOverlay.vue';
+
+const CourseStore = namespace('Courses');
 
 @Component({
   components: {
+    LoadingOverlay,
     NewCoursePopup,
     SearchField,
   },
 })
 export default class Courses extends Vue {
-  private filterString = '';
+  filterString = '';
 
-  private courses = [
-    {
-      name: 'TINF19IT1',
-      students: ['Max', 'Moritz'],
-    },
-    {
-      name: 'TINF19IT2',
-      students: ['Max', 'Moritz'],
-    },
-    {
-      name: 'TINF19CS1',
-      students: ['Max', 'Moritz'],
-    },
-    {
-      name: 'TINF20IT1',
-      students: ['Max', 'Moritz'],
-    },
-    {
-      name: 'TINF20IT2',
-      students: ['Max', 'Moritz'],
-    },
-  ]
+  loading = false;
 
-  get filteredCourses(): Array<any> {
+  @CourseStore.State
+  courses!: Array<Course>;
+
+  @CourseStore.Action
+  loadAllCourses!: () => Promise<void>;
+
+  @CourseStore.Action
+  deleteCourse!: (id: number) => Promise<void>;
+
+  get filteredCourses(): Array<Course> {
     return this.courses.filter((course) => course.name.toLowerCase()
       .includes(this.filterString.toLowerCase()));
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  deleteCourse(course: any): void {
-    alert(`Kurs ${course.name} wird gelöscht`);
+  deleteCourseFromList(courseId: number): void {
+    this.loading = true;
+    this.deleteCourse(courseId)
+      .finally(() => {
+        this.loading = false;
+      });
+  }
+
+  mounted(): void {
+    this.loading = true;
+    this.loadAllCourses()
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 </script>

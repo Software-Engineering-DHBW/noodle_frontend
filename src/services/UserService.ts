@@ -4,13 +4,9 @@ import NewNoodleUser from '@/classes/NewNoodleUser';
 
 class UserService {
   static getAllUsers(): Promise<Array<NoodleUser>> {
-    const userList: Array<NoodleUser> = [];
-
     return axios
       .get('api/user/getAll')
-      .then((res) => res.data)
-      .then((data) => data.forEach((element: NoodleUser) => userList.push(element)))
-      .then(() => userList);
+      .then((res) => res.data);
   }
 
   static deleteUser(username: string): Promise<void> {
