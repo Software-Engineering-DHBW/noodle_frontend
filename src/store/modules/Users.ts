@@ -9,6 +9,10 @@ import NewNoodleUser from '@/classes/NewNoodleUser';
 export default class Users extends VuexModule {
   users: Array<NoodleUser> = [];
 
+  get students(): Array<NoodleUser> {
+    return this.users.filter((user) => !user.userId.isAdministrator && !user.userId.isTeacher);
+  }
+
   @Mutation
   updateUsers(users: Array<NoodleUser>): void {
     this.users = users;

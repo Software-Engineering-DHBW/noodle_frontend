@@ -46,8 +46,8 @@
                     : 'Student'
                 }}
               </td>
-              <td>
-                {{ user.userId.course }}
+              <td class="text-center">
+                {{ user.userId.course ? user.userId.course.name : '-' }}
               </td>
               <td class="text-right">
                 <ChangePasswordPopup :username="user.userId.username" />
