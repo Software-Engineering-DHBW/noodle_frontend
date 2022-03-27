@@ -20,7 +20,7 @@ class CourseService {
 
   static removeStudentsFromCourse(studentsIds: Array<number>, courseId: number) {
     return axios
-      .post(`api/course/${courseId}/deleteStudent`);
+      .post(`api/course/${courseId}/deleteStudent`, [...studentsIds]);
   }
 }
 

@@ -34,8 +34,16 @@ export default class Courses extends VuexModule {
   }
 
   @Action
-  deleteCourse(id: number): Promise<void> {
-    return CourseService.deleteCourse(id)
+  deleteCourse(courseId: number): Promise<void> {
+    const courseToDelete = this.courses.find((course) => course.id === courseId);
+    const studentsToRemove = courseToDelete ? courseToDelete.students : [];
+    this.context.dispatch('removeStudentsFromCourse', {
+      students: studentsToRemove,
+      courseId,
+    });
+
+    this.context.dispatch('removeStudentFromCourse');
+    return CourseService.deleteCourse(courseId)
       .then(() => this.context.dispatch('loadAllCourses'))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
@@ -44,7 +52,8 @@ export default class Courses extends VuexModule {
   }
 
   @Action
-  removeStudentFromCourse(id: number, course: Course): Promise<void> {
-    return CourseService.removeStudentFromCourse(id, course);
+  // eslint-disable-next-line class-methods-use-this
+  removeStudentsFromCourse(data: { students: Array<number>, courseId: number }): Promise<void> {
+    return CourseService.removeStudentsFromCourse(data.students, data.courseId).then();
   }
 }

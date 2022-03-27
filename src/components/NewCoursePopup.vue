@@ -99,7 +99,7 @@ export default class NewUserPopup extends Vue {
     return this.students.filter((student) => !student.userId.course);
   }
 
-  createCourse(): any {
+  createCourse(): void {
     this.loadingWhileRegisteringCourse = true;
     this.registerCourse(this.newCourse)
       .then(() => {
