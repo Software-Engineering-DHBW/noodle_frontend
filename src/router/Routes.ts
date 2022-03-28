@@ -13,7 +13,7 @@ const routesForAdmin: Array<RouteConfig> = [
     component: () => import('../views/admin/ModuleOverview.vue'),
   },
   {
-    path: '/admin/module/:semester/:moduleName',
+    path: '/admin/module/:moduleId',
     name: 'Modul Admin',
     meta: { authorize: [Role.ADMIN] },
     component: () => import('../views/teacher/Module.vue'),
@@ -52,7 +52,7 @@ const routesForTeacher: Array<RouteConfig> = [
     component: () => import('../views/teacher/ModuleOverview.vue'),
   },
   {
-    path: '/teacher/module/:semester/:moduleName',
+    path: '/teacher/module/:moduleId',
     name: 'Modul Teacher',
     meta: { authorize: [Role.TEACHER] },
     component: () => import('../views/teacher/Module.vue'),
@@ -81,7 +81,7 @@ const routesForStudent: Array<RouteConfig> = [
     component: () => import('../views/student/ModuleOverview.vue'),
   },
   {
-    path: '/student/module/:semester/:moduleName',
+    path: '/student/module/:moduleId',
     name: 'Modul Student',
     meta: { authorize: [Role.STUDENT] },
     component: () => import('../views/student/Module.vue'),

@@ -2,9 +2,9 @@
   <div>
     <v-card
       v-for="module in modules"
-      :key="module.name"
+      :key="module.id"
       hover
-      :to="`module/${1}/${module.name}`"
+      :to="`module/${module.id}`"
       class="mb-4"
     >
       <v-card-title v-text="module.name" />
@@ -18,9 +18,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { NoodleModule } from '@/classes/NoodleModule';
 
 @Component
 export default class ModuleList extends Vue {
-  @Prop({ required: true }) modules: any;
+  @Prop({ required: true }) modules!: Array<NoodleModule>;
 }
 </script>

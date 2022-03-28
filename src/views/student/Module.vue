@@ -67,6 +67,8 @@ import LectureMaterialTree from '@/components/LectureMaterialTree.vue';
 export default class Module extends Vue {
   private moduleName = '';
 
+  moduleId!: number;
+
   private description = 'Dieses Modul ist besonders geil. Es ist supergeil!';
 
   private semester = 0;
@@ -150,8 +152,7 @@ export default class Module extends Vue {
   }
 
   mounted(): void {
-    this.moduleName = this.$route.params.moduleName;
-    this.semester = +this.$route.params.semester;
+    this.moduleId = +this.$route.params.moduleId;
   }
 }
 </script>
