@@ -153,6 +153,6 @@ html {
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 6;
+  z-index: 1000;
 }
 </style>
