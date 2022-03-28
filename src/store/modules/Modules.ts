@@ -27,7 +27,7 @@ export default class Modules extends VuexModule {
   @Action
   registerModule(module: NewModule): Promise<void> {
     return ModuleService.registerModule(module)
-      .then(() => console.log('Modul registriert'))
+      .then(() => this.context.dispatch('loadAllModules'))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
         throw error;

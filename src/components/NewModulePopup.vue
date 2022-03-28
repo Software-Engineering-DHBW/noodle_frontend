@@ -63,6 +63,7 @@
           <v-btn
             text
             color="primary"
+            :loading="loading"
             @click="createModule"
             v-text="'Erstellen'"
           />
@@ -85,7 +86,9 @@ const ModuleStore = namespace('Modules');
 
 @Component
 export default class NewModulePopup extends Vue {
-  private visible = false;
+  visible = false;
+
+  loading = false
 
   @CourseStore.State
   courses!: Array<Course>;
@@ -94,7 +97,7 @@ export default class NewModulePopup extends Vue {
   teacher!: Array<NoodleUser>;
 
   @ModuleStore.Action
-  registerModule!: (module: NewModule) => void;
+  registerModule!: (module: NewModule) => Promise<void>;
 
   module = {
     name: '',
@@ -105,21 +108,28 @@ export default class NewModulePopup extends Vue {
   };
 
   createModule(): void {
+    this.loading = true;
+
     this.registerModule({
       name: this.module.name,
       description: this.module.description,
       assignedCourse: this.module.assignedCourse,
       assignedTeacher: [this.module.assignedTeacher],
       submodule: this.module.submodule,
-    });
+    })
+      .then(() => {
+        this.module.name = '';
+        this.module.description = '';
+        this.module.assignedCourse = 0;
+        this.module.assignedTeacher = 0;
+        this.module.submodule = [];
 
-    this.module.name = '';
-    this.module.description = '';
-    this.module.assignedCourse = 0;
-    this.module.assignedTeacher = 0;
-    this.module.submodule = [];
-
-    this.visible = false;
+        this.visible = false;
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 </script>
