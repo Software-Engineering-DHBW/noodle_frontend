@@ -84,6 +84,7 @@
         </v-card-text>
 
         <v-card-actions>
+          <v-spacer />
           <v-btn
             text
             color="primary"
@@ -108,7 +109,7 @@ import DateField from '@/components/DateField.vue';
 import TimeField from '@/components/TimeField.vue';
 import { namespace } from 'vuex-class';
 import { NoodleModule } from '@/classes/NoodleModule';
-import { CalendarEntry } from '@/classes/CalendarEntry';
+import { NewCalendarEntry } from '@/classes/NewCalendarEntry';
 import LoadingOverlay from './LoadingOverlay.vue';
 
 const ModuleStore = namespace('Modules');
@@ -147,7 +148,7 @@ export default class MeetingPopup extends Vue {
   loadPersonalModules!: () => Promise<void>;
 
   @CalendarStore.Action
-  registerEntry!: (entry: CalendarEntry) => Promise<void>
+  registerEntry!: (entry: NewCalendarEntry) => Promise<void>
 
   saveMeeting(): void {
     this.loading = true;

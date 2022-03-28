@@ -6,5 +6,5 @@ export type CalendarEntry = {
     endTime: string
     description: string
     room: string
-    assignedModule: NoodleModule | number
+    assignedModule: NoodleModule
 }

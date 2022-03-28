@@ -1,4 +1,5 @@
 import { CalendarEntry } from '@/classes/CalendarEntry';
+import { NewCalendarEntry } from '@/classes/NewCalendarEntry';
 import CalendarService from '@/services/CalendarService';
 import {
   Action, Module, Mutation, VuexModule,
@@ -23,7 +24,9 @@ export default class Calendar extends VuexModule {
     @Action
     loadAllEntries(): Promise<void> {
       return CalendarService.getPersonalCalendar()
-        .then((entryList) => this.context.commit('updateAllEntries', entryList))
+        .then((entryList) => {
+          this.context.commit('updateAllEntries', entryList);
+        })
         .catch((error) => {
           this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
           throw error;
@@ -31,7 +34,7 @@ export default class Calendar extends VuexModule {
     }
 
     @Action
-    registerEntry(entry: CalendarEntry): Promise<void> {
+    registerEntry(entry: NewCalendarEntry): Promise<void> {
       return CalendarService.registerEntry(entry)
         .then(() => this.context.dispatch('loadAllEntries'))
         .catch((error) => {

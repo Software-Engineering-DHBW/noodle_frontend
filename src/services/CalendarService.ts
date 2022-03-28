@@ -1,15 +1,15 @@
 import axios from 'axios';
-import { NoodleModule } from '@/classes/NoodleModule';
+import { NewCalendarEntry } from '@/classes/NewCalendarEntry';
 import { CalendarEntry } from '@/classes/CalendarEntry';
 
 class CalendarService {
-  static getPersonalCalendar(): Promise<Array<NoodleModule>> {
+  static getPersonalCalendar(): Promise<Array<CalendarEntry>> {
     return axios
       .get('api/timetable/getPerson')
       .then((res) => res.data);
   }
 
-  static registerEntry(entry: CalendarEntry): Promise<void> {
+  static registerEntry(entry: NewCalendarEntry): Promise<void> {
     return axios.post('api/timetable/insert', entry);
   }
 }
