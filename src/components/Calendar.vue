@@ -170,7 +170,8 @@ export default class Calendar extends Vue {
     let start: any;
     let date: any;
     if (this.$refs.calendar) {
-      start = this.$refs.calendar.lastStart;
+      const x: any = this.$refs.calendar;
+      start = x.lastStart;
     }
     if (start) {
       date = new Date(start.date);
