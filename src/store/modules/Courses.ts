@@ -71,6 +71,7 @@ export default class Courses extends VuexModule {
   }): void {
     data.students.forEach((student, index) => {
       GradesService.addGrade(data.grades[index], student.id, data.moduleId)
+        .then(() => this.context.dispatch('AlertStore/showSuccess', 'Student bewertet', { root: true }))
         .catch((error) => this.context.dispatch('AlertStore/showError', error.response.data, { root: true }));
     });
   }

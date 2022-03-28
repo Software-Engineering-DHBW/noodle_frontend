@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Course } from '@/classes/Course';
 
 class GradesService {
-  static getGrades(id: any) {
+  static getGrades(id: number): Promise<void> {
     return axios.get(`api/grades/${id}`);
   }
 
