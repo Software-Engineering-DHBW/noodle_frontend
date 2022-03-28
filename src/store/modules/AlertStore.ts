@@ -78,7 +78,6 @@ class AlertStore extends VuexModule {
 
   @Action
   showError(message: string): void {
-    console.log(message);
     const alert: Alert = {
       id: this.alertCount,
       type: AlertType.ERROR,

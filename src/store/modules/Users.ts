@@ -27,8 +27,7 @@ export default class Users extends VuexModule {
     return UserService.getAllUsers()
       .then((userList) => this.context.commit('updateUsers', userList))
       .catch((error) => {
-        alert(error);
-        throw error;
+        this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
       });
   }
 
@@ -37,8 +36,7 @@ export default class Users extends VuexModule {
     return UserService.registerUser(user)
       .then(() => this.context.dispatch('loadAllUsers'))
       .catch((error) => {
-        alert(error);
-        throw error;
+        this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
       });
   }
 
@@ -47,8 +45,7 @@ export default class Users extends VuexModule {
     return UserService.deleteUser(username)
       .then(() => this.context.dispatch('loadAllUsers'))
       .catch((error) => {
-        alert(error);
-        throw error;
+        this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
       });
   }
 

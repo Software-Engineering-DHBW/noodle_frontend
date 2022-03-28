@@ -48,7 +48,6 @@ class Auth extends VuexModule {
       .then(() => this.context.dispatch('AlertStore/showSuccess', 'Erfolgreich eingeloggt', { root: true }))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
-        throw error;
       });
   }
 
