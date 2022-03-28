@@ -99,8 +99,6 @@ export default class App extends Vue {
   @AlertStore.State
   alerts!: Array<Alert>;
 
-  alertsLength = true;
-
   @AlertStore.Action
   resetAlerts!: () => void;
 

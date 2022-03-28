@@ -3,7 +3,7 @@
     <v-btn
       v-if="$vuetify.breakpoint.xl"
       color="primary"
-      @click="visible=true"
+      @click="openPopup"
       v-text="'Neues Modul erstellen'"
     />
 
@@ -39,6 +39,7 @@
           <v-select
             v-model="module.assignedCourse"
             label="Kurs"
+            :loading="loadingCourses"
             :items="courses"
             item-text="name"
             item-value="id"
@@ -46,9 +47,10 @@
           <v-select
             v-model="module.assignedTeacher"
             label="Lehrender"
+            :loading="loadingTeachers"
             :items="teacher"
             item-text="fullname"
-            item-value="id"
+            item-value="userId.id"
           />
         </v-card-text>
 
@@ -63,7 +65,7 @@
           <v-btn
             text
             color="primary"
-            :loading="loading"
+            :loading="loadingWhileRegisteringModule"
             @click="createModule"
             v-text="'Erstellen'"
           />
@@ -88,13 +90,23 @@ const ModuleStore = namespace('Modules');
 export default class NewModulePopup extends Vue {
   visible = false;
 
-  loading = false
+  loadingWhileRegisteringModule = false
+
+  loadingTeachers = false
+
+  loadingCourses = false
+
+  @UserStore.Getter
+  teacher!: Array<NoodleUser>;
 
   @CourseStore.State
   courses!: Array<Course>;
 
-  @UserStore.Getter
-  teacher!: Array<NoodleUser>;
+  @UserStore.Action
+  loadAllUsers!: () => Promise<void>;
+
+  @CourseStore.Action
+  loadAllCourses!: () => Promise<void>;
 
   @ModuleStore.Action
   registerModule!: (module: NewModule) => Promise<void>;
@@ -108,7 +120,7 @@ export default class NewModulePopup extends Vue {
   };
 
   createModule(): void {
-    this.loading = true;
+    this.loadingWhileRegisteringModule = true;
 
     this.registerModule({
       name: this.module.name,
@@ -128,7 +140,25 @@ export default class NewModulePopup extends Vue {
       })
       .catch(() => undefined)
       .finally(() => {
-        this.loading = false;
+        this.loadingWhileRegisteringModule = false;
+      });
+  }
+
+  openPopup() : void {
+    this.visible = true;
+
+    this.loadingTeachers = true;
+    this.loadAllUsers()
+      .catch(() => undefined)
+      .finally(() => {
+        this.loadingTeachers = false;
+      });
+
+    this.loadingCourses = true;
+    this.loadAllCourses()
+      .catch(() => undefined)
+      .finally(() => {
+        this.loadingCourses = false;
       });
   }
 }
