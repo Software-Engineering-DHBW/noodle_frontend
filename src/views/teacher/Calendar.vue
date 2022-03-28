@@ -27,8 +27,10 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Calendar from '@/components/Calendar.vue';
 import MeetingPopup from '@/components/MeetingPopup.vue';
+import { CalendarEntry } from '@/classes/CalendarEntry';
 
-const Auth = namespace('Auth');
+const CalendarStore = namespace('Calendar');
+
 @Component({
   components: {
     MeetingPopup,
@@ -36,6 +38,14 @@ const Auth = namespace('Auth');
   },
 })
 export default class CalendarView extends Vue {
+  loading = false;
+
+  @CalendarStore.State
+  allEntries!: Array<CalendarEntry>;
+
+  @CalendarStore.Action
+  loadAllEntries!: () => Promise<void>;
+
   calendarViews = ['Meine Termine', 'Meine Termine + Kurs IT1', 'Meine Termine + Kurs IT2'];
 
   currentMeeting = null;
@@ -84,6 +94,15 @@ export default class CalendarView extends Vue {
     }
 
     this.events = events;
+  }
+
+  mounted(): void {
+    this.loading = true;
+    this.loadAllEntries()
+      .catch(() => undefined)
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 </script>

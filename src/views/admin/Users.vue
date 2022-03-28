@@ -121,15 +121,6 @@ export default class Users extends Vue {
   @UserStore.Action
   deleteUser!: (username: string) => Promise<void>;
 
-  loadTableData(): void {
-    this.loading = true;
-    this.loadAllUsers()
-      .catch(() => undefined)
-      .finally(() => {
-        this.loading = false;
-      });
-  }
-
   deleteSelectedUser(username:string): void {
     this.loading = true;
     this.deleteUser(username)
@@ -145,7 +136,12 @@ export default class Users extends Vue {
   }
 
   mounted(): void {
-    this.loadTableData();
+    this.loading = true;
+    this.loadAllUsers()
+      .catch(() => undefined)
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 </script>

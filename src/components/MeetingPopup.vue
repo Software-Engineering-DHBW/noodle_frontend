@@ -1,10 +1,11 @@
 <template>
   <div>
+    <LoadingOverlay :loading="loading" />
     <v-btn
       v-if="$vuetify.breakpoint.xl"
       color="primary"
       @click="visible=true"
-      v-text="'+ Termin'"
+      v-text="'Neuen Termin erstellen'"
     />
 
     <v-btn
@@ -26,27 +27,11 @@
     >
       <v-card>
         <v-card-title class="primary">
-          Termin
+          Neuer Termin
         </v-card-title>
 
         <v-card-text>
           <v-container>
-            <v-row>
-              <v-col cols="3">
-                <v-card-title class="pa-0">
-                  Kurs
-                </v-card-title>
-              </v-col>
-              <v-col cols="9">
-                <v-select
-                  v-model="selectedCourse"
-                  hide-details
-                  dense
-                  placeholder="Kurs"
-                  :items="courses"
-                />
-              </v-col>
-            </v-row>
             <v-row>
               <v-col cols="3">
                 <v-card-title class="pa-0">
@@ -55,14 +40,27 @@
               </v-col>
               <v-col cols="9">
                 <v-select
-                  v-model="selectedModule"
+                  v-model="entry.assignedModule"
                   hide-details
                   dense
                   placeholder="Modul"
-                  :items="modules"
+                  :items="allModules"
+                  item-text="name"
+                  item-value="id"
                 />
               </v-col>
             </v-row>
+
+            <v-text-field
+              v-model="entry.description"
+              label="Beschreibung"
+            />
+
+            <v-text-field
+              v-model="entry.room"
+              label="Raum"
+            />
+
             <v-row>
               <v-col>
                 <DateField v-model="date" />
@@ -71,25 +69,14 @@
             <v-row>
               <v-col>
                 <TimeField
-                  v-model="startTime"
+                  v-model="start"
                   label="Beginn"
                 />
               </v-col>
               <v-col>
                 <TimeField
-                  v-model="endTime"
+                  v-model="end"
                   label="Ende"
-                />
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-slider
-                  v-model="duration"
-                  label="Dauer"
-                  max="720"
-                  thumb-label
-                  step="5"
                 />
               </v-col>
             </v-row>
@@ -97,13 +84,6 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn
-            text
-            color="primary"
-            @click="deleteMeeting"
-            v-text="'Löschen'"
-          />
-          <v-spacer />
           <v-btn
             text
             color="primary"
@@ -123,61 +103,88 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import DateField from '@/components/DateField.vue';
 import TimeField from '@/components/TimeField.vue';
+import { namespace } from 'vuex-class';
+import { NoodleModule } from '@/classes/NoodleModule';
+import { CalendarEntry } from '@/classes/CalendarEntry';
+import LoadingOverlay from './LoadingOverlay.vue';
+
+const ModuleStore = namespace('Modules');
+const CalendarStore = namespace('Calendar');
 
 @Component({
   components: {
     TimeField,
     DateField,
+    LoadingOverlay,
   },
 })
 export default class MeetingPopup extends Vue {
-  @Prop({ required: true }) readonly meeting: any;
+  loading = false;
 
-  private visible = false;
+  visible = false;
 
-  private date = null;
-
-  private startTime: any = null;
-
-  private endTime: any = null;
-
-  private courses = ['IT1', 'IT2'];
-
-  private selectedCourse = null;
-
-  private modules = ['Mathematik', 'Softwareengineering', 'IT-Security'];
-
-  private selectedModule = null;
-
-  get duration(): any {
-    const startDate = new Date(`01/01/1970 ${this.startTime}`);
-    const endDate = new Date(`01/01/1970 ${this.endTime}`);
-    const minuteDiff = (endDate.getTime() - startDate.getTime()) / 1000 / 60;
-    return minuteDiff;
+  entry = {
+    startTime: '',
+    endTime: '',
+    description: '',
+    room: '',
+    assignedModule: 0,
   }
 
-  set duration(duration) {
-    if (!this.startTime) return;
-    const startDate = new Date(`01/01/1970 ${this.startTime}`);
-    const endDate = new Date(startDate.getTime() + duration * 60 * 1000);
-    this.endTime = `${endDate.getHours()
-      .toString()
-      .padStart(2, '0')}:${endDate.getMinutes()
-      .toString()
-      .padStart(2, '0')}`;
-  }
+  date = '';
+
+  start = '';
+
+  end = '';
+
+  @ModuleStore.State
+  allModules!: Array<NoodleModule>;
+
+  @ModuleStore.Action
+  loadPersonalModules!: () => Promise<void>;
+
+  @CalendarStore.Action
+  registerEntry!: (entry: CalendarEntry) => Promise<void>
 
   saveMeeting(): void {
-    console.log(this.meeting);
+    this.loading = true;
+    this.entry.startTime = `${this.date}T${this.start}:00.000Z`;
+    this.entry.endTime = `${this.date}T${this.end}:00.000Z`;
+
+    console.log(this.entry.assignedModule);
+
+    this.registerEntry(this.entry)
+      .then(() => {
+        this.entry.startTime = '';
+        this.entry.endTime = '';
+        this.entry.description = '';
+        this.entry.room = '';
+        this.entry.assignedModule = 0;
+
+        this.date = '';
+        this.start = '';
+        this.end = '';
+
+        this.visible = false;
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        this.loading = false;
+      });
+
     this.visible = false;
   }
 
-  deleteMeeting(): void {
-    console.log(this.meeting);
-    this.visible = false;
+  mounted(): void {
+    this.loading = true;
+    this.loadPersonalModules()
+      .catch(() => undefined)
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 </script>
