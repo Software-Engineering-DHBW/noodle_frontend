@@ -13,14 +13,26 @@
         <v-card-title v-text="module.name" />
         <v-card-text v-text="module.description" />
       </v-card>
-      <v-btn
+      <v-tooltip
         v-if="isAdmin"
-        icon
-        class="ml-2"
-        @click="deleteSelectedModule(module.id)"
+        bottom
       >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
+        Modul löschen
+        <template v-slot:activator="{ on }">
+          <div
+            class="d-inline-flex"
+            v-on="on"
+          >
+            <v-btn
+              icon
+              class="ml-2"
+              @click="deleteSelectedModule(module.id)"
+            >
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </div>
+        </template>
+      </v-tooltip>
     </div>
   </div>
 </template>

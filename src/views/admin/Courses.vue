@@ -33,12 +33,22 @@
                 {{ course.name }}
               </td>
               <td class="text-right">
-                <v-btn
-                  icon
-                  @click="deleteCourseFromList(course.id)"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
+                <v-tooltip bottom>
+                  Kurs löschen
+                  <template v-slot:activator="{ on }">
+                    <div
+                      class="d-inline-flex"
+                      v-on="on"
+                    >
+                      <v-btn
+                        icon
+                        @click="deleteCourseFromList(course.id)"
+                      >
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </div>
+                  </template>
+                </v-tooltip>
               </td>
             </tr>
           </tbody>

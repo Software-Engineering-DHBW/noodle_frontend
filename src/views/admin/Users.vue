@@ -49,16 +49,36 @@
               <td>
                 {{ user.userId.course ? user.userId.course.name : '-' }}
               </td>
-              <td class="text-right">
-                <ChangePasswordPopup :username="user.userId.username" />
+              <td class="text-center">
+                <v-tooltip bottom>
+                  Passwort ändern
+                  <template v-slot:activator="{ on }">
+                    <div
+                      class="d-inline-flex"
+                      v-on="on"
+                    >
+                      <ChangePasswordPopup :username="user.userId.username" />
+                    </div>
+                  </template>
+                </v-tooltip>
               </td>
               <td class="text-right">
-                <v-btn
-                  icon
-                  @click="deleteSelectedUser(user.userId.username)"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
+                <v-tooltip bottom>
+                  Nutzer löschen
+                  <template v-slot:activator="{ on }">
+                    <div
+                      class="d-inline-flex"
+                      v-on="on"
+                    >
+                      <v-btn
+                        icon
+                        @click="deleteSelectedUser(user.userId.username)"
+                      >
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </div>
+                  </template>
+                </v-tooltip>
               </td>
             </tr>
           </tbody>

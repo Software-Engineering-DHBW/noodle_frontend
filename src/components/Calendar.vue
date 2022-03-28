@@ -13,18 +13,19 @@
       <v-col class="py-0 d-flex justify-end">
         <v-tooltip bottom>
           Kalender exportieren
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              icon
-              v-bind="attrs"
-              v-on="on"
-              @click="exportCalendar"
-            >
-              <v-icon>
-                mdi-download
-              </v-icon>
-            </v-btn>
+          <template v-slot:activator="{ on }">
+            <div v-on="on">
+              <v-btn
+                color="primary"
+                icon
+                v-on="on"
+                @click="exportCalendar"
+              >
+                <v-icon>
+                  mdi-download
+                </v-icon>
+              </v-btn>
+            </div>
           </template>
         </v-tooltip>
       </v-col>
