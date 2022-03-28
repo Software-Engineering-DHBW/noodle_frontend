@@ -18,6 +18,7 @@
     </template>
     <v-date-picker
       v-model="date"
+      :first-day-of-week="1"
       @input="datePickerVisible = false"
     />
   </v-menu>

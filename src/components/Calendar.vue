@@ -72,7 +72,6 @@
           :events="events"
           :weekdays="weekdayOrder"
           @change="emitChange"
-          @click:event="onEventClick"
         />
       </v-col>
 
@@ -204,13 +203,6 @@ export default class Calendar extends Vue {
   // eslint-disable-next-line class-methods-use-this
   exportCalendar(): void {
     alert('Kalender wird exportiert');
-  }
-
-  // eslint-disable-next-line max-len
-  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/explicit-module-boundary-types
-  onEventClick({ event }: any): void {
-    const route = `/module/1/${event.name}`;
-    this.$router.push(route);
   }
 }
 </script>
