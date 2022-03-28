@@ -50,4 +50,14 @@ export default class Modules extends VuexModule {
         throw error;
       });
   }
+
+  @Action
+  deleteModule(id: number): Promise<void> {
+    return ModuleService.deleteModule(id)
+      .then(() => this.context.dispatch('loadAllModules'))
+      .catch((error) => {
+        this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
+        throw error;
+      });
+  }
 }

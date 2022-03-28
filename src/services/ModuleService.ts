@@ -10,13 +10,16 @@ class ModuleService {
   }
 
   static registerModule(module: NewModule): Promise<void> {
-    return axios
-      .post('api/module/register', module);
+    return axios.post('api/module/register', module);
   }
 
   static loadModule(id: number): Promise<void> {
     return axios.get(`api/module/${id}`)
       .then((res) => res.data);
+  }
+
+  static deleteModule(id: number): Promise<void> {
+    return axios.post(`api/module/${id}/deleteModule`);
   }
 }
 

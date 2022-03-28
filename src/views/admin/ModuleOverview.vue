@@ -1,16 +1,6 @@
 <template>
   <v-container>
     <LoadingOverlay :loading="loading" />
-
-    <!--    <v-row>-->
-    <!--      <v-col>-->
-    <!--        <SemesterDropdown-->
-    <!--          v-model="selectedSemester"-->
-    <!--          :semester="semester"-->
-    <!--        />-->
-    <!--      </v-col>-->
-    <!--    </v-row>-->
-
     <v-row>
       <v-col>
         <SearchField v-model="filterString" />
@@ -74,26 +64,5 @@ export default class ModuleOverview extends Vue {
         this.loading = false;
       });
   }
-
-  // TODO: Decision if module overview should be split into semester
-  // selectedSemester = this.semester[0];
-  //
-  // get semester(): Array<any> {
-  //   return [...new Set(this.modules.map((module) => module.semester))];
-  // }
-  //
-  // get semesterModules(): Array<any> {
-  //   return this.modules
-  //     .filter((module) => module.semester === this.selectedSemester)
-  //     .map((module) => ({
-  //       name: `${module.name} in Kurs ${module.course}`,
-  //       description: module.description,
-  //     }));
-  // }
-  //
-  // get filteredSemesterModules(): Array<any> {
-  //   return this.semesterModules
-  //     .filter((module) => module.name.toLowerCase().includes(this.filterString.toLowerCase()));
-  // }
 }
 </script>
