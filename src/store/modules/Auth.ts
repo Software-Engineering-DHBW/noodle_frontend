@@ -45,7 +45,6 @@ class Auth extends VuexModule {
   login(data: LoginData): Promise<void> {
     return AuthService.login(data)
       .then(() => this.context.commit('updateToken'))
-      .then(() => this.context.dispatch('AlertStore/showSuccess', 'Erfolgreich eingeloggt', { root: true }))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
         throw error;
