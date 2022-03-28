@@ -9,7 +9,14 @@ class ModuleService {
       .then((res) => res.data);
   }
 
+  static getPersonalModules(): Promise<Array<NoodleModule>> {
+    return axios
+      .get('api/module/getModules')
+      .then((res) => res.data);
+  }
+
   static registerModule(module: NewModule): Promise<void> {
+    console.log(module);
     return axios.post('api/module/register', module);
   }
 

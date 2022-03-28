@@ -1,21 +1,15 @@
 <template>
   <v-container>
+    <LoadingOverlay :loading="loading" />
     <v-row>
       <v-col>
-        <SemesterTabs
-          v-model="activeSemesterTab"
-          :semester-numbers="semesterNumbers"
-        />
+        <SearchField v-model="filterString" />
+      </v-col>
+    </v-row>
 
-        <v-tabs-items v-model="activeSemesterTab">
-          <v-tab-item
-            v-for="semesterNumber in semesterNumbers"
-            :key="semesterNumber"
-            class="pa-4"
-          >
-            <ModuleList :modules="semesterModules(semesterNumber)" />
-          </v-tab-item>
-        </v-tabs-items>
+    <v-row>
+      <v-col>
+        <ModuleList :modules="filteredModules" />
       </v-col>
     </v-row>
   </v-container>
@@ -23,59 +17,40 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import SemesterTabs from '@/components/SemesterTabs.vue';
 import ModuleList from '@/components/ModuleList.vue';
+import SearchField from '@/components/SearchField.vue';
+import { namespace } from 'vuex-class';
+import { NoodleModule } from '@/classes/NoodleModule';
+
+const ModuleStore = namespace('Modules');
 
 @Component({
-  components: { ModuleList, SemesterTabs },
+  components: { ModuleList, SearchField },
 })
 export default class ModuleOverview extends Vue {
-  private modules = [
-    {
-      name: 'Software-Engineering',
-      semester: 1,
-      description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
-    },
-    {
-      name: 'Mathematik',
-      semester: 1,
-      description: '9 von 7 Menschen sind mit Mathe überfordert',
-    },
-    {
-      name: 'Elektronik',
-      semester: 1,
-      description: 'Halbleiterbauelemente, wo den elektrischen Strom leiten',
-    },
-    {
-      name: 'Software-Engineering 2',
-      semester: 2,
-      description: 'Dieses Modul ist sehr sehr geil. Es ist supergeil!',
-    },
-    {
-      name: 'Mathematik 3',
-      semester: 3,
-      description: '9 von 7 Menschen sind mit Mathe überfordert',
-    },
-    {
-      name: 'Elektronik 5',
-      semester: 5,
-      description: 'Halbleiterbauelemente, wo den elektrischen Strom leiten',
-    },
-    {
-      name: 'Mathematik 5',
-      semester: 5,
-      description: '9 von 7 Menschen sind mit Mathe überfordert',
-    },
-  ];
+  filterString = '';
 
-  private activeSemesterTab: any = null;
+  loading = false;
 
-  get semesterNumbers(): Array<number> {
-    return [...new Set(this.modules.map((module) => module.semester))];
+  @ModuleStore.State
+  allModules!: Array<NoodleModule>;
+
+  @ModuleStore.Action
+  loadPersonalModules!: () => Promise<void>;
+
+  get filteredModules(): Array<NoodleModule> {
+    return this.allModules
+      .filter((module) => module.name.toLowerCase()
+        .includes(this.filterString.toLowerCase()));
   }
 
-  semesterModules(semester: number): Array<any> {
-    return this.modules.filter((module) => module.semester === semester);
+  mounted(): void {
+    this.loading = true;
+    this.loadPersonalModules()
+      .catch(() => undefined)
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 </script>

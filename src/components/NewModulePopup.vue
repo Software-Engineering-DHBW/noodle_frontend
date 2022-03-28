@@ -113,15 +113,15 @@ export default class NewModulePopup extends Vue {
     this.registerModule({
       name: this.module.name,
       description: this.module.description,
-      assignedCourse: this.module.assignedCourse,
       assignedTeacher: [this.module.assignedTeacher],
+      assignedCourse: this.module.assignedCourse,
       submodule: this.module.submodule,
     })
       .then(() => {
         this.module.name = '';
         this.module.description = '';
-        this.module.assignedCourse = 0;
         this.module.assignedTeacher = 0;
+        this.module.assignedCourse = 0;
         this.module.submodule = [];
 
         this.visible = false;

@@ -32,6 +32,16 @@ export default class Modules extends VuexModule {
   }
 
   @Action
+  loadPersonalModules(): Promise<void> {
+    return ModuleService.getPersonalModules()
+      .then((moduleList) => this.context.commit('updateAllModules', moduleList))
+      .catch((error) => {
+        this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
+        throw error;
+      });
+  }
+
+  @Action
   registerModule(module: NewModule): Promise<void> {
     return ModuleService.registerModule(module)
       .then(() => this.context.dispatch('loadAllModules'))
