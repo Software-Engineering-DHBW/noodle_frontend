@@ -16,7 +16,6 @@ class ModuleService {
   }
 
   static registerModule(module: NewModule): Promise<void> {
-    console.log(module);
     return axios.post('api/module/register', module);
   }
 
