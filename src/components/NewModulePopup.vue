@@ -13,7 +13,7 @@
       small
       color="primary"
       elevation="2"
-      @click="visible=true"
+      @click="openPopup"
     >
       <v-icon>mdi-plus</v-icon>
     </v-btn>

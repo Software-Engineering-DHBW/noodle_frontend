@@ -13,7 +13,7 @@
         cols="4"
         class="text-right"
       >
-        <CourseValuationPopup :course="module.assignedCourse" />
+        <CourseValuationPopup :module="module" />
       </v-col>
     </v-row>
 

@@ -3,7 +3,7 @@
     <v-btn
       v-if="$vuetify.breakpoint.xl"
       color="primary"
-      @click="visible=true"
+      @click="openPopup"
       v-text="'Teilnehmer bewerten'"
     />
 
@@ -13,85 +13,54 @@
       small
       color="primary"
       elevation="2"
-      @click="visible=true"
+      @click="openPopup"
     >
       <v-icon>mdi-account-check</v-icon>
     </v-btn>
 
-    <v-dialog v-model="visible">
+    <v-dialog
+      v-model="visible"
+      width="500"
+    >
+      <LoadingOverlay :loading="loadingStudents" />
+
       <v-card>
         <v-card-title class="primary">
-          {{ `Kurs ${course} bewerten` }}
+          {{ `Kurs ${module.assignedCourse.name} bewerten` }}
         </v-card-title>
 
         <v-simple-table
           fixed-header
-          height="500"
+          height="400"
         >
           <thead>
             <tr>
               <th>
                 Teilnehmer
               </th>
-              <th
-                v-for="(weight, index) in gradeWeights"
-                :key="index"
-                class="text-center"
-              >
-                <v-text-field
-                  v-model="gradeWeights[index]"
-                  :label="`Note ${index + 1}`"
-                  hide-details
-                  hide-spin-buttons
-                  type="number"
-                  append-icon="mdi-percent"
-                />
-              </th>
-              <th>
-                <v-row justify="center">
-                  <v-btn
-                    icon
-                    x-small
-                    @click="gradeWeights.push(100)"
-                  >
-                    <v-icon>mdi-plus</v-icon>
-                  </v-btn>
-                </v-row>
-                <v-row justify="center">
-                  <v-btn
-                    icon
-                    x-small
-                    @click="gradeWeights.pop()"
-                  >
-                    <v-icon>mdi-minus</v-icon>
-                  </v-btn>
-                </v-row>
+              <th class="text-center">
+                Note
               </th>
             </tr>
           </thead>
 
           <tbody>
             <tr
-              v-for="(student, studentIndex) in students"
+              v-for="(student, studentIndex) in studentsInCourse"
               :key="studentIndex"
             >
               <td>
-                {{ student.id }}
+                {{ `${student.id} - ${student.name}` }}
               </td>
-              <td
-                v-for="(weight, weightIndex) in gradeWeights"
-                :key="weightIndex"
-                class="text-center"
-              >
+              <td class="text-center">
                 <v-text-field
-                  v-model="students[studentIndex].grades[weightIndex]"
+                  v-model="grades[studentIndex]"
                   hide-details
                   hide-spin-buttons
                   placeholder="Note"
                   type="number"
                 />
               </td>
-              <td />
             </tr>
           </tbody>
         </v-simple-table>
@@ -119,125 +88,56 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import LoadingOverlay from '@/components/LoadingOverlay.vue';
+import { NoodleModule } from '@/classes/NoodleModule';
 
-@Component
+const CourseStore = namespace('Courses');
+
+@Component({
+  components: { LoadingOverlay },
+})
 export default class CourseValuationPopup extends Vue {
-  @Prop({ required: true }) readonly course: any;
+  @Prop({ required: true }) readonly module!: NoodleModule;
 
-  private students = [
-    {
-      id: 1,
-      grades: [],
-    },
-    {
-      id: 2,
-      grades: [],
-    },
-    {
-      id: 3,
-      grades: [],
-    },
-    {
-      id: 4,
-      grades: [],
-    },
-    {
-      id: 5,
-      grades: [],
-    },
-    {
-      id: 6,
-      grades: [],
-    },
-    {
-      id: 7,
-      grades: [],
-    },
-    {
-      id: 8,
-      grades: [],
-    },
-    {
-      id: 9,
-      grades: [],
-    },
-    {
-      id: 10,
-      grades: [],
-    },
-    {
-      id: 11,
-      grades: [],
-    },
-    {
-      id: 12,
-      grades: [],
-    },
-    {
-      id: 13,
-      grades: [],
-    },
-    {
-      id: 14,
-      grades: [],
-    },
-    {
-      id: 15,
-      grades: [],
-    },
-    {
-      id: 16,
-      grades: [],
-    },
-    {
-      id: 17,
-      grades: [],
-    },
-    {
-      id: 18,
-      grades: [],
-    },
-    {
-      id: 19,
-      grades: [],
-    },
-    {
-      id: 20,
-      grades: [],
-    },
-    {
-      id: 21,
-      grades: [],
-    },
-    {
-      id: 22,
-      grades: [],
-    },
-    {
-      id: 23,
-      grades: [],
-    },
-    {
-      id: 24,
-      grades: [],
-    },
-    {
-      id: 25,
-      grades: [],
-    },
-    {
-      id: 26,
-      grades: [],
-    },
-  ];
+  visible = false;
 
-  gradeWeights = [100, 100];
+  loadingStudents = false;
 
-  private visible = false;
+  @CourseStore.State
+  studentsInCourse!: Array<{ id: number, name: string }>;
+
+  @CourseStore.Action
+  loadStudentsInCourse!: (courseId: number) => Promise<void>;
+
+  @CourseStore.Action
+  valuateStudents!: (data: {
+    students: any,
+    grades: any,
+    moduleId: number,
+  }) => Promise<void>;
+
+  grades = [];
 
   saveValuations(): void {
-    alert('Kursbewertung abgegeben');
+    this.valuateStudents({
+      students: this.studentsInCourse,
+      grades: this.grades,
+      moduleId: this.module.id,
+    });
+
     this.visible = false;
+  }
+
+  openPopup(): void {
+    this.visible = true;
+
+    this.loadingStudents = true;
+    this.loadStudentsInCourse(this.module.assignedCourse ? this.module.assignedCourse.id : 0)
+      .catch(() => undefined)
+      .finally(() => {
+        this.loadingStudents = false;
+      });
   }
 }
 </script>
