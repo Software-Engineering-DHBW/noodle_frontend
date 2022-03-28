@@ -104,6 +104,7 @@ export default class Users extends Vue {
   loadTableData(): void {
     this.loading = true;
     this.loadAllUsers()
+      .catch()
       .finally(() => {
         this.loading = false;
       });
@@ -112,6 +113,7 @@ export default class Users extends Vue {
   deleteSelectedUser(username:string): void {
     this.loading = true;
     this.deleteUser(username)
+      .catch()
       .finally(() => {
         this.loading = false;
       });

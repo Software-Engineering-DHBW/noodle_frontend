@@ -87,6 +87,7 @@ export default class Courses extends Vue {
   deleteCourseFromList(courseId: number): void {
     this.loading = true;
     this.deleteCourse(courseId)
+      .catch()
       .finally(() => {
         this.loading = false;
       });

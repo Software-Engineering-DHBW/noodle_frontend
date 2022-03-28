@@ -19,6 +19,7 @@ export default class Courses extends VuexModule {
       .then((courseList) => this.context.commit('updateUsers', courseList))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
+        throw error;
       });
   }
 
@@ -28,6 +29,7 @@ export default class Courses extends VuexModule {
       .then(() => this.context.dispatch('loadAllCourses'))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
+        throw error;
       });
   }
 
@@ -37,6 +39,7 @@ export default class Courses extends VuexModule {
       .then(() => this.context.dispatch('loadAllCourses'))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
+        throw error;
       });
   }
 }

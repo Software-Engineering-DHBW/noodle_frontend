@@ -123,6 +123,7 @@ export default class NewUserPopup extends Vue {
         this.newUser = new NewNoodleUser();
         this.visible = false;
       })
+      .catch()
       .finally(() => {
         this.loading = false;
       });

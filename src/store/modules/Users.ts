@@ -28,6 +28,7 @@ export default class Users extends VuexModule {
       .then((userList) => this.context.commit('updateUsers', userList))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
+        throw error;
       });
   }
 
@@ -37,6 +38,7 @@ export default class Users extends VuexModule {
       .then(() => this.context.dispatch('loadAllUsers'))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
+        throw error;
       });
   }
 
@@ -46,6 +48,7 @@ export default class Users extends VuexModule {
       .then(() => this.context.dispatch('loadAllUsers'))
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
+        throw error;
       });
   }
 
@@ -54,7 +57,7 @@ export default class Users extends VuexModule {
     return UserService.changeUserPassword(data)
       .then(() => this.context.dispatch('loadAllUsers'))
       .catch((error) => {
-        alert(error);
+        this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
         throw error;
       });
   }

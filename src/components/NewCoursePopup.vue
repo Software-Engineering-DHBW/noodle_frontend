@@ -106,6 +106,7 @@ export default class NewUserPopup extends Vue {
         this.newCourse.name = '';
         this.newCourse.students = [];
       })
+      .catch()
       .finally(() => {
         this.loadingWhileRegisteringCourse = false;
         this.visible = false;
@@ -116,6 +117,7 @@ export default class NewUserPopup extends Vue {
     this.visible = true;
     this.loadingStudents = true;
     this.loadAllUsers()
+      .catch()
       .finally(() => {
         this.loadingStudents = false;
       });
