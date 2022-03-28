@@ -53,6 +53,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
 const UserStore = namespace('Users');
+const Auth = namespace('Auth');
 
 @Component
 export default class ChangePasswordPopup extends Vue {
@@ -62,16 +63,32 @@ export default class ChangePasswordPopup extends Vue {
 
   loading = false;
 
-  showPassword = false
+  showPassword = false;
 
-  data = { username: this.username, password: '' }
+  data = {
+    username: this.username,
+    password: '',
+  };
+
+  @Auth.Getter
+  isAdmin!: boolean;
+
+  @Auth.Action
+  logout!: () => void;
 
   @UserStore.Action
-  changeUserPassword!: (data: {username: string, password: string}) => Promise<void>;
+  changeUserPassword!: (data: { username: string, password: string }) => Promise<void>;
 
   changePassword(): void {
     this.loading = true;
     this.changeUserPassword(this.data)
+      .then(() => {
+        if (!this.isAdmin) {
+          this.logout();
+          this.$router.push('/login');
+        }
+      })
+      .catch(() => undefined)
       .finally(() => {
         this.loading = false;
         this.visible = false;

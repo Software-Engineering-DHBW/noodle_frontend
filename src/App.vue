@@ -39,6 +39,17 @@
         </span>
       </div>
       <v-spacer />
+      <v-tooltip bottom>
+        Passwort ändern
+        <template v-slot:activator="{ on }">
+          <div
+            class="d-inline-flex"
+            v-on="on"
+          >
+            <ChangePasswordPopup :username="currentUser.username" />
+          </div>
+        </template>
+      </v-tooltip>
       <v-btn
         text
         color="primary"
@@ -77,11 +88,13 @@ import CurrentUser from '@/classes/CurrentUser';
 import routes from '@/router/Routes';
 import { RouteConfig } from 'vue-router';
 import { Alert } from '@/classes/Alert';
+import ChangePasswordPopup from '@/components/ChangePasswordPopup.vue';
 
 const Auth = namespace('Auth');
 const AlertStore = namespace('AlertStore');
-
-@Component
+@Component({
+  components: { ChangePasswordPopup },
+})
 export default class App extends Vue {
   @AlertStore.State
   alerts!: Array<Alert>;
