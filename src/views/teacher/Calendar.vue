@@ -10,7 +10,7 @@
         />
       </v-col>
       <v-col class="text-right">
-        <MeetingPopup :meeting="currentMeeting" />
+        <NewMeetingPopup :meeting="currentMeeting" />
       </v-col>
     </v-row>
     <v-row>
@@ -26,14 +26,14 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Calendar from '@/components/Calendar.vue';
-import MeetingPopup from '@/components/MeetingPopup.vue';
+import NewMeetingPopup from '@/components/NewMeetingPopup.vue';
 import { CalendarEntry } from '@/classes/CalendarEntry';
 
 const CalendarStore = namespace('Calendar');
 
 @Component({
   components: {
-    MeetingPopup,
+    NewMeetingPopup,
     Calendar,
   },
 })

@@ -154,8 +154,6 @@ export default class MeetingPopup extends Vue {
     this.entry.startTime = `${this.date}T${this.start}:00.000Z`;
     this.entry.endTime = `${this.date}T${this.end}:00.000Z`;
 
-    console.log(this.entry.assignedModule);
-
     this.registerEntry(this.entry)
       .then(() => {
         this.entry.startTime = '';
