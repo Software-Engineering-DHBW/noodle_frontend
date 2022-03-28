@@ -1,15 +1,19 @@
 <template>
   <v-container>
+    <LoadingOverlay :loading="loading" />
     <v-row>
       <v-col cols="8">
-        <h2 v-text="`${moduleName} im ${semester}. Semester`" />
-        <v-textarea v-text="description" />
+        <h2>
+          {{ module.assignedCourse ? `${module.assignedCourse.name} - ` : '' }}
+          {{ module.name }}
+        </h2>
+        <v-textarea v-text="module.description" />
       </v-col>
       <v-col
         cols="4"
         class="text-right"
       >
-        <CourseValuationPopup :course="course" />
+        <CourseValuationPopup :course="module.assignedCourse" />
       </v-col>
     </v-row>
 
@@ -80,24 +84,30 @@ import { Component, Vue } from 'vue-property-decorator';
 import LectureMaterialTree from '@/components/LectureMaterialTree.vue';
 import NewAssignmentPopup from '@/components/NewAssignmentPopup.vue';
 import CourseValuationPopup from '@/components/CourseValuationPopup.vue';
+import { namespace } from 'vuex-class';
+import { NoodleModule } from '@/classes/NoodleModule';
+import LoadingOverlay from '@/components/LoadingOverlay.vue';
+
+const ModuleStore = namespace('Modules');
 
 @Component({
   components: {
+    LoadingOverlay,
     CourseValuationPopup,
     NewAssignmentPopup,
     LectureMaterialTree,
   },
 })
 export default class Module extends Vue {
-  private moduleName = '';
-
   moduleId!: number;
 
-  private description = 'Dieses Modul ist besonders geil. Es ist supergeil!';
+  @ModuleStore.State
+  module!: NoodleModule;
 
-  private semester = 0;
+  loading = false;
 
-  private course = 'IT2';
+  @ModuleStore.Action
+  loadModule!: (id: number) => Promise<void>;
 
   private lectureMaterial = [
     {
@@ -179,6 +189,13 @@ export default class Module extends Vue {
 
   mounted(): void {
     this.moduleId = +this.$route.params.moduleId;
+
+    this.loading = true;
+    this.loadModule(this.moduleId)
+      .catch(() => undefined)
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 </script>

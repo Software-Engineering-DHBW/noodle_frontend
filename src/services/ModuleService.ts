@@ -13,6 +13,11 @@ class ModuleService {
     return axios
       .post('api/module/register', module);
   }
+
+  static loadModule(id: number): Promise<void> {
+    return axios.get(`api/module/${id}`)
+      .then((res) => res.data);
+  }
 }
 
 export default ModuleService;
