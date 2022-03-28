@@ -115,6 +115,7 @@ export default class NewUserPopup extends Vue {
 
   openPopup() : void {
     this.visible = true;
+
     this.loadingStudents = true;
     this.loadAllUsers()
       .catch(() => undefined)

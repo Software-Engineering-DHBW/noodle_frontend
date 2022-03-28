@@ -55,7 +55,9 @@ export default class Users extends VuexModule {
   @Action
   changeUserPassword(data: {username: string, password: string}): Promise<void> {
     return UserService.changeUserPassword(data)
-      .then(() => this.context.dispatch('loadAllUsers'))
+      .then(() => {
+        this.context.dispatch('AlertStore/showSuccess', 'Passwort geändert', { root: true });
+      })
       .catch((error) => {
         this.context.dispatch('AlertStore/showError', error.response.data, { root: true });
         throw error;
