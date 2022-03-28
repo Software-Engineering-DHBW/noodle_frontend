@@ -51,18 +51,25 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+
+const Auth = namespace('Auth');
 
 @Component
 export default class LectureMaterialTree extends Vue {
   @Prop({ required: true }) lectureMaterial: any;
 
-  isAdmin = true;
+  @Auth.Getter
+  isAdmin!: boolean;
 
-  isTeacher = false;
+  @Auth.Getter
+  isTeacher!: boolean;
 
-  canEdit = this.isAdmin || this.isTeacher;
+  get canEdit(): boolean {
+    return this.isAdmin || this.isTeacher;
+  }
 
-  private formats = {
+  formats = {
     file: 'mdi-file-outline',
     pdf: 'mdi-file-pdf-box',
     link: 'mdi-link',
