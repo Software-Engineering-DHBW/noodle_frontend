@@ -21,11 +21,12 @@ import ModuleList from '@/components/ModuleList.vue';
 import SearchField from '@/components/SearchField.vue';
 import { namespace } from 'vuex-class';
 import { NoodleModule } from '@/classes/NoodleModule';
+import LoadingOverlay from '@/components/LoadingOverlay.vue';
 
 const ModuleStore = namespace('Modules');
 
 @Component({
-  components: { ModuleList, SearchField },
+  components: { LoadingOverlay, ModuleList, SearchField },
 })
 export default class ModuleOverview extends Vue {
   filterString = '';
