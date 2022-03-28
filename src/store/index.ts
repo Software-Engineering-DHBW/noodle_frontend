@@ -7,6 +7,7 @@ import Auth from '@/store/modules/Auth';
 import AlertStore from '@/store/modules/AlertStore';
 import Courses from '@/store/modules/Courses';
 import Modules from '@/store/modules/Modules';
+import Calendar from '@/store/modules/Calendar';
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     AlertStore,
     Courses,
     Modules,
+    Calendar,
   },
   plugins: [vuexLocal.plugin],
 });

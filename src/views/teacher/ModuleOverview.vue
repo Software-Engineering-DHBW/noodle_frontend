@@ -26,7 +26,7 @@ import LoadingOverlay from '@/components/LoadingOverlay.vue';
 const ModuleStore = namespace('Modules');
 
 @Component({
-  components: { LoadingOverlay, ModuleList, SearchField },
+  components: { ModuleList, SearchField, LoadingOverlay },
 })
 export default class ModuleOverview extends Vue {
   filterString = '';
