@@ -69,7 +69,7 @@ export default class ModuleOverview extends Vue {
   mounted(): void {
     this.loading = true;
     this.loadAllModules()
-      .catch()
+      .catch(() => undefined)
       .finally(() => {
         this.loading = false;
       });

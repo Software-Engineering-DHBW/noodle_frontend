@@ -87,7 +87,7 @@ export default class Courses extends Vue {
   deleteCourseFromList(courseId: number): void {
     this.loading = true;
     this.deleteCourse(courseId)
-      .catch()
+      .catch(() => undefined)
       .finally(() => {
         this.loading = false;
       });
@@ -96,6 +96,7 @@ export default class Courses extends Vue {
   mounted(): void {
     this.loading = true;
     this.loadAllCourses()
+      .catch(() => undefined)
       .finally(() => {
         this.loading = false;
       });
