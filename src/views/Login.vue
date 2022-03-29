@@ -7,19 +7,32 @@
       src="/noodle_black.png"
       style="margin-top: 20px; margin-bottom: 20px"
     />
-    <v-form>
+    <v-form
+      ref="loginForm"
+      class="text-center"
+    >
       <v-text-field
         v-model="user.username"
         label="Username"
         outlined
+        :rules="textFieldRules"
+        @keydown.enter="handleLogin"
       />
       <v-text-field
         v-model="user.password"
-        outlined
         label="Password"
         type="password"
+        autocomplete="on"
+        outlined
+        :rules="textFieldRules"
+        @keydown.enter="handleLogin"
       />
-      <v-btn @click="handleLogin()">
+      <v-btn
+        class="primary"
+        :disabled="!valid"
+        :loading="loading"
+        @click="handleLogin()"
+      >
         Login
       </v-btn>
     </v-form>
@@ -29,18 +42,30 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import { LoginData } from '@/classes/LoginData';
 
 const Auth = namespace('Auth');
 
 @Component
 export default class Login extends Vue {
-  private user: any = { username: '', password: '' };
+  loading = false;
+
+  user: LoginData = {
+    username: '',
+    password: '',
+  };
+
+  get valid(): boolean {
+    return !!this.user.username && !!this.user.password;
+  }
+
+  textFieldRules = [(value: any) => !!value || 'Feld darf nicht leer sein'];
 
   @Auth.Getter
-  private isLoggedIn!: boolean;
+  isLoggedIn!: boolean;
 
   @Auth.Action
-  private login!: (data: any) => Promise<any>;
+  login!: (loginData: LoginData) => Promise<void>;
 
   created(): void {
     if (this.isLoggedIn) {
@@ -49,15 +74,19 @@ export default class Login extends Vue {
   }
 
   handleLogin(): void {
-    if (this.user.username && this.user.password) {
-      this.login(this.user).then(
-        () => {
-          this.$router.push('/');
-        },
-        (error) => {
-          alert(error);
-        },
-      );
+    this.loading = true;
+
+    // validation of name and passwort field
+    const form: any = this.$refs.loginForm;
+    form.validate();
+
+    if (this.valid) {
+      this.login(this.user)
+        .then(() => this.$router.push('/'))
+        .catch(() => undefined)
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 }
