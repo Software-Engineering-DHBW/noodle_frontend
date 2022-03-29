@@ -1,7 +1,10 @@
 <template>
   <v-container>
-    <h2 v-text="`${moduleName} im ${semester}. Semester`" />
-    <v-textarea v-text="description" />
+    <LoadingOverlay :loading="loading" />
+    <h2>
+      {{ module.name }}
+    </h2>
+    <v-textarea v-text="module.description" />
 
     <br>
     <v-divider />
@@ -60,18 +63,27 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import LectureMaterialTree from '@/components/LectureMaterialTree.vue';
+import { namespace } from 'vuex-class';
+import { NoodleModule } from '@/classes/NoodleModule';
+import LoadingOverlay from '@/components/LoadingOverlay.vue';
+
+const ModuleStore = namespace('Modules');
 
 @Component({
-  components: { LectureMaterialTree },
+  components: { LoadingOverlay, LectureMaterialTree },
 })
 export default class Module extends Vue {
-  private moduleName = '';
-
   moduleId!: number;
 
-  private description = 'Dieses Modul ist besonders geil. Es ist supergeil!';
+  @ModuleStore.State
+  module!: NoodleModule;
 
-  private semester = 0;
+  @ModuleStore.Action
+  loadModule!: (id: number) => Promise<void>;
+
+  description = 'Dieses Modul ist besonders geil. Es ist supergeil!';
+
+  loading = false;
 
   private lectureMaterial = [
     {
@@ -153,6 +165,13 @@ export default class Module extends Vue {
 
   mounted(): void {
     this.moduleId = +this.$route.params.moduleId;
+
+    this.loading = true;
+    this.loadModule(this.moduleId)
+      .catch(() => undefined)
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 </script>
