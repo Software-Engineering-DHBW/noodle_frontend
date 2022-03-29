@@ -22,6 +22,9 @@
                 Nutzername
               </th>
               <th>
+                Vor- und Nachname
+              </th>
+              <th>
                 Rolle
               </th>
               <th>
@@ -38,6 +41,9 @@
             >
               <td class="text-break">
                 {{ user.userId.username }}
+              </td>
+              <td>
+                {{ user.fullname }}
               </td>
               <td>
                 {{
@@ -131,7 +137,7 @@ export default class Users extends Vue {
   }
 
   get filteredUsers(): Array<NoodleUser> {
-    return this.users.filter((user) => user.fullname.toLowerCase()
+    return this.users.filter((user) => user.userId.username.toLowerCase()
       .includes(this.filterString.toLowerCase()));
   }
 

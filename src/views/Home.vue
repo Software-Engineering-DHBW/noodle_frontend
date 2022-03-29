@@ -2,7 +2,7 @@
   <div class="home">
     <v-container fluid>
       <h1 style="margin: 100px">
-        Hello {{ currentUser ? currentUser.fullName : '' }}
+        Hallo {{ currentUser ? currentUser.fullName : '' }}
       </h1>
     </v-container>
   </div>
