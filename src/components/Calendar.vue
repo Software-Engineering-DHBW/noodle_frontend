@@ -87,8 +87,7 @@
           />
           <v-list-item
             v-for="(event, index) in weekday.events"
-            :key="event.start.getMilliseconds()"
-            :to="`module/${1}/${event.name}`"
+            :key="index"
           >
             <v-list-item-content class="pt-0">
               <v-list-item-title>
